@@ -80,3 +80,6 @@ def insert_respond_RS_AN(data):
         conn.close()
 
 
+@app.route('/')
+def home():
+    return render_template('index.html')
