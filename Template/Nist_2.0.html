@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NIST Cybersecurity Framework 2.0 Sunburst Chart</title>
+<link rel="stylesheet" href="styles.css" />
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+<div id="sunburstChart" style="width:100%;height:800px;"></div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var data = [{
+        type: "sunburst",
+        labels: [
+            "NIST CSF 2.0",
+            "Identify", "Protect", "Detect", "Respond", "Recover",
+            "Asset Management", "Business Environment", "Governance", "Risk Assessment", "Risk Management Strategy",
+            "Access Control", "Awareness and Training", "Data Security", "Information Protection Processes and Procedures", "Maintenance",
+            "Anomalies and Events", "Security Continuous Monitoring", "Detection Processes",
+            "Response Planning", "Respond Communications", "Analysis", "Mitigation", "Respond Improvements",
+            "Recovery Planning", "Recovery Improvements", "Recovery Communications",
+            // Identify subcategories
+            "ID.AM-1", "ID.AM-2", "ID.AM-3", "ID.AM-4", "ID.AM-5", "ID.AM-6", "ID.AM-7",
+            "ID.GV-1", "ID.GV-2", "ID.GV-3", "ID.GV-4", "ID.GV-5", "ID.GV-6", "ID.GV-7", "ID.GV-8", "ID.GV-9", "ID.GV-10", "ID.GV-11",
+            "ID.RA-1", "ID.RA-2", "ID.RA-3", "ID.RA-4", "ID.RA-5",
+            // Protect subcategories
+            "PR.AC-1", "PR.AC-2", "PR.AC-3", "PR.AC-4", "PR.AC-5", "PR.AC-6", "PR.AC-7", "PR.AC-8", "PR.AC-9", "PR.AC-10",
+            "PR.AT-1", "PR.AT-2", "PR.AT-3", "PR.AT-4",
+            "PR.DS-1", "PR.DS-2", "PR.DS-3", "PR.DS-4",
+            "PR.IP-1", "PR.IP-2", "PR.IP-3", "PR.IP-4", "PR.IP-5", "PR.IP-6", "PR.IP-7", "PR.IP-8", "PR.IP-9",
+            // Detect subcategories
+            "DE.AE-1", "DE.AE-2", "DE.AE-3", "DE.AE-4",
+            "DE.CM-1", "DE.CM-2", "DE.CM-3", "DE.CM-4", "DE.CM-5",
+            // Respond subcategories
+            "RS.RP-1", "RS.RP-2", "RS.RP-3", "RS.RP-4",
+            "RS.CO-1", "RS.CO-2", "RS.CO-3", "RS.CO-4", "RS.CO-5", "RS.CO-6",
+            "RS.IM-1",
+            // Recover subcategories
+            "RC.RP-1", "RC.RP-2",
+            "RC.IM-1", "RC.IM-2"
+        ],
+        parents: [
+            "",
+            "NIST CSF 2.0", "NIST CSF 2.0", "NIST CSF 2.0", "NIST CSF 2.0", "NIST CSF 2.0",
+            "Identify", "Identify", "Identify", "Identify", "Identify",
+            "Protect", "Protect", "Protect", "Protect", "Protect",
+            "Detect", "Detect", "Detect",
+            "Respond", "Respond", "Respond", "Respond", "Respond",
+            "Recover", "Recover", "Recover",
+            // Identify subcategories
+            "Asset Management", "Asset Management", "Asset Management", "Asset Management", "Asset Management", "Asset Management", "Asset Management",
+            "Governance", "Governance", "Governance", "Governance", "Governance", "Governance", "Governance", "Governance", "Governance", "Governance", "Governance",
+            "Risk Assessment", "Risk Assessment", "Risk Assessment", "Risk Assessment", "Risk Assessment",
+            // Protect subcategories
+            "Access Control", "Access Control", "Access Control", "Access Control", "Access Control", "Access Control", "Access Control", "Access Control", "Access Control", "Access Control",
+            "Awareness and Training", "Awareness and Training", "Awareness and Training", "Awareness and Training",
+            "Data Security", "Data Security", "Data Security", "Data Security",
+            "Information Protection Processes and Procedures", "Information Protection Processes and Procedures", "Information Protection Processes and Procedures", "Information Protection Processes and Procedures", "Information Protection Processes and Procedures", "Information Protection Processes and Procedures", "Information Protection Processes and Procedures", "Information Protection Processes and Procedures", "Information Protection Processes and Procedures",
+            // Detect subcategories
+            "Anomalies and Events", "Anomalies and Events", "Anomalies and Events", "Anomalies and Events",
+            "Security Continuous Monitoring", "Security Continuous Monitoring", "Security Continuous Monitoring", "Security Continuous Monitoring", "Security Continuous Monitoring",
+            // Respond subcategories
+            "Response Planning", "Response Planning", "Response Planning", "Response Planning",
+            "Respond Communications", "Respond Communications", "Respond Communications", "Respond Communications", "Respond Communications", "Respond Communications",
+            "Respond Improvements",
+            // Recover subcategories
+            "Recovery Planning", "Recovery Planning",
+            "Recovery Improvements", "Recovery Communications"
+        ],
+
+        outsidetextfont: {size: 28, color: "#377eb8"},
+        leaf: {opacity: 0.8},  // Make outer circle more prominent
+        marker: {line: {width: 2}},  // Thicker lines for better visibility\
+        insidetextorientation: 'radial',  // Ensure text is oriented radially
+        uniformtext: {mode: "hide", minsize: 1}, // Ensure uniform text size
+        textfont: {size: 16} 
+
+    }];
+
+    var layout = {
+        margin: {l: 0, r: 0, b: 0, t: 0},
+        sunburstcolorway: ["#636efa","#ef553b","#00cc96","#ab63fa","#ffa15a","#19d3f3","#ff6692"]
+    };
+
+    var config = {
+        responsive: true
+    };
+
+    Plotly.newPlot('sunburstChart', data, layout, config);
+});
+</script>
+</body>
+</html>
