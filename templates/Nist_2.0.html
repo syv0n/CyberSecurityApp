@@ -11,6 +11,143 @@
 <div id="sunburstChart" style="width:100%;height:800px;"></div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  var hoverText = [
+      "NIST Cybersecurity Framework 2.0",
+      "Identify: Develop an understanding of the organization's systems, assets, data, and capabilities to manage cybersecurity risk.",
+      "Protect: Develop and implement appropriate safeguards to ensure delivery of critical infrastructure services.",
+      "Detect: Develop and implement appropriate activities to identify the occurrence of a cybersecurity event.",
+      "Respond: Develop and implement appropriate activities to take action regarding a detected cybersecurity incident.",
+      "Recover: Develop and implement appropriate activities to maintain plans for resilience and to restore any capabilities or services that were impaired due to a cybersecurity incident.",
+      
+      // Identify subcategories
+      "Asset Management: Inventory of physical devices and systems.",
+      "Business Environment: Establish and communicate organizational mission and objectives.",
+      "Governance: Risk management frameworks established and managed.",
+      "Risk Assessment: Identify and document asset vulnerabilities.",
+      "Risk Management Strategy: Determine organizational risk tolerance.",
+      
+      // Protect subcategories
+      "Access Control: Manage identities and credentials for authorized users.",
+      "Awareness and Training: Implement security awareness training for all users.",
+      "Data Security: Protect data-at-rest and data-in-transit.",
+      "Information Protection Processes and Procedures: Establish processes for data handling and security.",
+      "Maintenance: Maintain security through regular updates and monitoring.",
+      
+      // Detect subcategories
+      "Anomalies and Events: Detect and analyze network security alerts.",
+      "Security Continuous Monitoring: Continuously monitor the security state of systems.",
+      "Detection Processes: Ensure robust processes for identifying potential incidents.",
+      
+      // Respond subcategories
+      "Response Planning: Develop and maintain incident response plans.",
+      "Respond Communications: Manage communication during incident response.",
+      "Analysis: Conduct analyses to incorporate lessons learned.",
+      "Mitigation: Implement strategies to reduce impacts of incidents.",
+      "Respond Improvements: Enhance response strategies based on feedback.",
+      
+      // Recover subcategories
+      "Recovery Planning: Develop plans to restore systems affected by incidents.",
+      "Recovery Improvements: Improve recovery processes based on evaluations.",
+      "Recovery Communications: Maintain communication during recovery efforts.",
+      
+      // Identify subcategories detailed
+      "ID.AM-1: Physical devices and systems within the organization are inventoried.",
+      "ID.AM-2: Software platforms and applications within the organization are inventoried.",
+      "ID.AM-3: Organizational communication and data flows are mapped.",
+      "ID.AM-4: External information systems are cataloged.",
+      "ID.AM-5: Roles and responsibilities for assets are identified.",
+      "ID.AM-6: Cybersecurity roles are coordinated with internal and external partners.",
+      "ID.AM-7: A plan for managing assets is developed and implemented.",
+      
+      // More subcategories...
+      
+      "ID.GV-1: Organizational mission, objectives, and priorities are established.",
+      "ID.GV-2: Governance frameworks are established and managed.",
+      "ID.GV-3: Legal and regulatory requirements regarding cybersecurity are understood.",
+      "ID.GV-4: Organizational risk tolerance is determined and expressed.",
+      "ID.GV-5: Resources are prioritized based on risk.",
+      "ID.GV-6: Stakeholders' roles and responsibilities are communicated.",
+      "ID.GV-7: Cybersecurity is integrated into business continuity management.",
+      "ID.GV-8: Cybersecurity criteria are incorporated into contracts.",
+      "ID.GV-9: Acquisition processes incorporate cybersecurity requirements.",
+      "ID.GV-10: Supplier relationships are managed to ensure cybersecurity.",
+      "ID.GV-11: Cybersecurity is integrated into human resources practices.",
+      
+      // More detailed subcategories...
+      
+      "ID.RA-1: Asset vulnerabilities are identified and documented.",
+      "ID.RA-2: Internal and external threats are identified.",
+      "ID.RA-3: Potential business impacts and likelihoods are identified.",
+      "ID.RA-4: Risk responses are identified and prioritized.",
+      "ID.RA-5: Risk management strategy is reviewed and updated.",
+      
+      // Continue for Protect, Detect, Respond, Recover subcategories...
+      
+      "PR.AC-1: Identities and credentials are managed for authorized devices.",
+      "PR.AC-2: Access permissions are managed using least privilege.",
+      "PR.AC-3: Remote access is managed to minimize risks.",
+      "PR.AC-4: Access permissions are reviewed periodically.",
+      "PR.AC-5: Network integrity is protected.",
+      "PR.AC-6: Security architecture minimizes impact of potential events.",
+      "PR.AC-7: Cryptographic protocols protect data integrity.",
+      "PR.AC-8: Access to sensitive information is controlled.",
+      "PR.AC-9: Information systems are monitored for unauthorized access.",
+      "PR.AC-10: Response processes are tested for effectiveness.",
+      
+      // Add other subcategories similarly...
+
+      "PR.AT-1: A formal policy for security awareness is established.",
+      "PR.AT-2: All users receive cybersecurity awareness training.",
+      "PR.AT-3: Role-based security training is provided.",
+      "PR.AT-4: Training effectiveness is evaluated.",
+      
+      "PR.DS-1: Data-at-rest is protected.",
+      "PR.DS-2: Data-in-transit is protected.",
+      "PR.DS-3: Asset vulnerabilities are identified.",
+      "PR.DS-4: Organizational data is physically protected.",
+      
+      "PR.IP-1: Data is classified based on sensitivity.",
+      "PR.IP-2: Data is labeled according to classification.",
+      "PR.IP-3: Handling procedures for data are established.",
+      "PR.IP-4: Access permissions are managed with least privilege.",
+      "PR.IP-5: Information is sanitized or destroyed according to policy.",
+      "PR.IP-6: Information is managed throughout removal and transfers.",
+      "PR.IP-7: Configuration management processes are implemented.",
+      "PR.IP-8: Software is maintained with security features enabled.",
+      "PR.IP-9: Integrity checking mechanisms are used.",
+      
+      "DE.AE-1: Network security alerts are detected and analyzed.",
+      "DE.AE-2: Network activity is monitored in real-time.",
+      "DE.AE-3: Information on system state is collected and analyzed.",
+      "DE.AE-4: Response plans are developed based on identified events.",
+      
+      "DE.CM-1: The security state of systems is continuously monitored.",
+      "DE.CM-2: Detected anomalies are analyzed for impact.",
+      "DE.CM-3: Changes to systems are monitored for security impacts.",
+      "DE.CM-4: Cybersecurity controls are assessed for effectiveness.",
+      "DE.CM-5: Systems are protected from unauthorized access.",
+      
+      "RS.RP-1: Response plans are developed and maintained.",
+      "RS.RP-2: Response plans incorporate lessons from incidents.",
+      "RS.RP-3: Response plans are tested for effectiveness.",
+      "RS.RP-4: Incident response training is implemented.",
+      
+      "RS.CO-1: Incident response plans are communicated to stakeholders.",
+      "RS.CO-2: Communication channels with external stakeholders are established.",
+      "RS.CO-3: Information sharing within the organization is facilitated.",
+      "RS.CO-4: Information sharing with external stakeholders is facilitated.",
+      "RS.CO-5: Coordination with external stakeholders is facilitated.",
+      "RS.CO-6: Public relations are managed during incidents.",
+      
+      "RS.IM-1: Analysis is conducted to ensure lessons learned are incorporated.",
+      
+      "RC.RP-1: Recovery plans are developed and implemented.",
+      "RC.RP-2: Recovery plans incorporate lessons from previous incidents.",
+      
+      "RC.IM-1: Recovery procedures are regularly tested.",
+      "RC.IM-2: Recovery procedures are improved based on tests."
+    ];
+
     var data = [{
         type: "sunburst",
         labels: [
@@ -71,11 +208,13 @@ document.addEventListener('DOMContentLoaded', function() {
         ],
 
         outsidetextfont: {size: 28, color: "#377eb8"},
-        leaf: {opacity: 0.8},  // Make outer circle more prominent
-        marker: {line: {width: 2}},  // Thicker lines for better visibility\
-        insidetextorientation: 'radial',  // Ensure text is oriented radially
-        uniformtext: {mode: "hide", minsize: 1}, // Ensure uniform text size
-        textfont: {size: 16} 
+        leaf: {opacity: 0.8},
+        marker: {line: {width: 2}},
+        insidetextorientation: 'radial',
+        uniformtext: {mode: "hide", minsize: 1},
+        textfont: {size: 16},
+        hovertext: hoverText, // Add this line
+        hoverinfo: "text" // Add this line to show hover text
 
     }];
 
@@ -93,3 +232,126 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
+
+
+<!--
+### Functions:
+1. **Identify**: Develop an understanding of the organization's systems, assets, data, and capabilities to manage cybersecurity risk.
+   
+2. **Protect**: Develop and implement appropriate safeguards to ensure delivery of critical infrastructure services.
+   
+3. **Detect**: Develop and implement appropriate activities to identify the occurrence of a cybersecurity event.
+   
+4. **Respond**: Develop and implement appropriate activities to take action regarding a detected cybersecurity incident.
+   
+5. **Recover**: Develop and implement appropriate activities to maintain plans for resilience and to restore any capabilities or services that were impaired due to a cybersecurity incident.
+
+### Categories and Subcategories:
+- **Asset Management**
+  - **ID.AM-1**: Physical devices and systems within the organization are inventoried.
+  - **ID.AM-2**: Software platforms and applications within the organization are inventoried.
+  - **ID.AM-3**: Organizational communication and data flows are mapped.
+  - **ID.AM-4**: External information systems are cataloged.
+  - **ID.AM-5**: Roles and responsibilities for assets are identified.
+  - **ID.AM-6**: Cybersecurity roles and responsibilities are coordinated and aligned with internal roles and external partners.
+  - **ID.AM-7**: A plan for managing assets is developed and implemented.
+
+- **Business Environment**
+  - **ID.GV-1**: Organizational mission, objectives, and priorities are established and communicated.
+  - **ID.GV-2**: Governance and risk management frameworks are established and managed.
+  - **ID.GV-3**: Legal and regulatory requirements regarding cybersecurity are understood.
+  - **ID.GV-4**: Organizational risk tolerance is determined and clearly expressed.
+  - **ID.GV-5**: Organizational resources are prioritized and allocated based on risk.
+  - **ID.GV-6**: Stakeholders' roles and responsibilities are determined and communicated.
+  - **ID.GV-7**: Organizational resilience is increased by integrating cybersecurity into business continuity management.
+  - **ID.GV-8**: Cybersecurity criteria are incorporated into contracts and agreements.
+  - **ID.GV-9**: Acquisition processes, policies, and procedures incorporate cybersecurity requirements.
+  - **ID.GV-10**: Supplier relationships are managed to ensure cybersecurity.
+  - **ID.GV-11**: Cybersecurity is integrated into human resources practices.
+
+- **Governance**
+  - **ID.RA-1**: Asset vulnerabilities are identified and documented.
+  - **ID.RA-2**: Threats, both internal and external, are identified and documented.
+  - **ID.RA-3**: Potential business impacts and likelihoods are identified.
+  - **ID.RA-4**: Risk responses are identified and prioritized.
+  - **ID.RA-5**: Organizational risk management strategy is reviewed and updated.
+
+- **Access Control**
+  - **PR.AC-1**: Identities and credentials are managed for authorized devices and users.
+  - **PR.AC-2**: Access permissions and authorizations are managed, incorporating the principles of least privilege and separation of duties.
+  - **PR.AC-3**: Remote access is managed to minimize risks.
+  - **PR.AC-4**: Access permissions are reviewed periodically.
+  - **PR.AC-5**: Network integrity is protected (e.g., network segregation, VLANs, firewalls).
+  - **PR.AC-6**: Security architecture and processes are designed to minimize the impact of potential cybersecurity events.
+  - **PR.AC-7**: Cryptographic protocols are selected to protect the integrity of data.
+  - **PR.AC-8**: Access to sensitive information is controlled and protected.
+  - **PR.AC-9**: Information systems are monitored to detect unauthorized access or activities.
+  - **PR.AC-10**: Response processes are tested to ensure effectiveness.
+
+- **Awareness and Training**
+  - **PR.AT-1**: A formal policy for security awareness is established and communicated.
+  - **PR.AT-2**: All users receive awareness training related to cybersecurity policies and procedures.
+  - **PR.AT-3**: Role-based security training is provided.
+  - **PR.AT-4**: Awareness and training effectiveness are evaluated and updated.
+
+- **Data Security**
+  - **PR.DS-1**: Data-at-rest is protected.
+  - **PR.DS-2**: Data-in-transit is protected.
+  - **PR.DS-3**: Asset vulnerabilities are identified and documented.
+  - **PR.DS-4**: Organizational data is physically protected.
+
+- **Information Protection Processes and Procedures**
+  - **PR.IP-1**: Data is classified according to its sensitivity.
+  - **PR.IP-2**: Data is labeled based on its classification.
+  - **PR.IP-3**: Handling and marking procedures are established for data.
+  - **PR.IP-4**: Access permissions and authorizations are managed, incorporating the principles of least privilege and separation of duties.
+  - **PR.IP-5**: Information is sanitized or destroyed according to policy.
+  - **PR.IP-6**: Information is formally managed throughout removal, transfers, and disposition.
+  - **PR.IP-7**: Configuration management processes are implemented for security features.
+  - **PR.IP-8**: Software is installed and maintained with security features enabled.
+  - **PR.IP-9**: Integrity checking mechanisms are used to verify software, firmware, and information integrity.
+
+- **Anomalies and Events**
+  - **DE.AE-1**: Network security alerts are detected and analyzed.
+  - **DE.AE-2**: Network activity is monitored in real time.
+  - **DE.AE-3**: Information on the internal state of information systems is collected and analyzed.
+  - **DE.AE-4**: Response plans are developed and implemented based on identified cybersecurity events.
+
+- **Security Continuous Monitoring**
+  - **DE.CM-1**: The security state of organizational systems and assets is continuously monitored.
+  - **DE.CM-2**: Detected cybersecurity anomalies and events are analyzed to understand their potential impact.
+  - **DE.CM-3**: Changes to information systems are monitored and assessed for security impacts.
+  - **DE.CM-4**: Cybersecurity and privacy controls are assessed for effectiveness.
+  - **DE.CM-5**: The organization's information systems and assets are protected from unauthorized access, use, disclosure, disruption, modification, or destruction.
+
+- **Response Planning**
+  - **RS.RP-1**: Response plans are developed, maintained, and implemented to address incidents.
+  - **RS.RP-2**: Response plans incorporate lessons learned from previous incidents.
+  - **RS.RP-3**: Response plans are tested to ensure their effectiveness.
+  - **RS.RP-4**: Incident response training and awareness programs are implemented.
+
+- **Respond Communications**
+  - **RS.CO-1**: Incident response plans are communicated to relevant stakeholders.
+  - **RS.CO-2**: Communication channels with external stakeholders are established for incident response.
+  - **RS.CO-3**: Information sharing within the organization is facilitated during incident response.
+  - **RS.CO-4**: Information sharing with external stakeholders is facilitated during incident response.
+  - **RS.CO-5**: Coordination with external stakeholders is facilitated during incident response.
+  - **RS.CO-6**: Public relations are managed during incident response.
+
+- **Analysis**
+  - **RS.IM-1**: Analysis is conducted to ensure lessons learned are incorporated into incident response processes.
+
+- **Recovery Planning**
+  - **RC.RP-1**: Recovery plans are developed and implemented to restore systems affected by cybersecurity incidents.
+  - **RC.RP-2**: Recovery plans incorporate lessons learned from previous incidents.
+
+- **Recovery Improvements**
+  - **RC.IM-1**: Recovery procedures are regularly tested to ensure their effectiveness.
+  - **RC.IM-2**: Recovery procedures are improved based on test results.
+
+- **Recovery Communications**
+  - **RC.IM-1**: Communication is maintained with stakeholders during the recovery process.
+  - **RC.IM-2**: Public relations are managed during the recovery process.
+
+These labels and descriptions provide a structured approach to cybersecurity risk management, covering a wide range of controls and activities necessary to protect organizational assets and data from cybersecurity threats. For detailed implementation guidance, refer to NIST Special Publication 800-53 Revision 5 and the corresponding documents for each function, category, and subcategory.
+-->
