@@ -34,50 +34,7 @@ def get_db_connection():
             print(f"Error: {ex}")
         raise
 
-#----------------------------------------------------- RESPONSE -------------------------------------------------#
-
-#CREATE Operations
-def insert_respond_RS_RP(data):
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute("""
-            INSERT INTO Respond (
-                Department_Id,
-                Type,
-                TypeDescription,
-                Score,
-                Created_By,
-                Create_Datetime
-            ) VALUES (?, ?, ?, ?, ?, ?)
-        """, data['Department_Id'], 'RS.RP', 'Response Planning', data['Score'],  'Admin', datetime.now())
-        conn.commit()
-    except Exception as e:
-        print(f"Error inserting Respond data: {e}")
-        flash("An error occurred while submitting the form. Please try again.", "danger")
-    finally:
-        conn.close()
-
-def insert_respond_RS_AN(data):
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute("""
-            INSERT INTO Respond (
-                Department_Id,
-                Type,
-                TypeDescription,
-                Score,
-                Created_By,
-                Create_Datetime
-            ) VALUES (?, ?, ?, ?, ?, ?)
-        """, data['Department_Id'], 'RS.AN', 'Analysis', data['Score'],  'Admin', datetime.now())
-        conn.commit()
-    except Exception as e:
-        print(f"Error inserting Respond data: {e}")
-        flash("An error occurred while submitting the form. Please try again.", "danger")
-    finally:
-        conn.close()
+#----------------------------------------------------- REPORT -------------------------------------------------#
 
 
 @app.route('/')
