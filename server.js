@@ -28,5 +28,113 @@ app.get('/api/report', async (req, res) => {
     }
 });
 
+app.post('/api/createIdentity', async (req, res) => {
+    try {
+        // Extract data from the request body
+        const { reportId, category, subcategory, oisFoundationalObjective, maturityLevel, informationSource, score } = req.body;
+
+        // Validate the required fields
+        if (!reportId || !category || !subcategory || !oisFoundationalObjective || !maturityLevel || !informationSource || !score) {
+            return res.status(400).json({ message: "All fields are required." });
+        }
+
+        // Call the createIdentity function with the extracted data
+        await createIdentity(reportId, category, subcategory, oisFoundationalObjective, maturityLevel, informationSource, score);
+
+        // Send a success response
+        res.status(201).json({ message: "Identity created successfully." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Failed to create identity." });
+    }
+});
+
+app.post('/api/createProtect', async (req, res) => {
+    try {
+        // Extract data from the request body
+        const { reportId, category, subcategory, oisFoundationalObjective, maturityLevel, informationSource, score } = req.body;
+
+        // Validate the required fields
+        if (!reportId || !category || !subcategory || !oisFoundationalObjective || !maturityLevel || !informationSource || !score) {
+            return res.status(400).json({ message: "All fields are required." });
+        }
+
+        // Call the createIdentity function with the extracted data
+        await createProtect(reportId, category, subcategory, oisFoundationalObjective, maturityLevel, informationSource, score);
+
+        // Send a success response
+        res.status(201).json({ message: "Identity created successfully." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Failed to create identity." });
+    }
+});
+
+app.post('/api/createDetect', async (req, res) => {
+    try {
+        // Extract data from the request body
+        const { reportId, category, subcategory, oisFoundationalObjective, maturityLevel, informationSource, score } = req.body;
+
+        // Validate the required fields
+        if (!reportId || !category || !subcategory || !oisFoundationalObjective || !maturityLevel || !informationSource || !score) {
+            return res.status(400).json({ message: "All fields are required." });
+        }
+
+        // Call the createIdentity function with the extracted data
+        await createDetect(reportId, category, subcategory, oisFoundationalObjective, maturityLevel, informationSource, score);
+
+        // Send a success response
+        res.status(201).json({ message: "Identity created successfully." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Failed to create identity." });
+    }
+});
+
+app.post('/api/createRespond', async (req, res) => {
+    try {
+        // Extract data from the request body
+        const { reportId, category, subcategory, oisFoundationalObjective, maturityLevel, informationSource, score } = req.body;
+
+        // Validate the required fields
+        if (!reportId || !category || !subcategory || !oisFoundationalObjective || !maturityLevel || !informationSource || !score) {
+            return res.status(400).json({ message: "All fields are required." });
+        }
+
+        // Call the createIdentity function with the extracted data
+        await createRespond(reportId, category, subcategory, oisFoundationalObjective, maturityLevel, informationSource, score);
+
+        // Send a success response
+        res.status(201).json({ message: "Identity created successfully." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Failed to create identity." });
+    }
+});
+
+app.post('/api/createRecover', async (req, res) => {
+    try {
+        // Extract data from the request body
+        const { reportId, category, subcategory, oisFoundationalObjective, maturityLevel, informationSource, score } = req.body;
+
+        // Validate the required fields
+        if (!reportId || !category || !subcategory || !oisFoundationalObjective || !maturityLevel || !informationSource || !score) {
+            return res.status(400).json({ message: "All fields are required." });
+        }
+
+        // Call the createIdentity function with the extracted data
+        await createRecover(reportId, category, subcategory, oisFoundationalObjective, maturityLevel, informationSource, score);
+
+        // Send a success response
+        res.status(201).json({ message: "Identity created successfully." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Failed to create identity." });
+    }
+});
+
+
+
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
