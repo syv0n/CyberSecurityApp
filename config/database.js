@@ -21,4 +21,17 @@ async function connectDB() {
   }
 }
 
-module.exports = { sql, connectDB };
+// Database Operations
+
+async function getReport() {
+  try {
+    const result = await sql.query('SELECT * FROM Report');
+    return result
+  } catch (err) {
+    console.error('Failed to fetch data: ', err);
+    throw err;
+  }
+}
+
+
+module.exports = { sql, connectDB, getReport };
