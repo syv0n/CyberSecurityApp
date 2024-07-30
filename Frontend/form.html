@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIST CSF Input Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        select {
+            width: 100%;
+            padding: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>NIST CSF Input Form</h1>
+    <form id="nistForm">
+        <div class="form-group">
+            <label for="identify">Identify:</label>
+            <select id="identify" name="identify" required>
+                <option value="">Select an option</option>
+                <option value="Asset Management">Asset Management</option>
+                <option value="Business Environment">Business Environment</option>
+                <option value="Governance">Governance</option>
+                <option value="Risk Assessment">Risk Assessment</option>
+                <option value="Risk Management Strategy">Risk Management Strategy</option>
+                <option value="Supply Chain Risk Management">Supply Chain Risk Management</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="protect">Protect:</label>
+            <select id="protect" name="protect" required>
+                <option value="">Select an option</option>
+                <option value="Identity Management, Authentication and Access Control">Identity Management, Authentication and Access Control</option>
+                <option value="Awareness and Training">Awareness and Training</option>
+                <option value="Data Security">Data Security</option>
+                <option value="Information Protection Processes and Procedures">Information Protection Processes and Procedures</option>
+                <option value="Maintenance">Maintenance</option>
+                <option value="Protective Technology">Protective Technology</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="detect">Detect:</label>
+            <select id="detect" name="detect" required>
+                <option value="">Select an option</option>
+                <option value="Anomalies and Events">Anomalies and Events</option>
+                <option value="Security Continuous Monitoring">Security Continuous Monitoring</option>
+                <option value="Detection Processes">Detection Processes</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="respond">Respond:</label>
+            <select id="respond" name="respond" required>
+                <option value="">Select an option</option>
+                <option value="Response Planning">Response Planning</option>
+                <option value="Respond Communications">Respond Communications</option>
+                <option value="Analysis">Analysis</option>
+                <option value="Mitigation">Mitigation</option>
+                <option value="Respond Improvements">Respond Improvements</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="recover">Recover:</label>
+            <select id="recover" name="recover" required>
+                <option value="">Select an option</option>
+                <option value="Recovery Planning">Recovery Planning</option>
+                <option value="Recover Improvements">Recover Improvements</option>
+                <option value="Recover Communications">Recover Communications</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="additional">Additional Information:</label>
+            <select id="additional" name="additional" required>
+                <option value="">Select an option</option>
+                <option value="Option 1">Option 1</option>
+                <option value="Option 2">Option 2</option>
+                <option value="Option 3">Option 3</option>
+            </select>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script src="script.js"></script>
+</body>
+</html>

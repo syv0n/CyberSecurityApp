@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NIST Cybersecurity Framework 2.0 Sunburst Chart</title>
+<link rel="stylesheet" href="styles.css" />
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+<div id="sunburstChart" style="width:100%;height:800px;"></div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var hoverText = [
+    "NIST Cybersecurity Framework 2.0",
+    "Identify: Develop an organizational understanding to manage cybersecurity risk to systems, people, assets, data, and capabilities.",
+    "Protect: Develop and implement appropriate safeguards to ensure delivery of critical services.",
+    "Detect: Develop and implement appropriate activities to identify the occurrence of a cybersecurity event.",
+    "Respond: Develop and implement appropriate activities to take action regarding a detected cybersecurity incident.",
+    "Recover: Develop and implement appropriate activities to maintain plans for resilience and to restore any capabilities or services that were impaired due to a cybersecurity incident.",
+    
+    // Identify categories
+    "Asset Management: The data, personnel, devices, systems, and facilities that enable the organization to achieve business purposes are identified and managed consistent with their relative importance to organizational objectives and the organization's risk strategy.",
+    "Business Environment: The organization's mission, objectives, stakeholders, and activities are understood and prioritized; this information is used to inform cybersecurity roles, responsibilities, and risk management decisions.",
+    "Governance: The policies, procedures, and processes to manage and monitor the organization's regulatory, legal, risk, environmental, and operational requirements are understood and inform the management of cybersecurity risk.",
+    "Risk Assessment: The organization understands the cybersecurity risks to organizational operations (including mission, functions, image, or reputation), organizational assets, and individuals.",
+    "Risk Management Strategy: The organization's priorities, constraints, risk tolerances, and assumptions are established and used to support operational risk decisions.",
+    "Supply Chain Risk Management: The organization's priorities, constraints, risk tolerances, and assumptions are established and used to support risk decisions associated with managing supply chain risk. The organization has established and implemented the processes to identify, assess and manage supply chain risks.",
+    
+    // Protect categories
+    "Identity Management, Authentication and Access Control: Access to physical and logical assets and associated facilities is limited to authorized users, processes, and devices, and is managed consistent with the assessed risk of unauthorized access to authorized activities and transactions.",
+    "Awareness and Training: The organization's personnel and partners are provided cybersecurity awareness education and are trained to perform their cybersecurity-related duties and responsibilities consistent with related policies, procedures, and agreements.",
+    "Data Security: Information and records (data) are managed consistent with the organization's risk strategy to protect the confidentiality, integrity, and availability of information.",
+    "Information Protection Processes and Procedures: Security policies (that address purpose, scope, roles, responsibilities, management commitment, and coordination among organizational entities), processes, and procedures are maintained and used to manage protection of information systems and assets.",
+    "Maintenance: Maintenance and repairs of industrial control and information system components are performed consistent with policies and procedures.",
+    "Protective Technology: Technical security solutions are managed to ensure the security and resilience of systems and assets, consistent with related policies, procedures, and agreements.",
+    
+    // Detect categories
+    "Anomalies and Events: Anomalous activity is detected and the potential impact of events is understood.",
+    "Security Continuous Monitoring: The information system and assets are monitored to identify cybersecurity events and verify the effectiveness of protective measures.",
+    "Detection Processes: Detection processes and procedures are maintained and tested to ensure awareness of anomalous events.",
+    
+    // Respond categories
+    "Response Planning: Response processes and procedures are executed and maintained, to ensure response to detected cybersecurity incidents.",
+    "Communications: Response activities are coordinated with internal and external stakeholders (e.g. external support from law enforcement agencies).",
+    "Analysis: Analysis is conducted to ensure effective response and support recovery activities.",
+    "Mitigation: Activities are performed to prevent expansion of an event, mitigate its effects, and resolve the incident.",
+    "Improvements: Organizational response activities are improved by incorporating lessons learned from current and previous detection/response activities.",
+    
+    // Recover categories
+    "Recovery Planning: Recovery processes and procedures are executed and maintained to ensure restoration of systems or assets affected by cybersecurity incidents.",
+    "Improvements: Recovery planning and processes are improved by incorporating lessons learned into future activities.",
+    "Communications: Restoration activities are coordinated with internal and external parties (e.g. coordinating centers, Internet Service Providers, owners of attacking systems, victims, other CSIRTs, and vendors).",
+    
+    // Identify subcategories
+    "ID.AM-01: Physical devices and systems within the organization are inventoried",
+    "ID.AM-02: Software platforms and applications within the organization are inventoried",
+    "ID.AM-03: Organizational communication and data flows are mapped",
+    "ID.AM-04: External information systems are catalogued",
+    "ID.AM-05: Resources (e.g., hardware, devices, data, time, personnel, and software) are prioritized based on their classification, criticality, and business value",
+    "ID.AM-06: Cybersecurity roles and responsibilities for the entire workforce and third-party stakeholders (e.g., suppliers, customers, partners) are established",
+    "ID.BE-01: The organization's role in the supply chain is identified and communicated",
+    "ID.BE-02: The organization's place in critical infrastructure and its industry sector is identified and communicated",
+    "ID.BE-03: Priorities for organizational mission, objectives, and activities are established and communicated",
+    "ID.BE-04: Dependencies and critical functions for delivery of critical services are established",
+    "ID.BE-05: Resilience requirements to support delivery of critical services are established for all operating states (e.g. under duress/attack, during recovery, normal operations)",
+    "ID.GV-01: Organizational cybersecurity policy is established and communicated",
+    "ID.GV-02: Cybersecurity roles and responsibilities are coordinated and aligned with internal roles and external partners",
+    "ID.GV-03: Legal and regulatory requirements regarding cybersecurity, including privacy and civil liberties obligations, are understood and managed",
+    "ID.GV-04: Governance and risk management processes address cybersecurity risks",
+    "ID.RA-01: Asset vulnerabilities are identified and documented",
+    "ID.RA-02: Cyber threat intelligence is received from information sharing forums and sources",
+    "ID.RA-03: Threats, both internal and external, are identified and documented",
+    "ID.RA-04: Potential business impacts and likelihoods are identified",
+    "ID.RA-05: Threats, vulnerabilities, likelihoods, and impacts are used to determine risk",
+    "ID.RA-06: Risk responses are identified and prioritized",
+    "ID.RM-01: Risk management processes are established, managed, and agreed to by organizational stakeholders",
+    "ID.RM-02: Organizational risk tolerance is determined and clearly expressed",
+    "ID.RM-03: The organization's determination of risk tolerance is informed by its role in critical infrastructure and sector specific risk analysis",
+    "ID.SC-01: Cyber supply chain risk management processes are identified, established, assessed, managed, and agreed to by organizational stakeholders",
+    "ID.SC-02: Suppliers and third party partners of information systems, components, and services are identified, prioritized, and assessed using a cyber supply chain risk assessment process",
+    "ID.SC-03: Contracts with suppliers and third-party partners are used to implement appropriate measures designed to meet the objectives of an organization's cybersecurity program and Cyber Supply Chain Risk Management Plan",
+    "ID.SC-04: Suppliers and third-party partners are routinely assessed using audits, test results, or other forms of evaluations to confirm they are meeting their contractual obligations",
+    "ID.SC-05: Response and recovery planning and testing are conducted with suppliers and third-party providers",
+    
+    // Protect subcategories
+    "PR.AC-01: Identities and credentials are issued, managed, verified, revoked, and audited for authorized devices, users and processes",
+    "PR.AC-02: Physical access to assets is managed and protected",
+    "PR.AC-03: Remote access is managed",
+    "PR.AC-04: Access permissions and authorizations are managed, incorporating the principles of least privilege and separation of duties",
+    "PR.AC-05: Network integrity is protected (e.g., network segregation, network segmentation)",
+    "PR.AC-06: Identities are proofed and bound to credentials and asserted in interactions",
+    "PR.AC-07: Users, devices, and other assets are authenticated (e.g., single-factor, multi-factor) commensurate with the risk of the transaction (e.g., individuals' security and privacy risks and other organizational risks)",
+    "PR.AT-01: All users are informed and trained",
+    "PR.AT-02: Privileged users understand their roles and responsibilities",
+    "PR.AT-03: Third-party stakeholders (e.g., suppliers, customers, partners) understand their roles and responsibilities",
+    "PR.AT-04: Senior executives understand their roles and responsibilities",
+    "PR.AT-05: Physical and cybersecurity personnel understand their roles and responsibilities",
+    "PR.DS-01: Data-at-rest is protected",
+    "PR.DS-02: Data-in-transit is protected",
+    "PR.DS-03: Assets are formally managed throughout removal, transfers, and disposition",
+    "PR.DS-04: Adequate capacity to ensure availability is maintained",
+    "PR.DS-05: Protections against data leaks are implemented",
+    "PR.DS-06: Integrity checking mechanisms are used to verify software, firmware, and information integrity",
+    "PR.DS-07: The development and testing environment(s) are separate from the production environment",
+    "PR.IP-01: A baseline configuration of information technology/industrial control systems is created and maintained incorporating security principles (e.g. concept of least functionality)",
+    "PR.IP-02: A System Development Life Cycle to manage systems is implemented",
+    "PR.IP-03: Configuration change control processes are in place",
+    "PR.IP-04: Backups of information are conducted, maintained, and tested",
+    "PR.IP-05: Policy and regulations regarding the physical operating environment for organizational assets are met",
+    "PR.IP-06: Data is destroyed according to policy",
+    "PR.IP-07: Protection processes are improved",
+    "PR.IP-08: Effectiveness of protection technologies is shared",
+    "PR.IP-09: Response plans (Incident Response and Business Continuity) and recovery plans (Incident Recovery and Disaster Recovery) are in place and managed",
+    "PR.IP-10: Response and recovery plans are tested",
+    "PR.IP-11: Cybersecurity is included in human resources practices (e.g., deprovisioning, personnel screening)",
+    "PR.IP-12: A vulnerability management plan is developed and implemented",
+    "PR.MA-01: Maintenance and repair of organizational assets are performed and logged, with approved and controlled tools",
+    "PR.MA-02: Remote maintenance of organizational assets is approved, logged, and performed in a manner that prevents unauthorized access",
+    "PR.PT-01: Audit/log records are determined, documented, implemented, and reviewed in accordance with policy",
+    "PR.PT-02: Removable media is protected and its use restricted according to policy",
+    "PR.PT-03: The principle of least functionality is incorporated by configuring systems to provide only essential capabilities",
+    "PR.PT-04: Communications and control networks are protected",
+    "PR.PT-05: Mechanisms (e.g., failsafe, load balancing, hot swap) are implemented to achieve resilience requirements in normal and adverse situations",
+    
+    // Detect subcategories
+    "DE.AE-01: A baseline of network operations and expected data flows for users and systems is established and managed",
+    "DE.AE-02: Detected events are analyzed to understand attack targets and methods",
+    "DE.AE-03: Event data are collected and correlated from multiple sources and sensors",
+    "DE.AE-04: Impact of events is determined",
+    "DE.AE-05: Incident alert thresholds are established",
+    "DE.CM-01: The network is monitored to detect potential cybersecurity events",
+    "DE.CM-02: The physical environment is monitored to detect potential cybersecurity events",
+    "DE.CM-03: Personnel activity is monitored to detect potential cybersecurity events",
+    "DE.CM-04: Malicious code is detected",
+    "DE.CM-05: Unauthorized mobile code is detected",
+    "DE.CM-06: External service provider activity is monitored to detect potential cybersecurity events",
+    "DE.CM-07: Monitoring for unauthorized personnel, connections, devices, and software is performed",
+    "DE.CM-08: Vulnerability scans are performed",
+    "DE.DP-01: Roles and responsibilities for detection are well defined to ensure accountability",
+    "DE.DP-02: Detection activities comply with all applicable requirements",
+    "DE.DP-03: Detection processes are tested",
+    "DE.DP-04: Event detection information is communicated",
+    "DE.DP-05: Detection processes are continuously improved",
+    
+    // Respond subcategories
+    "RS.RP-01: Response plan is executed during or after an incident",
+    "RS.CO-01: Personnel know their roles and order of operations when a response is needed",
+    "RS.CO-02: Incidents are reported consistent with established criteria",
+    "RS.CO-03: Information is shared consistent with response plans",
+    "RS.CO-04: Coordination with stakeholders occurs consistent with response plans",
+    "RS.CO-05: Voluntary information sharing occurs with external stakeholders to achieve broader cybersecurity situational awareness",
+    "RS.AN-01: Notifications from detection systems are investigated",
+    "RS.AN-02: The impact of the incident is understood",
+    "RS.AN-03: Forensics are performed",
+    "RS.AN-04: Incidents are categorized consistent with response plans",
+    "RS.AN-05: Processes are established to receive, analyze and respond to vulnerabilities disclosed to the organization from internal and external sources (e.g. internal testing, security bulletins, or security researchers)",
+    "RS.MI-01: Incidents are contained",
+    "RS.MI-02: Incidents are mitigated",
+    "RS.MI-03: Newly identified vulnerabilities are mitigated or documented as accepted risks",
+    "RS.IM-01: Response plans incorporate lessons learned",
+    "RS.IM-02: Response strategies are updated",
+    
+    // Recover subcategories
+    "RC.RP-01: Recovery plan is executed during or after a cybersecurity incident",
+    "RC.IM-01: Recovery plans incorporate lessons learned",
+    "RC.IM-02: Recovery strategies are updated",
+    "RC.CO-01: Public relations are managed",
+    "RC.CO-02: Reputation is repaired after an incident",
+    "RC.CO-03: Recovery activities are communicated to internal and external stakeholders as well as executive and management teams"
+  ];
+
+  var data = [{
+    type: "sunburst",
+    labels: [
+        "NIST CSF 2.0",
+        "Identify", "Protect", "Detect", "Respond", "Recover",
+        
+        // Identify categories (6)
+        "Asset Management", "Business Environment", "Governance", "Risk Assessment", "Risk Management Strategy", "Supply Chain Risk Management",
+        
+        // Protect categories (6)
+        "Identity Management, Authentication and Access Control", "Awareness and Training", "Data Security", "Information Protection Processes and Procedures", "Maintenance", "Protective Technology",
+        
+        // Detect categories (3)
+        "Anomalies and Events", "Security Continuous Monitoring", "Detection Processes",
+        
+        // Respond categories (5)
+        "Response Planning", "Respond Communications", "Analysis", "Mitigation", "Respond Improvements",
+        
+        // Recover categories (3)
+        "Recovery Planning", "Recover Improvements", "Recover Communications",
+        
+        // Identify subcategories (29)
+        "ID.AM-01", "ID.AM-02", "ID.AM-03", "ID.AM-04", "ID.AM-05", "ID.AM-06",
+        "ID.BE-01", "ID.BE-02", "ID.BE-03", "ID.BE-04", "ID.BE-05",
+        "ID.GV-01", "ID.GV-02", "ID.GV-03", "ID.GV-04",
+        "ID.RA-01", "ID.RA-02", "ID.RA-03", "ID.RA-04", "ID.RA-05", "ID.RA-06",
+        "ID.RM-01", "ID.RM-02", "ID.RM-03",
+        "ID.SC-01", "ID.SC-02", "ID.SC-03", "ID.SC-04", "ID.SC-05",
+        
+        // Protect subcategories (39)
+        "PR.AC-01", "PR.AC-02", "PR.AC-03", "PR.AC-04", "PR.AC-05", "PR.AC-06", "PR.AC-07",
+        "PR.AT-01", "PR.AT-02", "PR.AT-03", "PR.AT-04", "PR.AT-05",
+        "PR.DS-01", "PR.DS-02", "PR.DS-03", "PR.DS-04", "PR.DS-05", "PR.DS-06", "PR.DS-07",
+        "PR.IP-01", "PR.IP-02", "PR.IP-03", "PR.IP-04", "PR.IP-05", "PR.IP-06", "PR.IP-07", "PR.IP-08", "PR.IP-09", "PR.IP-10", "PR.IP-11", "PR.IP-12",
+        "PR.MA-01", "PR.MA-02",
+        "PR.PT-01", "PR.PT-02", "PR.PT-03", "PR.PT-04", "PR.PT-05",
+        
+        // Detect subcategories (18)
+        "DE.AE-01", "DE.AE-02", "DE.AE-03", "DE.AE-04", "DE.AE-05",
+        "DE.CM-01", "DE.CM-02", "DE.CM-03", "DE.CM-04", "DE.CM-05", "DE.CM-06", "DE.CM-07", "DE.CM-08",
+        "DE.DP-01", "DE.DP-02", "DE.DP-03", "DE.DP-04", "DE.DP-05",
+        
+        // Respond subcategories (15)
+        "RS.RP-01",
+        "RS.CO-01", "RS.CO-02", "RS.CO-03", "RS.CO-04", "RS.CO-05",
+        "RS.AN-01", "RS.AN-02", "RS.AN-03", "RS.AN-04", "RS.AN-05",
+        "RS.MI-01", "RS.MI-02", "RS.MI-03",
+        "RS.IM-01", "RS.IM-02",
+        
+        // Recover subcategories (5)
+        "RC.RP-01",
+        "RC.IM-01", "RC.IM-02",
+        "RC.CO-01", "RC.CO-02", "RC.CO-03"
+    ],
+    parents: [
+        "",
+        "NIST CSF 2.0", "NIST CSF 2.0", "NIST CSF 2.0", "NIST CSF 2.0", "NIST CSF 2.0",
+        
+        // Identify categories
+        "Identify", "Identify", "Identify", "Identify", "Identify", "Identify",
+        
+        // Protect categories
+        "Protect", "Protect", "Protect", "Protect", "Protect", "Protect",
+        
+        // Detect categories
+        "Detect", "Detect", "Detect",
+        
+        // Respond categories
+        "Respond", "Respond", "Respond", "Respond", "Respond",
+        
+        // Recover categories
+        "Recover", "Recover", "Recover",
+        
+        // Identify subcategories
+        "Asset Management", "Asset Management", "Asset Management", "Asset Management", "Asset Management", "Asset Management",
+        "Business Environment", "Business Environment", "Business Environment", "Business Environment", "Business Environment",
+        "Governance", "Governance", "Governance", "Governance",
+        "Risk Assessment", "Risk Assessment", "Risk Assessment", "Risk Assessment", "Risk Assessment", "Risk Assessment",
+        "Risk Management Strategy", "Risk Management Strategy", "Risk Management Strategy",
+        "Supply Chain Risk Management", "Supply Chain Risk Management", "Supply Chain Risk Management", "Supply Chain Risk Management", "Supply Chain Risk Management",
+        
+        // Protect subcategories
+        "Identity Management, Authentication and Access Control", "Identity Management, Authentication and Access Control", "Identity Management, Authentication and Access Control", "Identity Management, Authentication and Access Control", "Identity Management, Authentication and Access Control", "Identity Management, Authentication and Access Control", "Identity Management, Authentication and Access Control",
+        "Awareness and Training", "Awareness and Training", "Awareness and Training", "Awareness and Training", "Awareness and Training",
+        "Data Security", "Data Security", "Data Security", "Data Security", "Data Security", "Data Security", "Data Security",
+        "Information Protection Processes and Procedures", "Information Protection Processes and Procedures", "Information Protection Processes and Procedures", "Information Protection Processes and Procedures", "Information Protection Processes and Procedures", "Information Protection Processes and Procedures", "Information Protection Processes and Procedures", "Information Protection Processes and Procedures", "Information Protection Processes and Procedures", "Information Protection Processes and Procedures", "Information Protection Processes and Procedures", "Information Protection Processes and Procedures",
+        "Maintenance", "Maintenance",
+        "Protective Technology", "Protective Technology", "Protective Technology", "Protective Technology", "Protective Technology",
+        
+        // Detect subcategories
+        "Anomalies and Events", "Anomalies and Events", "Anomalies and Events", "Anomalies and Events", "Anomalies and Events",
+        "Security Continuous Monitoring", "Security Continuous Monitoring", "Security Continuous Monitoring", "Security Continuous Monitoring", "Security Continuous Monitoring", "Security Continuous Monitoring", "Security Continuous Monitoring", "Security Continuous Monitoring",
+        "Detection Processes", "Detection Processes", "Detection Processes", "Detection Processes", "Detection Processes",
+        
+        // Respond subcategories
+        "Response Planning",
+        "Respond Communications", "Respond Communications", "Respond Communications", "Respond Communications", "Respond Communications",
+        "Analysis", "Analysis", "Analysis", "Analysis", "Analysis",
+        "Mitigation", "Mitigation", "Mitigation",
+        "Respond Improvements", "Respond Improvements",
+        
+        // Recover subcategories
+        "Recovery Planning",
+        "Recover Improvements", "Recover Improvements",
+        "Recover Communications", "Recover Communications", "Recover Communications"
+    ],
+    outsidetextfont: {size: 28, color: "#377eb8"},
+    leaf: {opacity: 0.8},
+    marker: {line: {width: 2}},
+    insidetextorientation: 'radial',
+    uniformtext: {mode: "hide", minsize: 1},
+    textfont: {size: 16},
+    hovertext: hoverText,
+    hoverinfo: "text"
+}];
+
+    var layout = {
+        margin: {l: 0, r: 0, b: 0, t: 0},
+        sunburstcolorway: ["#636efa","#ef553b","#00cc96","#ab63fa","#ffa15a","#19d3f3","#ff6692"]
+    };
+
+    var config = {
+        responsive: true
+    };
+
+    Plotly.newPlot('sunburstChart', data, layout, config);
+});
+</script>
+<script src="script.js"></script>
+<div style="text-align: right; margin-top: 20px;">
+    <button id="nextPageBtn" style="font-size: 24px; padding: 10px 20px;">→</button>
+  </div>
+</body>
+</html>
+

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome to Your Dashboard</h2>
+        <p id="welcomeMessage">You have successfully logged in!</p>
+
+        <button id="viewProfileBtn" class="button">View Profile</button>
+        <button id="NIST_CSF_2.0" class="button">NIST CSF 2.0</button>
+        <button id="updateProfileBtn" class="button">Update Profile</button>
+        <button id="deleteUserBtn" class="button">Delete Account</button>
+        <button id="logoutBtn" class="button">Logout</button>
+
+        <div id="profileSection" style="display: none;">
+            <h3>Your Profile</h3>
+            <p id="profileDetails"></p>
+        </div>
+
+        <div id="updateProfileSection" style="display: none;">
+            <h3>Update Profile</h3>
+            <form id="updateProfileForm">
+                <label>Username
+                    <input type="text" id="updateUsername" placeholder="Username" required />
+                </label>
+                <label>Email
+                    <input type="email" id="updateEmail" placeholder="Email" required />
+                </label>
+                <input type="submit" value="Update" class="button" />
+            </form>
+            <p id="updateMessage"></p>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = 'login.html';
+            }
+
+            const viewProfileBtn = document.getElementById('viewProfileBtn');
+            const updateProfileBtn = document.getElementById('updateProfileBtn');
+            const deleteUserBtn = document.getElementById('deleteUserBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const profileSection = document.getElementById('profileSection');
+            const profileDetails = document.getElementById('profileDetails');
+            const updateProfileSection = document.getElementById('updateProfileSection');
+            const updateProfileForm = document.getElementById('updateProfileForm');
+            const updateMessage = document.getElementById('updateMessage');
+            const nistCsfBtn = document.getElementById('NIST_CSF_2.0');
+
+            viewProfileBtn.addEventListener('click', async () => {
+                try {
+                    const response = await fetch('http://localhost:3000/api/users/profile', {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        profileDetails.textContent = `Username: ${data.user.username}, Email: ${data.user.email}`;
+                        profileSection.style.display = 'block';
+                        updateProfileSection.style.display = 'none';
+                    } else {
+                        profileDetails.textContent = data.message || 'Failed to fetch profile.';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    profileDetails.textContent = 'An error occurred. Please try again.';
+                }
+            });
+
+            nistCsfBtn.addEventListener('click', () => {
+                window.location.href = 'NIST.html';
+            });
+
+
+            updateProfileBtn.addEventListener('click', () => {
+                profileSection.style.display = 'none';
+                updateProfileSection.style.display = 'block';
+            });
+
+            updateProfileForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const username = document.getElementById('updateUsername').value;
+                const email = document.getElementById('updateEmail').value;
+
+                try {
+                    const response = await fetch('http://localhost:3000/api/users/profile', {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ username, email }),
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        updateMessage.textContent = 'Profile updated successfully!';
+                        updateMessage.className = 'success';
+                        setTimeout(() => {
+                            profileSection.style.display = 'block';
+                            updateProfileSection.style.display = 'none';
+                            profileDetails.textContent = `Username: ${data.user.username}, Email: ${data.user.email}`;
+                        }, 2000);
+                    } else {
+                        updateMessage.textContent = data.message || 'Failed to update profile.';
+                        updateMessage.className = 'error';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    updateMessage.textContent = 'An error occurred. Please try again.';
+                    updateMessage.className = 'error';
+                }
+            });
+
+            deleteUserBtn.addEventListener('click', async () => {
+                if (confirm('Are you sure you want to delete your account?')) {
+                    try {
+                        const response = await fetch('http://localhost:3000/api/users/profile', {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json',
+                            },
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok) {
+                            alert('Account deleted successfully!');
+                            localStorage.removeItem('token');
+                            window.location.href = 'signup.html';
+                        } else {
+                            alert(data.message || 'Failed to delete account.');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('An error occurred. Please try again.');
+                    }
+                }
+            });
+
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('token');
+                window.location.href = 'login.html';
+            });
+        });
+    </script>
+</body>
+</html>
