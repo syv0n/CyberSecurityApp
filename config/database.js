@@ -24,7 +24,7 @@ async function connectDB() {
 
 // Database Operations
 
-// Create
+// ------------------------------------------------------------Create-----------------------------------------------------------------
 
 async function createIdentity(reportId, category, subcategory, oisFoundationalObjective, maturityLevel, informationSource, score) {
   try {
@@ -158,7 +158,11 @@ async function createRecover(reportId, category, subcategory, oisFoundationalObj
   }
 }
 
-// Read
+async function createReport(reportId) {
+  // TODO Have a score totalled for each section (identity, protect, etc)
+}
+
+// -------------------------------------------------------------------------Read-----------------------------------------------------
 async function getReport() {
   try {
     const result = await sql.query('SELECT * FROM Report');
@@ -169,7 +173,21 @@ async function getReport() {
   }
 }
 
+// get full report, joining all tables
+async function getFullReport(reportId) {
 
+}
+
+// ------------------------------------------------------------------------ Update -------------------------------------------------------
+
+// ------------------------------------------------------------------------ Delete -------------------------------------------------------
+
+async function deleteReport(reportId) {
+  // deletes functions with that ReportID (ie, identity table, protect table, etc)
+  // then deletes ReportID from the table Report
+}
+
+// export the modules for use
 module.exports = { sql, connectDB, getReport, createIdentity, createProtect, 
   createDetect, createRespond, createRecover
  };
