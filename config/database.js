@@ -188,27 +188,27 @@ async function deleteReport(reportId) {
         try {
           await t.request()
             .input('reportId', sql.Int, reportId)
-            .query(`DELETE FROM Identity WHERE Report_Id = @reportId`);
+            .query(`DELETE FROM Identity WHERE Report_ID = @reportId`);
 
           await t.request()
             .input('reportId', sql.Int, reportId)
-            .query(`DELETE FROM Protect WHERE Report_Id = @reportId`);
+            .query(`DELETE FROM Protect WHERE Report_ID = @reportId`);
 
           await t.request()
             .input('reportId', sql.Int, reportId)
-            .query(`DELETE FROM Detect WHERE Report_Id = @reportId`);
+            .query(`DELETE FROM Detect WHERE Report_ID = @reportId`);
 
           await t.request()
             .input('reportId', sql.Int, reportId)
-            .query(`DELETE FROM Recover WHERE Report_Id = @reportId`);
+            .query(`DELETE FROM Recover WHERE Report_ID = @reportId`);
 
           await t.request()
             .input('reportId', sql.Int, reportId)
-            .query(`DELETE FROM Respond WHERE Report_Id = @reportId`);
+            .query(`DELETE FROM Respond WHERE Report_ID = @reportId`);
 
           await t.request()
             .input('reportId', sql.Int, reportId)
-            .query(`DELETE FROM Report WHERE Report_Id = @reportId`)
+            .query(`DELETE FROM Report WHERE Report_ID = @reportId`)
 
           resolve();
         } catch (err) {
@@ -232,8 +232,177 @@ async function deleteReport(reportId) {
   }
 }
 
+// --------------------------------------------------------------- SCORING -------------------------------------------------------------
+
+async function getIdentityScore(reportId) {
+  try {
+    // Fetch all records for the given reportId
+    const records = await sql.query('SELECT Score, Subcategory FROM Identity WHERE Report_Id = ?', [reportId]);
+    
+    // Initialize variables
+    let totalScore = 0;
+
+    // Define weights for each subcategory
+    const weights = {
+      'ID.AM-1': 0.15,
+      'ID.AM-2': 0.15,
+      'ID.AM-5': 0.10,
+      'ID.BE-5': 0.05,
+      'ID.GV-1a': 0.10,
+      'ID.GV-1b': 0.10,
+      'ID.GV-2': 0.05,
+      'ID.GV-4': 0.20,
+      'ID.RA-1': 0.10
+
+      // Add more categories as needed
+    };
+
+    // Calculate the weighted score for each record
+    for (let record of records.recordset) {
+      const weight = weights[record.Subcategory] || 0; // Use default weight if unknown category
+      totalScore += record.Score * weight;
+    }
+
+    return totalScore;
+  } catch (err) {
+    console.error('Failed to calculate total score: ', err);
+    throw err;
+  }
+}
+
+async function getProtectScore(reportId) {
+  try {
+    // Fetch all records for the given reportId
+    const records = await sql.query('SELECT Score, Subcategory FROM Protect WHERE Report_Id = ?', [reportId]);
+    
+    // Initialize variables
+    let totalScore = 0;
+
+    // Define weights for each subcategory
+    const weights = {
+      'PR.AC-1': 0.10,
+      'PR.AC-2': 0.07,
+      'PR.AC-3': 0.05,
+      'PR.AC-5': 0.05,
+      'PR.AT-1': 0.05,
+      'PR.AT-2': 0.05,
+      'PR-DS-1a': 0.05,
+      'PR-DS-1b': 0.05,
+      'PR-DS-2': 0.10,
+      'PR.IP-1': 0.05,
+      'PR.IP-3': 0.10,
+      'PR.IP-5': 0.05,
+      'PR.IP-9': 0.10,
+      'PR.IP-10': 0.05,
+      'PR.IP-12': 0.08
+      // Add more categories as needed
+    };
+
+    // Calculate the weighted score for each record
+    for (let record of records.recordset) {
+      const weight = weights[record.Subcategory] || 0; // Use default weight if unknown category
+      totalScore += record.Score * weight;
+    }
+
+    return totalScore;
+  } catch (err) {
+    console.error('Failed to calculate total score: ', err);
+    throw err;
+  }
+}
+
+async function getDetectScore(reportId) {
+  try {
+    // Fetch all records for the given reportId
+    const records = await sql.query('SELECT Score, Subcategory FROM Detect WHERE Report_Id = ?', [reportId]);
+    
+    // Initialize variables
+    let totalScore = 0;
+
+    // Define weights for each subcategory
+    const weights = {
+      'DE.AE-3': 0.20,
+      'DE.CM-1': 0.20,
+      'DE.CM-4': 0.20,
+      'DE.CM-8': 0.20,
+      'DE.DP-1': 0.05,
+      'DE.DP-3': 0.05,
+      'DE.DP-4': 0.10
+      // Add more categories as needed
+    };
+
+    // Calculate the weighted score for each record
+    for (let record of records.recordset) {
+      const weight = weights[record.Subcategory] || 0; // Use default weight if unknown category
+      totalScore += record.Score * weight;
+    }
+
+    return totalScore;
+  } catch (err) {
+    console.error('Failed to calculate total score: ', err);
+    throw err;
+  }
+}
+
+async function getRespondScore(reportId) {
+  try {
+    // Fetch all records for the given reportId
+    const records = await sql.query('SELECT Score, Subcategory FROM Respond WHERE Report_Id = ?', [reportId]);
+    
+    // Initialize variables
+    let totalScore = 0;
+
+    // Define weights for each subcategory
+    const weights = {
+      'RS.RP-1': 0.25,
+      'RS.CO-1': 0.25,
+      'RS.CO-2': 0.25,
+      'RS.AN-1': 0.25
+      // Add more categories as needed
+    };
+
+    // Calculate the weighted score for each record
+    for (let record of records.recordset) {
+      const weight = weights[record.Subcategory] || 0; // Use default weight if unknown category
+      totalScore += record.Score * weight;
+    }
+
+    return totalScore;
+  } catch (err) {
+    console.error('Failed to calculate total score: ', err);
+    throw err;
+  }
+}
+
+async function getRecoverScore(reportId) {
+  try {
+    // Fetch all records for the given reportId
+    const records = await sql.query('SELECT Score, Subcategory FROM Respond WHERE Report_Id = ?', [reportId]);
+    
+    // Initialize variables
+    let totalScore = 0;
+
+    // Define weights for each subcategory
+    const weights = {
+      'RC.RP-1': 1.0
+      // Add more categories as needed
+    };
+
+    // Calculate the weighted score for each record
+    for (let record of records.recordset) {
+      const weight = weights[record.Subcategory] || 0; // Use default weight if unknown category
+      totalScore += record.Score * weight;
+    }
+
+    return totalScore;
+  } catch (err) {
+    console.error('Failed to calculate total score: ', err);
+    throw err;
+  }
+}
 
 // export the modules for use
 module.exports = { sql, connectDB, getReport, createIdentity, createProtect, 
-  createDetect, createRespond, createRecover, deleteReport
+  createDetect, createRespond, createRecover, deleteReport, getIdentityScore, getProtectScore,
+  getDetectScore, getRespondScore, getRecoverScore
  };
