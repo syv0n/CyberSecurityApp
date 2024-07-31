@@ -180,6 +180,7 @@ async function createReport(reportId, departmentName, identityScore, protectScor
     request.input('detectScore', sql.Float, detectScore)
     request.input('respondScore', sql.Float, respondScore)
     request.input('recoverScore', sql.Float, recoverScore)
+    request.input('totalScore', sql.Float, totalScore)
 
   } catch (err) {
     console.error('Failed to update Report', err);
