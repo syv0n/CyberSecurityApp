@@ -26,7 +26,7 @@ async function connectDB() {
 
 // ------------------------------------------------------------Create-----------------------------------------------------------------
 
-async function createIdentity(reportId, category, subcategory, oisFoundationalObjective, maturityLevel, informationSource, score) {
+async function createIdentify(reportId, category, subcategory, oisFoundationalObjective, maturityLevel, informationSource, score) {
   try {
     // Prepare the INSERT query with placeholders for parameters
     let sqlQuery = `
@@ -45,9 +45,9 @@ async function createIdentity(reportId, category, subcategory, oisFoundationalOb
     request.input('score', sql.Float, score); // Added input for the new Score column
     
     await request.query(sqlQuery);
-    console.log('Identity record created successfully.');
+    console.log('Identify record created successfully.');
   } catch (err) {
-    console.error('Failed to create Identity record:', err);
+    console.error('Failed to create Identify record:', err);
     throw err; // Rethrow the error to handle it further up the call stack
   }
 }
@@ -280,7 +280,7 @@ async function deleteReport(reportId) {
 
 // --------------------------------------------------------------- SCORING -------------------------------------------------------------
 
-async function getIdentityScore(reportId) {
+async function getIdentifyScore(reportId) {
   try {
     // Fetch all records for the given reportId
     const records = await sql.query('SELECT Score, Subcategory FROM Identity WHERE Report_Id = ?', [reportId]);
@@ -448,7 +448,7 @@ async function getRecoverScore(reportId) {
 }
 
 // export the modules for use
-module.exports = { sql, connectDB, getReport, createIdentity, createProtect, 
-  createDetect, createRespond, createRecover, deleteReport, getIdentityScore, getProtectScore,
+module.exports = { sql, connectDB, getReport, createIdentify, createProtect, 
+  createDetect, createRespond, createRecover, deleteReport, getIdentifyScore, getProtectScore,
   getDetectScore, getRespondScore, getRecoverScore, createReport, initializeReport
  };

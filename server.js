@@ -28,7 +28,7 @@ app.get('/api/report', async (req, res) => {
     }
 });
 
-app.post('/api/createIdentity', async (req, res) => {
+app.post('/api/createIdentify', async (req, res) => {
     try {
         // Extract data from the request body
         const { reportId, category, subcategory, oisFoundationalObjective, maturityLevel, informationSource, score } = req.body;
@@ -42,10 +42,10 @@ app.post('/api/createIdentity', async (req, res) => {
         await createIdentity(reportId, category, subcategory, oisFoundationalObjective, maturityLevel, informationSource, score);
 
         // Send a success response
-        res.status(201).json({ message: "Identity created successfully." });
+        res.status(201).json({ message: "Identify created successfully." });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Failed to create identity." });
+        res.status(500).json({ message: "Failed to create identify." });
     }
 });
 
@@ -63,10 +63,10 @@ app.post('/api/createProtect', async (req, res) => {
         await createProtect(reportId, category, subcategory, oisFoundationalObjective, maturityLevel, informationSource, score);
 
         // Send a success response
-        res.status(201).json({ message: "Identity created successfully." });
+        res.status(201).json({ message: "Protect created successfully." });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Failed to create identity." });
+        res.status(500).json({ message: "Failed to create Protect." });
     }
 });
 
@@ -84,10 +84,10 @@ app.post('/api/createDetect', async (req, res) => {
         await createDetect(reportId, category, subcategory, oisFoundationalObjective, maturityLevel, informationSource, score);
 
         // Send a success response
-        res.status(201).json({ message: "Identity created successfully." });
+        res.status(201).json({ message: "Detect created successfully." });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Failed to create identity." });
+        res.status(500).json({ message: "Failed to create Detect." });
     }
 });
 
@@ -105,10 +105,10 @@ app.post('/api/createRespond', async (req, res) => {
         await createRespond(reportId, category, subcategory, oisFoundationalObjective, maturityLevel, informationSource, score);
 
         // Send a success response
-        res.status(201).json({ message: "Identity created successfully." });
+        res.status(201).json({ message: "Respond created successfully." });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Failed to create identity." });
+        res.status(500).json({ message: "Failed to create Respond." });
     }
 });
 
@@ -126,10 +126,10 @@ app.post('/api/createRecover', async (req, res) => {
         await createRecover(reportId, category, subcategory, oisFoundationalObjective, maturityLevel, informationSource, score);
 
         // Send a success response
-        res.status(201).json({ message: "Identity created successfully." });
+        res.status(201).json({ message: "Recover created successfully." });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Failed to create identity." });
+        res.status(500).json({ message: "Failed to create Recover." });
     }
 });
 
