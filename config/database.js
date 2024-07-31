@@ -181,13 +181,59 @@ async function getFullReport(reportId) {
 // ------------------------------------------------------------------------ Update -------------------------------------------------------
 
 // ------------------------------------------------------------------------ Delete -------------------------------------------------------
-
 async function deleteReport(reportId) {
-  // deletes functions with that ReportID (ie, identity table, protect table, etc)
-  // then deletes ReportID from the table Report
+  try {
+    await new Promise((resolve, reject) => {
+      sql.Transaction(async t => {
+        try {
+          await t.request()
+            .input('reportId', sql.Int, reportId)
+            .query(`DELETE FROM Identity WHERE Report_Id = @reportId`);
+
+          await t.request()
+            .input('reportId', sql.Int, reportId)
+            .query(`DELETE FROM Protect WHERE Report_Id = @reportId`);
+
+          await t.request()
+            .input('reportId', sql.Int, reportId)
+            .query(`DELETE FROM Detect WHERE Report_Id = @reportId`);
+
+          await t.request()
+            .input('reportId', sql.Int, reportId)
+            .query(`DELETE FROM Recover WHERE Report_Id = @reportId`);
+
+          await t.request()
+            .input('reportId', sql.Int, reportId)
+            .query(`DELETE FROM Respond WHERE Report_Id = @reportId`);
+
+          await t.request()
+            .input('reportId', sql.Int, reportId)
+            .query(`DELETE FROM Report WHERE Report_Id = @reportId`)
+
+          resolve();
+        } catch (err) {
+          reject(err);
+        }
+      }, (err) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          console.log("All deletions successful.");
+          resolve();
+        }
+      });
+    });
+  } catch (error) {
+    console.error(error);
+    // Handle error appropriately
+  } finally {
+    sql.close(); // Close the connection after operations are done
+  }
 }
+
 
 // export the modules for use
 module.exports = { sql, connectDB, getReport, createIdentity, createProtect, 
-  createDetect, createRespond, createRecover
+  createDetect, createRespond, createRecover, deleteReport
  };
