@@ -1,5 +1,5 @@
 const express = require('express');
-const { connectDB, getReport } = require('./config/database');
+const { connectDB, getReport, initializeReport } = require('./config/database');
 const userRoutes = require('./routes/userRoutes');
 require('dotenv').config();
 const cors = require('cors');
@@ -133,6 +133,16 @@ app.post('/api/createRecover', async (req, res) => {
     }
 });
 
+app.post('/api/initializeReport', async (req, res) => {
+    try{
+        const { departmentId } = req.body;
+        const reportID = await initializeReport(departmentId);
+        res.status(201).json({ message: "Initialized Report Successfully.", reportID});
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Failed to initialize Report"});
+    }
+});
 
 
 

@@ -158,36 +158,6 @@ async function createRecover(reportId, category, subcategory, oisFoundationalObj
   }
 }
 
-async function createReport(reportId, departmentName, identityScore, protectScore, detectScore, respondScore, recoverScore, totalScore) {
-  try {
-    let sqlQuery = `
-      UPDATE dbo.Report
-      SET Department_Name = @departmentName,
-          Identity_Score = @identityScore,
-          Protect_Score = @protectScore,
-          Detect_Score = @detectScore,
-          Respond_Score = @respondScore,
-          Recover_Score = @recoverScore,
-          Total_Score = @totalScore
-      WHERE Report_Id = @reportId;
-    `;
-
-    const request = new sql.Request();
-    request.input('reportId', sql.BigInt, reportId)
-    request.input('departmentName', sql.VarChar, departmentName)
-    request.input('identityScore', sql.Float, identityScore)
-    request.input('protectScore', sql.Float, protectScore)
-    request.input('detectScore', sql.Float, detectScore)
-    request.input('respondScore', sql.Float, respondScore)
-    request.input('recoverScore', sql.Float, recoverScore)
-    request.input('totalScore', sql.Float, totalScore)
-
-  } catch (err) {
-    console.error('Failed to update Report', err);
-    throw err;
-  }
-}
-
 async function initializeReport(departmentName) {
   try {
     const request = new sql.Request();
@@ -225,7 +195,35 @@ async function getFullReport(reportId) {
 }
 
 // ------------------------------------------------------------------------ Update -------------------------------------------------------
+async function createReport(reportId, departmentName, identityScore, protectScore, detectScore, respondScore, recoverScore, totalScore) {
+  try {
+    let sqlQuery = `
+      UPDATE dbo.Report
+      SET Department_Name = @departmentName,
+          Identity_Score = @identityScore,
+          Protect_Score = @protectScore,
+          Detect_Score = @detectScore,
+          Respond_Score = @respondScore,
+          Recover_Score = @recoverScore,
+          Total_Score = @totalScore
+      WHERE Report_Id = @reportId;
+    `;
 
+    const request = new sql.Request();
+    request.input('reportId', sql.BigInt, reportId)
+    request.input('departmentName', sql.VarChar, departmentName)
+    request.input('identityScore', sql.Float, identityScore)
+    request.input('protectScore', sql.Float, protectScore)
+    request.input('detectScore', sql.Float, detectScore)
+    request.input('respondScore', sql.Float, respondScore)
+    request.input('recoverScore', sql.Float, recoverScore)
+    request.input('totalScore', sql.Float, totalScore)
+
+  } catch (err) {
+    console.error('Failed to update Report', err);
+    throw err;
+  }
+}
 // ------------------------------------------------------------------------ Delete -------------------------------------------------------
 async function deleteReport(reportId) {
   try {
@@ -423,7 +421,7 @@ async function getRespondScore(reportId) {
 async function getRecoverScore(reportId) {
   try {
     // Fetch all records for the given reportId
-    const records = await sql.query('SELECT Score, Subcategory FROM Respond WHERE Report_Id = ?', [reportId]);
+    const records = await sql.query('SELECT Score, Subcategory FROM Recover WHERE Report_Id = ?', [reportId]);
     
     // Initialize variables
     let totalScore = 0;
