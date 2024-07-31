@@ -158,9 +158,54 @@ async function createRecover(reportId, category, subcategory, oisFoundationalObj
   }
 }
 
-async function createReport(reportId) {
-  // TODO Have a score totalled for each section (identity, protect, etc)
+async function createReport(reportId, departmentName, identityScore, protectScore, detectScore, respondScore, recoverScore, totalScore) {
+  try {
+    let sqlQuery = `
+      UPDATE dbo.Report
+      SET Department_Name = @departmentName,
+          Identity_Score = @identityScore,
+          Protect_Score = @protectScore,
+          Detect_Score = @detectScore,
+          Respond_Score = @respondScore,
+          Recover_Score = @recoverScore,
+          Total_Score = @totalScore
+      WHERE Report_Id = @reportId;
+    `;
+
+    const request = new sql.Request();
+    request.input('reportId', sql.BigInt, reportId)
+    request.input('departmentName', sql.VarChar, departmentName)
+    request.input('identityScore', sql.Float, identityScore)
+    request.input('protectScore', sql.Float, protectScore)
+    request.input('detectScore', sql.Float, detectScore)
+    request.input('respondScore', sql.Float, respondScore)
+    request.input('recoverScore', sql.Float, recoverScore)
+
+  } catch (err) {
+    console.error('Failed to update Report', err);
+    throw err;
+  }
 }
+
+async function initializeReport(departmentName) {
+  try {
+    const request = new sql.Request();
+    request.input('departmentName', sql.VarChar, departmentName);
+
+    // Insert a new report and get the last inserted ID
+    await request.query('INSERT INTO dbo.Report (Department_Name, Identity_Score, Protect_Score, Detect_Score, Respond_Score, Recover_Score, Total_Score) VALUES (@departmentName, 0, 0, 0, 0, 0, 0); SELECT SCOPE_IDENTITY() AS NewReportId;');
+
+    // Extract the Report_ID from the result
+    const result = await request.get();
+    const reportId = result.recordset[0].NewReportId;
+
+    return reportId;
+  } catch (err) {
+    console.error('Failed to initialize report:', err);
+    throw err;
+  }
+}
+
 
 // -------------------------------------------------------------------------Read-----------------------------------------------------
 async function getReport() {
@@ -404,5 +449,5 @@ async function getRecoverScore(reportId) {
 // export the modules for use
 module.exports = { sql, connectDB, getReport, createIdentity, createProtect, 
   createDetect, createRespond, createRecover, deleteReport, getIdentityScore, getProtectScore,
-  getDetectScore, getRespondScore, getRecoverScore
+  getDetectScore, getRespondScore, getRecoverScore, createReport, initializeReport
  };
