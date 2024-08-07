@@ -23,6 +23,7 @@ exports.register = [
       const user = await User.create(username, email, hashedPassword);
       res.status(201).json({ message: 'User registered successfully', userId: user.id });
     } catch (error) {
+      console.error('Error registering user:', error);
       res.status(500).json({ message: 'Error registering user', error: error.message });
     }
   }

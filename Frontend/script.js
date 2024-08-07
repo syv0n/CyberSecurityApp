@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveButton = document.getElementById('saveButton');
     const finishButton = document.getElementById('finishScoring');
     const nextPageBtn = document.getElementById('nextPageBtn');
+    const ciobtn = document.getElementById('cio-btn')
+    const techbtn = document.getElementById('tech-btn')
+    const isobtn = document.getElementById('iso-btn')
 
 
     if (signupForm) {
@@ -161,14 +164,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    document.getElementById('cio-btn').addEventListener('click', () => {
-        window.location.href = 'cio.html';
-    })
+    if (ciobtn) {
+        ciobtn.addEventListener('click', () => {
+            window.location.href = 'cio.html';
+        });
+    } else {
+        console.error('Element with ID "cio-btn" not found');
+    }
 
-    document.getElementById('iso-btn').addEventListener('click', () => {
-        window.location.href = 'iso.html';
-    })
-    document.getElementById('tech-btn').addEventListener('click', () => {
-        window.location.href = 'Tech.html';
-    })
+
+    if (isobtn) {
+        isobtn.addEventListener('click', () => {
+            window.location.href = 'iso.html';
+        });
+    } else {
+        console.error('Element with ID "iso-btn" not found');
+    }
+
+    if (techbtn) {
+        techbtn.addEventListener('click', () => {
+            window.location.href = 'Tech.html';
+        });
+    } else {
+        console.error('Element with ID "tech-btn" not found');
+    }
+
 });

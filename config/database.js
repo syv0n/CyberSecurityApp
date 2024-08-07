@@ -1,37 +1,24 @@
-const sql = require('mssql');
+const { Client } = require('pg');
 require('dotenv').config();
 
-const config = {
+const client = new Client({
   user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  server: process.env.DB_SERVER,
+  host: process.env.DB_HOST,
   database: process.env.DB_NAME,
-  options: {
-    encrypt: true,
-    trustServerCertificate: true
-  }
-};
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+});
 
 async function connectDB() {
   try {
-    await sql.connect(config);
-    console.log('Connected to MSSQL');
+    await client.connect();
+    console.log("Connected to Postgres database");
   } catch (err) {
-    console.error('Database connection failed:', err);
+    console.error("Database connection error:", err);
   }
 }
 
-// Database Operations
-
-// async function getReport() {
-//   try {
-//     const result = await sql.query('SELECT * FROM Report');
-//     return result
-//   } catch (err) {
-//     console.error('Failed to fetch data: ', err);
-//     throw err;
-//   }
-// }
-
-module.exports = { sql, connectDB}
-// module.exports = { sql, connectDB, getReport };
+module.exports = {
+  db: client, // Export the client for use in models
+  connectDB
+};

@@ -1,48 +1,36 @@
-const { sql } = require('../config/database');
+const { db } = require('../config/database');
 
 class User {
     static async create(username, email, password) {
-        const pool = await sql.connect();
-        const result = await pool.request()
-            .input('username', sql.NVarChar, username)
-            .input('email', sql.NVarChar, email)
-            .input('password', sql.NVarChar, password)
-            .query('INSERT INTO Users (username, email, password) VALUES (@username, @email, @password); SELECT SCOPE_IDENTITY() AS id');
-        return result.recordset[0];
+        const query = 'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id';
+        const values = [username, email, password];
+        const { rows } = await db.query(query, values);
+        return { id: rows[0].id };
     }
 
     static async findByEmail(email) {
-        const pool = await sql.connect();
-        const result = await pool.request()
-            .input('email', sql.NVarChar, email)
-            .query('SELECT * FROM Users WHERE email = @email');
-        return result.recordset[0];
+        const query = 'SELECT * FROM users WHERE email = $1';
+        const { rows } = await db.query(query, [email]);
+        return rows[0] || null;
     }
 
     static async findById(id) {
-        const pool = await sql.connect();
-        const result = await pool.request()
-            .input('id', sql.Int, id)
-            .query('SELECT * FROM Users WHERE id = @id');
-        return result.recordset[0];
+        const query = 'SELECT * FROM users WHERE id = $1';
+        const { rows } = await db.query(query, [id]);
+        return rows[0] || null;
     }
 
     static async update(id, username, email) {
-        const pool = await sql.connect();
-        const result = await pool.request()
-            .input('id', sql.Int, id)
-            .input('username', sql.NVarChar, username)
-            .input('email', sql.NVarChar, email)
-            .query('UPDATE Users SET username = @username, email = @email WHERE id = @id; SELECT * FROM Users WHERE id = @id');
-        return result.recordset[0];
+        const query = 'UPDATE users SET username = $1, email = $2 WHERE id = $3 RETURNING *';
+        const values = [username, email, id];
+        const { rows } = await db.query(query, values);
+        return rows[0] || null;
     }
 
     static async delete(id) {
-        const pool = await sql.connect();
-        const result = await pool.request()
-          .input('id', sql.Int, id)
-          .query('DELETE FROM Users WHERE id = @id');
-        return result.rowsAffected[0] > 0;
+        const query = 'DELETE FROM users WHERE id = $1';
+        const { rowCount } = await db.query(query, [id]);
+        return rowCount > 0;
     }
 }
 

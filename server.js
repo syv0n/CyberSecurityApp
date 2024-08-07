@@ -20,7 +20,7 @@ connectDB();
 
 app.use('/api/users', userRoutes);
 app.use('/api/scores', scoreRoutes);
-app.use('/', frontendRoutes)
+app.use('/api/', frontendRoutes)
 
 app.use(express.static(path.join(__dirname, 'Frontend')));
 
