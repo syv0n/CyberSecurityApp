@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NIST CSF Input Form</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      select, input[type="text"] {
+        width: 100%;
+        padding: 5px;
+      }
+      .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #45a049;
+      }
+      .finish {
+        display: flex;
+        justify-content: center;
+        text-align: right;
+        padding-top: 5rem;
+      }
+      .tooltip {
+        position: relative;
+        display: inline-block;
+      }
+
+      .info-icon {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 18px;
+        font-size: 14px;
+        cursor: pointer;
+        margin-left: 5px;
+      }
+
+      .tooltiptext {
+        visibility: hidden;
+        width: 300px;
+        max-height: 300px; /* Set a maximum height */
+        overflow-y: auto; /* Add vertical scrollbar if content exceeds max-height */
+        background-color: #555;
+        color: #fff;
+        text-align: left;
+        border-radius: 6px;
+        padding: 10px;
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 125%;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <h1>NIST CSF Input Form:</h1>
+    <h2>PROTECT</h2>
+    <form id="nistForm">
+      <div class="form-group">
+        <label for="category">Category:</label>
+        <select id="category" name="category">
+            <option value="">Select an option</option>
+            <option value="Identity Management, Authentication and Access Control">Identity Management, Authentication and Access Control</option>
+            <option value="Awareness and Training">Awareness and Training</option>
+            <option value="Data Security">Data Security</option>
+            <option value="Information Protection Processes and Procedures">Information Protection Processes and Procedures</option>
+            <option value="Maintenance">Maintenance</option>
+            <option value="Protective Technology">Protective Technology</option>
+        </select>
+        
+      </div>
+      <div class="form-group">
+        <label for="subcategory">Subcategory:</label>
+        <select id="subcategory" name="subcategory">
+            <option value="">Select an option</option>
+            <option value="PR.AC-01">PR.AC-01</option>
+            <option value="PR.AC-02">PR.AC-02</option>
+            <option value="PR.AC-03">PR.AC-03</option>
+            <option value="PR.AC-04">PR.AC-04</option>
+            <option value="PR.AC-05">PR.AC-05</option>
+            <option value="PR.AC-06">PR.AC-06</option>
+            <option value="PR.AC-07">PR.AC-07</option>
+            <option value="PR.AT-01">PR.AT-01</option>
+            <option value="PR.AT-02">PR.AT-02</option>
+            <option value="PR.AT-03">PR.AT-03</option>
+            <option value="PR.AT-04">PR.AT-04</option>
+            <option value="PR.AT-05">PR.AT-05</option>
+            <option value="PR.DS-01">PR.DS-01</option>
+            <option value="PR.DS-02">PR.DS-02</option>
+            <option value="PR.DS-03">PR.DS-03</option>
+            <option value="PR.DS-04">PR.DS-04</option>
+            <option value="PR.DS-05">PR.DS-05</option>
+            <option value="PR.DS-06">PR.DS-06</option>
+            <option value="PR.DS-07">PR.DS-07</option>
+            <option value="PR.IP-01">PR.IP-01</option>
+            <option value="PR.IP-02">PR.IP-02</option>
+            <option value="PR.IP-03">PR.IP-03</option>
+            <option value="PR.IP-04">PR.IP-04</option>
+            <option value="PR.IP-05">PR.IP-05</option>
+            <option value="PR.IP-06">PR.IP-06</option>
+            <option value="PR.IP-07">PR.IP-07</option>
+            <option value="PR.IP-08">PR.IP-08</option>
+            <option value="PR.IP-09">PR.IP-09</option>
+            <option value="PR.IP-10">PR.IP-10</option>
+            <option value="PR.IP-11">PR.IP-11</option>
+            <option value="PR.IP-12">PR.IP-12</option>
+            <option value="PR.MA-01">PR.MA-01</option>
+            <option value="PR.MA-02">PR.MA-02</option>
+            <option value="PR.PT-01">PR.PT-01</option>
+            <option value="PR.PT-02">PR.PT-02</option>
+            <option value="PR.PT-03">PR.PT-03</option>
+            <option value="PR.PT-04">PR.PT-04</option>
+            <option value="PR.PT-05">PR.PT-05</option>
+        </select>
+        
+      </div>
+      <div class="form-group">
+        <label for="maturity-level">
+          Maturity Level:
+          <span class="tooltip">
+            <span class="info-icon">?</span>
+            <span class="tooltiptext">
+              0 - No published policy for physical device inventory.<br>
+              1 - Policy is published for physical device inventory. (SAM 5305.5, NIST CM-8)<br>
+              2 - Procedures are in place for physical device inventory. (SAM 5305.5, NIST CM-8)<br>
+              3 - Entity can produce a physical device inventory which is accurate to the following percentages (SAM 5305.5, SIMM 5305-A, NIST CM-8):<br>
+              3.0 at least 50%<br>
+              3.1 at least 55%<br>
+              3.2 at least 60%<br>
+              3.3 at least 65%<br>
+              3.4 at least 70%<br>
+              3.5 at least 75%<br>
+              3.6 at least 80%<br>
+              3.7 at least 85%<br>
+              3.8 at least 90%<br>
+              3.9 at least 95%<br>
+              Tested via relevant sample.<br>
+              4 - Entity leverages an automated tool to update physical device inventory.
+            </span>
+          </span>
+        </label>
+
+      </div>
+      <div class="form-group">
+        <label for="information-source">
+          Information Source:
+          <span class="tooltip">
+            <span class="info-icon">?</span>
+            <span class="tooltiptext">
+              0 - OIS Audits<br>
+              1 - OIS Audits<br>
+              2 - OIS Audits<br>
+              3 - OIS Audits<br>
+              4 - OIS Audits
+            </span>
+          </span>
+        </label>
+
+      </div>
+      <div class="form-group">
+        <label for="score">Score:</label>
+        <select id="score" name="score">
+          <option value="">Select an option</option>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="comments">Comments:</label>
+        <textarea id="comments" name="comments" rows="4" style="width: 100%"></textarea>
+      </div>
+      <div class="button-container">
+        <button type="button" id="backButton">Back</button>
+        <button type="button" id="saveButton">Save</button>
+      </div>
+      <div class="finish">
+        <button type="button" id="finishScoring">Finish</button>
+      </div>
+    </form>
+
+    <script>
+      document.getElementById("saveButton").addEventListener("click", function () {
+        // Simulate form save process
+        const form = document.getElementById("nistForm");
+        if (form.checkValidity()) {
+          alert("Form saved successfully!");
+        } else {
+          alert("Failed to save the form. Please fill in all fields.");
+        }
+      });
+
+      document.getElementById("backButton").addEventListener("click", function () {
+        // Go back to the previous page
+        history.back();
+      });
+
+      document.getElementById("finishScoring").addEventListener("click", function () {
+        // Simulate scoring process
+        console.log('buttons clicked');
+        alert("Scoring complete!");
+        window.location.href = "Detect.html";
+      });
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>

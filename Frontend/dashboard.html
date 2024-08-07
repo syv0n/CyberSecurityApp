@@ -13,6 +13,7 @@
 
         <button id="viewProfileBtn" class="button">View Profile</button>
         <button id="NIST_CSF_2.0" class="button">NIST CSF 2.0</button>
+        <button id="chooseoptionsBtn" class="button">Choose Options</button>
         <button id="updateProfileBtn" class="button">Update Profile</button>
         <button id="deleteUserBtn" class="button">Delete Account</button>
         <button id="logoutBtn" class="button">Logout</button>
@@ -53,6 +54,7 @@
             const updateProfileForm = document.getElementById('updateProfileForm');
             const updateMessage = document.getElementById('updateMessage');
             const nistCsfBtn = document.getElementById('NIST_CSF_2.0');
+            const chooseoptionsBtn = document.getElementById('chooseoptionsBtn');
 
             viewProfileBtn.addEventListener('click', async () => {
                 try {
@@ -150,6 +152,10 @@
                         alert('An error occurred. Please try again.');
                     }
                 }
+            });
+
+            chooseoptionsBtn.addEventListener('click', () => {
+                window.location.href = 'Choose_Options.html';
             });
 
             logoutBtn.addEventListener('click', () => {

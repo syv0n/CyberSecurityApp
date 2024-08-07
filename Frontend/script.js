@@ -2,6 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const signupForm = document.getElementById('signupForm');
     const loginForm = document.getElementById('loginForm');
     const message = document.getElementById('message');
+    const nistForm = document.getElementById('nistForm');
+    const saveButton = document.getElementById('saveButton');
+    const finishButton = document.getElementById('finishScoring');
+    const nextPageBtn = document.getElementById('nextPageBtn');
+
 
     if (signupForm) {
         signupForm.addEventListener('submit', async (e) => {
@@ -75,18 +80,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // New code for the NIST wheel page
-    const nextPageBtn = document.getElementById('nextPageBtn');
     if (nextPageBtn) {
-        
         nextPageBtn.addEventListener('click', function() {
             console.log('Button clicked');
-            window.location.href = 'form.html';
+            window.location.href = 'Identify.html';
         });
     }
 
-    // New code for the input form page
-    const nistForm = document.getElementById('nistForm');
     if (nistForm) {
         nistForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -97,16 +97,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 detect: document.getElementById('detect').value,
                 respond: document.getElementById('respond').value,
                 recover: document.getElementById('recover').value,
-                additional: document.getElementById('additional').value
+                comments: document.getElementById('comments').value
             };
 
             try {
-
                 const response = await fetch('http://localhost:3000/api/users/response', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        // 'Authorization': 'Bearer ' + localStorage.getItem('token')
                     },
                     body: JSON.stringify(formData),
                 });
@@ -124,4 +122,53 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    if (saveButton) {
+        saveButton.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const category = document.getElementById('category').value;
+            const subcategory = document.getElementById('subcategory').value;
+            const score = document.getElementById('score').value;
+            const comments = document.getElementById('comments').value;
+
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:3000/api/scores', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ category, subcategory, score, comments })
+                });
+
+                if (response.ok) {
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.indexOf("application/json") !== -1) {
+                        const data = await response.json();
+                        alert(data.message);
+                    } else {
+                        alert('Score saved successfully!');
+                    }
+                } else {
+                    const errorText = await response.text();
+                    alert(`Failed to save score. Server response: ${errorText}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+    }
+
+    document.getElementById('cio-btn').addEventListener('click', () => {
+        window.location.href = 'cio.html';
+    })
+
+    document.getElementById('iso-btn').addEventListener('click', () => {
+        window.location.href = 'iso.html';
+    })
+    document.getElementById('tech-btn').addEventListener('click', () => {
+        window.location.href = 'Tech.html';
+    })
 });
