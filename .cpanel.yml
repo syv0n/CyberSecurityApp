@@ -1,4 +1,5 @@
+---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/oheuzamy/publicrepositories/CyberSecurityApp 
-    - /bin/cp * $DEPLOYPATH
+    - export DEPLOYPATH=/home/oheuzamy/publicrepositories/CyberSecurityApp
+    - /bin/cp -r * $DEPLOYPATH
