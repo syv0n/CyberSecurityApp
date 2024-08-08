@@ -9,6 +9,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const ciobtn = document.getElementById('cio-btn')
     const techbtn = document.getElementById('tech-btn')
     const isobtn = document.getElementById('iso-btn')
+    const registerButton = document.getElementById('register-BTN')
+    const loginButton = document.getElementById('login-BTN')
+
+    registerButton.addEventListener('click', () => {
+        window.location.href ='signup.html';
+    })
+
+    loginButton.addEventListener('click', () => {
+        window.location.href ='login.html';
+    })
 
 
     if (signupForm) {
