@@ -4,6 +4,13 @@ const path = require('path');
 const router = express.Router();
 
 // Define routes for HTML files
+
+router.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../Frontend', 'homepage.html'));
+});
+
+
+
 router.get('/register', (req, res) => {
   res.sendFile(path.join(__dirname, '../Frontend', 'signup.html'));
 });
