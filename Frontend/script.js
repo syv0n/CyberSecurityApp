@@ -6,21 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveButton = document.getElementById('saveButton');
     const finishButton = document.getElementById('finishScoring');
     const nextPageBtn = document.getElementById('nextPageBtn');
-    const ciobtn = document.getElementById('cio-btn')
-    const techbtn = document.getElementById('tech-btn')
-    const isobtn = document.getElementById('iso-btn')
-    const registerButton = document.getElementById('register-BTN')
-    const loginButton = document.getElementById('login-BTN')
-
-    registerButton.addEventListener('click', () => {
-        window.location.href ='signup.html';
-    })
-
-    loginButton.addEventListener('click', () => {
-        window.location.href ='login.html';
-    })
-
-
+    const ciobtn = document.getElementById('cio-btn');
+    const techbtn = document.getElementById('tech-btn');
+    const isobtn = document.getElementById('iso-btn');
+  
+    
     if (signupForm) {
         signupForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -29,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = document.getElementById('password').value;
 
             try {
-                const response = await fetch('http://localhost:3000/api/users/register', {
+                const response = await fetch('http://localhost:9009/api/users/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -64,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = document.getElementById('password').value;
 
             try {
-                const response = await fetch('http://localhost:3000/api/users/login', {
+                const response = await fetch('http://localhost:9009/api/users/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -114,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             try {
-                const response = await fetch('http://localhost:3000/api/users/response', {
+                const response = await fetch('http://localhost:9009/api/users/response', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -146,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch('http://localhost:3000/api/scores', {
+                const response = await fetch('http://localhost:9009/api/scores', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -182,7 +172,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Element with ID "cio-btn" not found');
     }
 
-
     if (isobtn) {
         isobtn.addEventListener('click', () => {
             window.location.href = 'iso.html';
@@ -198,5 +187,4 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('Element with ID "tech-btn" not found');
     }
-
 });

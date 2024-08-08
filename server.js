@@ -1,34 +1,32 @@
 const express = require('express');
+const path = require('path');
 const { connectDB } = require('./config/database');
 const userRoutes = require('./routes/userRoutes');
-const frontendRoutes = require('./routes/frontendRoutes')
+const frontendRoutes = require('./routes/frontendRoutes');
 const scoreRoutes = require('./routes/scoreRoutes');
-
-const { createProxyMiddleware } = require('http-proxy-middleware');
-const path = require('path');
-
-require('dotenv').config();
 const cors = require('cors');
-
+require('dotenv').config();
 
 const app = express();
+
+// Middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }) );
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
+// Connect to database
 connectDB();
 
+// API Routes
 app.use('/api/users', userRoutes);
 app.use('/api/scores', scoreRoutes);
-app.use('/api/', frontendRoutes)
 
+// Frontend Routes
+app.use('/', frontendRoutes);
+
+// Serve static files
 app.use(express.static(path.join(__dirname, 'Frontend')));
 
-app.get('/proile', (req, res) => {
-   res.json({ message: "This is the profile endpoint" })
-});
-
-
-
-const PORT = process.env.PORT || 3000;
+// Start the server
+const PORT = process.env.PORT || 9009;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
