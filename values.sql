@@ -212,3 +212,343 @@ INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id,
  (SELECT id FROM Subcategories WHERE name = 'ID.SC-01'), 
  (SELECT id FROM Categories WHERE name = 'Supply Chain Risk Management'), 
  (SELECT id FROM Components WHERE name = 'Identify'));
+
+-- iso
+-- Asset Management
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How is the inventory of all IT assets maintained and updated?', 
+    (SELECT id FROM Subcategories WHERE name = 'ID.AM-01'), 
+    (SELECT id FROM Categories WHERE name = 'Asset Management'), 
+    (SELECT id FROM Components WHERE name = 'Identify'));
+
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Are critical assets identified and documented?', 
+    (SELECT id FROM Subcategories WHERE name = 'ID.AM-02'), 
+    (SELECT id FROM Categories WHERE name = 'Asset Management'), 
+    (SELECT id FROM Components WHERE name = 'Identify'));
+
+-- Business Environment
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How does the organization assess its business environment for cybersecurity risks?', 
+    (SELECT id FROM Subcategories WHERE name = 'ID.BE-01'), 
+    (SELECT id FROM Categories WHERE name = 'Business Environment'), 
+    (SELECT id FROM Components WHERE name = 'Identify'));
+
+-- Governance
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Is there a governance framework for managing cybersecurity risks?', 
+    (SELECT id FROM Subcategories WHERE name = 'ID.GV-01'), 
+    (SELECT id FROM Categories WHERE name = 'Governance'), 
+    (SELECT id FROM Components WHERE name = 'Identify'));
+
+-- Risk Assessment
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How are cybersecurity risks identified and documented?', 
+    (SELECT id FROM Subcategories WHERE name = 'ID.RA-01'), 
+    (SELECT id FROM Categories WHERE name = 'Risk Assessment'), 
+    (SELECT id FROM Components WHERE name = 'Identify'));
+
+-- Risk Management Strategy
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'What strategies are in place to manage identified risks?', 
+    (SELECT id FROM Subcategories WHERE name = 'ID.RM-01'), 
+    (SELECT id FROM Categories WHERE name = 'Risk Management Strategy'), 
+    (SELECT id FROM Components WHERE name = 'Identify'));
+
+-- Supply Chain Risk Management
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How are third-party risks assessed and managed?', 
+    (SELECT id FROM Subcategories WHERE name = 'ID.SC-01'), 
+    (SELECT id FROM Categories WHERE name = 'Supply Chain Risk Management'), 
+    (SELECT id FROM Components WHERE name = 'Identify'));
+
+-- Identity Management, Authentication and Access Control
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How is access to sensitive systems controlled?', 
+    (SELECT id FROM Subcategories WHERE name = 'PR.AC-01'), 
+    (SELECT id FROM Categories WHERE name = 'Identity Management, Authentication and Access Control'), 
+    (SELECT id FROM Components WHERE name = 'Protect'));
+
+-- Awareness and Training
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'What training programs are in place to enhance cybersecurity awareness?', 
+    (SELECT id FROM Subcategories WHERE name = 'PR.AT-01'), 
+    (SELECT id FROM Categories WHERE name = 'Awareness and Training'), 
+    (SELECT id FROM Components WHERE name = 'Protect'));
+
+-- Data Security
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Are data protection policies aligned with regulatory requirements?', 
+    (SELECT id FROM Subcategories WHERE name = 'PR.DS-04'), 
+    (SELECT id FROM Categories WHERE name = 'Data Security'), 
+    (SELECT id FROM Components WHERE name = 'Protect'));
+
+-- Information Protection Processes and Procedures
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Are information protection processes documented and enforced?', 
+    (SELECT id FROM Subcategories WHERE name = 'PR.IP-01'), 
+    (SELECT id FROM Categories WHERE name = 'Information Protection Processes and Procedures'), 
+    (SELECT id FROM Components WHERE name = 'Protect'));
+
+-- Maintenance
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How are maintenance activities scheduled and documented?', 
+    (SELECT id FROM Subcategories WHERE name = 'PR.MA-01'), 
+    (SELECT id FROM Categories WHERE name = 'Maintenance'), 
+    (SELECT id FROM Components WHERE name = 'Protect'));
+
+-- Protective Technology
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'What technologies are in place to protect against cybersecurity threats?', 
+    (SELECT id FROM Subcategories WHERE name = 'PR.PT-01'), 
+    (SELECT id FROM Categories WHERE name = 'Protective Technology'), 
+    (SELECT id FROM Components WHERE name = 'Protect'));
+
+-- Anomalies and Events
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How are anomalies and events detected and documented?', 
+    (SELECT id FROM Subcategories WHERE name = 'DE.AE-01'), 
+    (SELECT id FROM Categories WHERE name = 'Anomalies and Events'), 
+    (SELECT id FROM Components WHERE name = 'Detect'));
+
+-- Security Continuous Monitoring
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How is continuous monitoring implemented to detect security events?', 
+    (SELECT id FROM Subcategories WHERE name = 'DE.CM-01'), 
+    (SELECT id FROM Categories WHERE name = 'Security Continuous Monitoring'), 
+    (SELECT id FROM Components WHERE name = 'Detect'));
+
+-- Detection Processes
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'What processes are in place for detecting cybersecurity incidents?', 
+    (SELECT id FROM Subcategories WHERE name = 'DE.DP-01'), 
+    (SELECT id FROM Categories WHERE name = 'Detection Processes'), 
+    (SELECT id FROM Components WHERE name = 'Detect'));
+
+-- Response Planning
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How is the incident response plan developed and maintained?', 
+    (SELECT id FROM Subcategories WHERE name = 'RS.RP-01'), 
+    (SELECT id FROM Categories WHERE name = 'Response Planning'), 
+    (SELECT id FROM Components WHERE name = 'Respond'));
+
+-- Respond Communications
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How are communication protocols established for incident response?', 
+    (SELECT id FROM Subcategories WHERE name = 'RS.CO-01'), 
+    (SELECT id FROM Categories WHERE name = 'Respond Communications'), 
+    (SELECT id FROM Components WHERE name = 'Respond'));
+
+-- Analysis
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How are incidents analyzed to determine root causes?', 
+    (SELECT id FROM Subcategories WHERE name = 'RS.AN-01'), 
+    (SELECT id FROM Categories WHERE name = 'Analysis'), 
+    (SELECT id FROM Components WHERE name = 'Respond'));
+
+-- Mitigation
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'What strategies are in place to mitigate the impact of incidents?', 
+    (SELECT id FROM Subcategories WHERE name = 'RS.MI-01'), 
+    (SELECT id FROM Categories WHERE name = 'Mitigation'), 
+    (SELECT id FROM Components WHERE name = 'Respond'));
+
+-- Respond Improvements
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How are lessons learned from incidents integrated into response plans?', 
+    (SELECT id FROM Subcategories WHERE name = 'RS.IM-01'), 
+    (SELECT id FROM Categories WHERE name = 'Respond Improvements'), 
+    (SELECT id FROM Components WHERE name = 'Respond'));
+
+-- Recovery Planning
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How is the recovery plan developed and maintained?', 
+    (SELECT id FROM Subcategories WHERE name = 'RC.RP-01'), 
+    (SELECT id FROM Categories WHERE name = 'Recovery Planning'), 
+    (SELECT id FROM Components WHERE name = 'Recover'));
+
+-- Recover Improvements
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How are recovery processes improved based on past incidents?', 
+    (SELECT id FROM Subcategories WHERE name = 'RC.IM-01'), 
+    (SELECT id FROM Categories WHERE name = 'Recover Improvements'), 
+    (SELECT id FROM Components WHERE name = 'Recover'));
+
+-- Recover Communications
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How are communication protocols established for recovery activities?', 
+    (SELECT id FROM Subcategories WHERE name = 'RC.CO-01'), 
+    (SELECT id FROM Categories WHERE name = 'Recover Communications'), 
+    (SELECT id FROM Components WHERE name = 'Recover'));
+
+-- Business Environment
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Are business priorities and objectives aligned with cybersecurity strategies?', 
+    (SELECT id FROM Subcategories WHERE name = 'ID.BE-02'), 
+    (SELECT id FROM Categories WHERE name = 'Business Environment'), 
+    (SELECT id FROM Components WHERE name = 'Identify'));
+
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How does the organization monitor changes in the business environment that may impact cybersecurity?', 
+    (SELECT id FROM Subcategories WHERE name = 'ID.BE-03'), 
+    (SELECT id FROM Categories WHERE name = 'Business Environment'), 
+    (SELECT id FROM Components WHERE name = 'Identify'));
+
+-- Governance
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Is there an executive or board-level oversight committee for information security?', 
+    (SELECT id FROM Subcategories WHERE name = 'ID.GV-03'), 
+    (SELECT id FROM Categories WHERE name = 'Governance'), 
+    (SELECT id FROM Components WHERE name = 'Identify'));
+
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How is accountability for cybersecurity risks established within the organization?', 
+    (SELECT id FROM Subcategories WHERE name = 'ID.GV-04'), 
+    (SELECT id FROM Categories WHERE name = 'Governance'), 
+    (SELECT id FROM Components WHERE name = 'Identify'));
+
+-- Risk Assessment
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Are risk assessments conducted regularly and documented?', 
+    (SELECT id FROM Subcategories WHERE name = 'ID.RA-03'), 
+    (SELECT id FROM Categories WHERE name = 'Risk Assessment'), 
+    (SELECT id FROM Components WHERE name = 'Identify'));
+
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How are risk assessment results communicated to stakeholders?', 
+    (SELECT id FROM Subcategories WHERE name = 'ID.RA-04'), 
+    (SELECT id FROM Categories WHERE name = 'Risk Assessment'), 
+    (SELECT id FROM Components WHERE name = 'Identify'));
+
+-- Risk Management Strategy
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Are risk management strategies reviewed and updated regularly?', 
+    (SELECT id FROM Subcategories WHERE name = 'ID.RM-04'), 
+    (SELECT id FROM Categories WHERE name = 'Risk Management Strategy'), 
+    (SELECT id FROM Components WHERE name = 'Identify'));
+
+-- Supply Chain Risk Management
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How are supply chain risks communicated to stakeholders?', 
+    (SELECT id FROM Subcategories WHERE name = 'ID.SC-04'), 
+    (SELECT id FROM Categories WHERE name = 'Supply Chain Risk Management'), 
+    (SELECT id FROM Components WHERE name = 'Identify'));
+
+-- Identity Management, Authentication and Access Control
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Are access control policies aligned with organizational requirements?', 
+    (SELECT id FROM Subcategories WHERE name = 'PR.AC-06'), 
+    (SELECT id FROM Categories WHERE name = 'Identity Management, Authentication and Access Control'), 
+    (SELECT id FROM Components WHERE name = 'Protect'));
+
+-- Awareness and Training
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Are training effectiveness evaluations conducted regularly?', 
+    (SELECT id FROM Subcategories WHERE name = 'PR.AT-03'), 
+    (SELECT id FROM Categories WHERE name = 'Awareness and Training'), 
+    (SELECT id FROM Components WHERE name = 'Protect'));
+
+-- Data Security
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How is data integrity ensured across all systems?', 
+    (SELECT id FROM Subcategories WHERE name = 'PR.DS-05'), 
+    (SELECT id FROM Categories WHERE name = 'Data Security'), 
+    (SELECT id FROM Components WHERE name = 'Protect'));
+
+-- Information Protection Processes and Procedures
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Are information protection procedures tested regularly?', 
+    (SELECT id FROM Subcategories WHERE name = 'PR.IP-04'), 
+    (SELECT id FROM Categories WHERE name = 'Information Protection Processes and Procedures'), 
+    (SELECT id FROM Components WHERE name = 'Protect'));
+
+-- Maintenance
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How are maintenance records maintained and reviewed?', 
+    (SELECT id FROM Subcategories WHERE name = 'PR.MA-03'), 
+    (SELECT id FROM Categories WHERE name = 'Maintenance'), 
+    (SELECT id FROM Components WHERE name = 'Protect'));
+
+-- Protective Technology
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Are protective technologies updated to address new threats?', 
+    (SELECT id FROM Subcategories WHERE name = 'PR.PT-04'), 
+    (SELECT id FROM Categories WHERE name = 'Protective Technology'), 
+    (SELECT id FROM Components WHERE name = 'Protect'));
+
+-- Anomalies and Events
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Are anomaly detection processes reviewed and updated regularly?', 
+    (SELECT id FROM Subcategories WHERE name = 'DE.AE-04'), 
+    (SELECT id FROM Categories WHERE name = 'Anomalies and Events'), 
+    (SELECT id FROM Components WHERE name = 'Detect'));
+
+-- Security Continuous Monitoring
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Are monitoring results communicated to relevant stakeholders?', 
+    (SELECT id FROM Subcategories WHERE name = 'DE.CM-04'), 
+    (SELECT id FROM Categories WHERE name = 'Security Continuous Monitoring'), 
+    (SELECT id FROM Components WHERE name = 'Detect'));
+
+-- Detection Processes
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How are detection processes tested for effectiveness?', 
+    (SELECT id FROM Subcategories WHERE name = 'DE.DP-04'), 
+    (SELECT id FROM Categories WHERE name = 'Detection Processes'), 
+    (SELECT id FROM Components WHERE name = 'Detect'));
+
+-- Response Planning
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How are response plans communicated to stakeholders?', 
+    (SELECT id FROM Subcategories WHERE name = 'RS.RP-04'), 
+    (SELECT id FROM Categories WHERE name = 'Response Planning'), 
+    (SELECT id FROM Components WHERE name = 'Respond'));
+
+-- Respond Communications
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Are communication plans aligned with organizational policies?', 
+    (SELECT id FROM Subcategories WHERE name = 'RS.CO-04'), 
+    (SELECT id FROM Categories WHERE name = 'Respond Communications'), 
+    (SELECT id FROM Components WHERE name = 'Respond'));
+
+-- Analysis
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'How is the effectiveness of analysis processes evaluated?', 
+    (SELECT id FROM Subcategories WHERE name = 'RS.AN-04'), 
+    (SELECT id FROM Categories WHERE name = 'Analysis'), 
+    (SELECT id FROM Components WHERE name = 'Respond'));
+
+-- Mitigation
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Are mitigation strategies tested for effectiveness?', 
+    (SELECT id FROM Subcategories WHERE name = 'RS.MI-04'), 
+    (SELECT id FROM Categories WHERE name = 'Mitigation'), 
+    (SELECT id FROM Components WHERE name = 'Respond'));
+
+-- Respond Improvements
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Are lessons learned from incidents communicated to stakeholders?', 
+    (SELECT id FROM Subcategories WHERE name = 'RS.IM-03'), 
+    (SELECT id FROM Categories WHERE name = 'Respond Improvements'), 
+    (SELECT id FROM Components WHERE name = 'Respond'));
+
+-- Recovery Planning
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Are recovery plans tested and updated regularly?', 
+    (SELECT id FROM Subcategories WHERE name = 'RC.RP-02'), 
+    (SELECT id FROM Categories WHERE name = 'Recovery Planning'), 
+    (SELECT id FROM Components WHERE name = 'Recover'));
+
+-- Recover Improvements
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Are improvement plans documented and reviewed?', 
+    (SELECT id FROM Subcategories WHERE name = 'RC.IM-02'), 
+    (SELECT id FROM Categories WHERE name = 'Recover Improvements'), 
+    (SELECT id FROM Components WHERE name = 'Recover'));
+
+-- Recover Communications
+INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id, component_id) VALUES
+(2, 'ISO', 'Are recovery communication plans aligned with organizational policies?', 
+    (SELECT id FROM Subcategories WHERE name = 'RC.CO-02'), 
+    (SELECT id FROM Categories WHERE name = 'Recover Communications'), 
+    (SELECT id FROM Components WHERE name = 'Recover'));

@@ -3,93 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ISO Assessment</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>CIO Assessment</title>
+    <style>
+        body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f9;
+}
+
+#app {
+  width: 80%;
+  max-width: 600px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  resize: none; /* Prevents resizing */
+}
+
+    </style>
 </head>
 <body>
-    <h1>ISO Assessment</h1>
-    <form id="iso-form">
-        <h2>Identify (ID)</h2>
-        <label for="id-am-2">Asset Management (ID.AM-2): How does the organization ensure all software platforms and applications are inventoried?</label>
-        <textarea id="id-am-2" name="id-am-2"></textarea>
-        
-        <label for="id-gv-1">Governance (ID.GV-1): What governance policies are in place to manage cybersecurity risk?</label>
-        <textarea id="id-gv-1" name="id-gv-1"></textarea>
-        
-        <label for="id-ra-1">Risk Assessment (ID.RA-1): How does the organization conduct risk assessments to identify potential threats?</label>
-        <textarea id="id-ra-1" name="id-ra-1"></textarea>
-        
-        <label for="id-rm-1">Risk Management Strategy (ID.RM-1): What strategies are in place for managing cybersecurity risks?</label>
-        <textarea id="id-rm-1" name="id-rm-1"></textarea>
-        
-        <label for="id-sc-1">Supply Chain Risk Management (ID.SC-1): How does the organization assess and manage supply chain risks?</label>
-        <textarea id="id-sc-1" name="id-sc-1"></textarea>
-        
-        <h2>Protect (PR)</h2>
-        <label for="pr-ac-3">Access Control (PR.AC-3): What mechanisms are in place to ensure secure access control?</label>
-        <textarea id="pr-ac-3" name="pr-ac-3"></textarea>
-        
-        <label for="pr-at-1">Awareness and Training (PR.AT-1): How does the organization conduct cybersecurity awareness and training programs?</label>
-        <textarea id="pr-at-1" name="pr-at-1"></textarea>
-        
-        <label for="pr-ds-2">Data Security (PR.DS-2): How is data integrity ensured across the organization?</label>
-        <textarea id="pr-ds-2" name="pr-ds-2"></textarea>
-        
-        <label for="pr-ip-1">Information Protection Processes and Procedures (PR.IP-1): What processes and procedures are in place to protect information systems?</label>
-        <textarea id="pr-ip-1" name="pr-ip-1"></textarea>
-        
-        <label for="pr-ma-1">Maintenance (PR.MA-1): How does the organization manage and maintain its information systems?</label>
-        <textarea id="pr-ma-1" name="pr-ma-1"></textarea>
-        
-        <label for="pr-pt-1">Protective Technology (PR.PT-1): What technologies are used to enhance cybersecurity protections?</label>
-        <textarea id="pr-pt-1" name="pr-pt-1"></textarea>
-        
-        <h2>Detect (DE)</h2>
-        <label for="de-ae-2">Anomalies and Events (DE.AE-2): How does the organization analyze detected anomalies and events?</label>
-        <textarea id="de-ae-2" name="de-ae-2"></textarea>
-        
-        <label for="de-cm-3">Security Continuous Monitoring (DE.CM-3): What tools and techniques are used for continuous monitoring of security systems?</label>
-        <textarea id="de-cm-3" name="de-cm-3"></textarea>
-        
-        <label for="de-dp-1">Detection Processes (DE.DP-1): What processes are in place to ensure timely detection of cybersecurity events?</label>
-        <textarea id="de-dp-1" name="de-dp-1"></textarea>
-        
-        <label for="de-dp-4">Detection Processes (DE.DP-4): How are detection processes tested and improved?</label>
-        <textarea id="de-dp-4" name="de-dp-4"></textarea>
-        
-        <h2>Respond (RS)</h2>
-        <label for="rs-rp-2">Response Planning (RS.RP-2): How often is the incident response plan reviewed and updated?</label>
-        <textarea id="rs-rp-2" name="rs-rp-2"></textarea>
-        
-        <label for="rs-co-2">Communications (RS.CO-2): How are incident response communications managed and documented?</label>
-        <textarea id="rs-co-2" name="rs-co-2"></textarea>
-        
-        <label for="rs-an-1">Analysis (RS.AN-1): How does the organization conduct incident analysis to determine the impact and severity of incidents?</label>
-        <textarea id="rs-an-1" name="rs-an-1"></textarea>
-        
-        <label for="rs-mi-1">Mitigation (RS.MI-1): What steps are taken to mitigate the effects of cybersecurity incidents?</label>
-        <textarea id="rs-mi-1" name="rs-mi-1"></textarea>
-        
-        <label for="rs-im-2">Improvements (RS.IM-2): How are lessons learned from incidents incorporated into the response plan?</label>
-        <textarea id="rs-im-2" name="rs-im-2"></textarea>
-        
-        <h2>Recover (RC)</h2>
-        <label for="rc-rp-2">Recovery Planning (RC.RP-2): How is the effectiveness of recovery plans evaluated?</label>
-        <textarea id="rc-rp-2" name="rc-rp-2"></textarea>
-        
-        <label for="rc-im-2">Improvements (RC.IM-2): How does the organization ensure continuous improvement of its recovery processes?</label>
-        <textarea id="rc-im-2" name="rc-im-2"></textarea>
-        
-        <label for="rc-co-1">Communications (RC.CO-1): How are recovery plans communicated to stakeholders?</label>
-        <textarea id="rc-co-1" name="rc-co-1"></textarea>
-        
-        <label for="rc-co-2">Communications (RC.CO-2): How does the organization coordinate with external stakeholders during recovery efforts?</label>
-        <textarea id="rc-co-2" name="rc-co-2"></textarea>
-        
-        <label for="rc-rp-3">Recovery Planning (RC.RP-3): What measures are taken to ensure the organization can recover from a major cybersecurity incident?</label>
-        <textarea id="rc-rp-3" name="rc-rp-3"></textarea>
-        
-        <button type="submit">Submit</button>
-    </form>
+    <div id="app">
+        <h1>ISO Self-Assessment Questions</h1>
+        <div id="question-container">
+            <!-- Questions will be dynamically loaded here -->
+        </div>
+        <div id="navigation">
+            <button id="prev">Previous</button>
+            <button id="save">Save</button>
+            <button id="submit">Submit</button>
+        </div>
+    </div>
+    <script src="iso.js"></script>
 </body>
 </html>
