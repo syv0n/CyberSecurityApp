@@ -36,30 +36,14 @@ exports.createOrUpdateScore = [
     }
 ];
 
-exports.createScore = [
-    body('category').isString().notEmpty().withMessage('Category is required'),
-    body('subcategory').isString().notEmpty().withMessage('Subcategory is required'),
-    body('score').isInt({ min: 0, max: 100 }).withMessage('Score must be between 0 and 100'),
-    body('comments').optional().isString(),
-    handleValidationErrors,
-    async (req, res) => {
-        try {
-            const userId = req.userData.userId;
-            const { category, subcategory, score, comments } = req.body;
-            const newScore = await Score.create(userId, category, subcategory, score, comments);
-            res.status(201).json({ message: 'Score created successfully', score: newScore });
-        } catch (error) {
-            res.status(500).json({ message: 'Error creating score', error: error.message });
-        }
-    }
-];
-
 exports.getScoresByCategory = async (req, res) => {
     try {
         const userId = req.userData.userId;
         const { category } = req.params;
-        const scores = await Score.findByUserIdAndCategory(userId, category);
-        res.json({ scores });
+
+        const scores = await Score.findByCategory(userId, category);
+
+        res.status(200).json({ scores });
     } catch (error) {
         res.status(500).json({ message: 'Error fetching scores', error: error.message });
     }
