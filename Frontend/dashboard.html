@@ -4,26 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
     <div class="container">
         <h2>Welcome to Your Dashboard</h2>
         <p id="welcomeMessage">You have successfully logged in!</p>
 
-        <button id="viewProfileBtn" class="button">View Profile</button>
-        <button id="NIST_CSF_2.0" class="button">NIST CSF 2.0</button>
-        <button id="chooseoptionsBtn" class="button">Choose Options</button>
-        <button id="updateProfileBtn" class="button">Update Profile</button>
-        <button id="deleteUserBtn" class="button">Delete Account</button>
-        <button id="logoutBtn" class="button">Logout</button>
+        <div class="button-group">
+            <button id="viewProfileBtn" class="button">
+                <span class="material-icons">account_circle</span> View Profile
+            </button>
+            <button id="NIST_CSF_2.0" class="button">
+                <span class="material-icons">security</span> NIST CSF 2.0
+            </button>
+            <button id="updateProfileBtn" class="button">
+                <span class="material-icons">edit</span> Update Profile
+            </button>
+            <button id="deleteUserBtn" class="button">
+                <span class="material-icons">delete</span> Delete Account
+            </button>
+            <button id="logoutBtn" class="button">
+                <span class="material-icons">logout</span> Logout
+            </button>
+        </div>
 
-        <div id="profileSection" style="display: none;">
+        <div id="profileSection" class="hidden">
             <h3>Your Profile</h3>
             <p id="profileDetails"></p>
         </div>
 
-        <div id="updateProfileSection" style="display: none;">
+        <div id="updateProfileSection" class="hidden">
             <h3>Update Profile</h3>
             <form id="updateProfileForm">
                 <label>Username
@@ -54,7 +67,7 @@
             const updateProfileForm = document.getElementById('updateProfileForm');
             const updateMessage = document.getElementById('updateMessage');
             const nistCsfBtn = document.getElementById('NIST_CSF_2.0');
-            const chooseoptionsBtn = document.getElementById('chooseoptionsBtn');
+
 
             viewProfileBtn.addEventListener('click', async () => {
                 try {
@@ -154,9 +167,7 @@
                 }
             });
 
-            chooseoptionsBtn.addEventListener('click', () => {
-                window.location.href = 'Choose_Options.html';
-            });
+         
 
             logoutBtn.addEventListener('click', () => {
                 localStorage.removeItem('token');

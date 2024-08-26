@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const prod = window.location.hostname === 'localhost'
+    ? 'http://localhost:9009'
+    : 'http://162.240.40.136:9009'
+
+
     let currentQuestionIndex = 0;
     let questions = [];
 
@@ -11,7 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function loadQuestions() {
-        fetch('http://localhost:9009/api/questions/ISO')
+
+
+        fetch(`${prod}/api/questions/ISO`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -19,9 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 return response.json();
             })
             .then(data => {
+
+
+                
                 questions = data;
                 if (questions.length > 0) {
-                    displayQuestions();
+                    displayQuestion();
                 } else {
                     alert('No questions available.');
                 }
@@ -29,87 +39,97 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(error => console.error('Error fetching questions:', error));
     }
 
-    function displayQuestions() {
+    function displayQuestion() {
         const questionContainer = document.getElementById('question-container');
-        questionContainer.innerHTML = '';
+        const question = questions[currentQuestionIndex];
 
-        for (let i = 0; i < 2; i++) {
-            const questionIndex = currentQuestionIndex + i;
-            if (questionIndex >= questions.length) break;
+        questionContainer.innerHTML = `
+            <h2>${question.id} . ${question.question}</h2>
+            <p>Component: ${question.component}</p>
+            <p>Category: ${question.category}</p>
+            <p>Subcategory: ${question.subcategory}</p>
+            <div>
+                <label>Score:</label>
+                <select id="score">
+                    <option value="0" title="No progress">0 - No progress</option>
+                    <option value="1" title="Initialized">1 - Initialized</option>
+                    <option value="2" title="Started">2 - Started</option>
+                    <option value="3" title="More than 50%">3 - More than 50%</option>
+                    <option value="4" title="Completed">4 - Completed</option>
+                </select>
+            </div>
+            <div>
+                <label>Comment:</label>
+                <textarea id="comment" rows="4" style="width: 100%;"></textarea>
+            </div>
+        `;
 
-            const question = questions[questionIndex];
-            const questionDiv = document.createElement('div');
-            questionDiv.innerHTML = `
-                <h2>${question.question}</h2>
-                <p>Category: ${question.category}</p>
-                <p>Subcategory: ${question.subcategory}</p>
-                <div>
-                    <label>Score:</label>
-                    <input type="text" id="score-${questionIndex}" placeholder="Score: 0 - 4" style="width: 20%;" title="0 - No progress\n1 - Initialized\n2 - Started\n3 - More than 50%\n4 - Completed">
-                </div>
-                <div>
-                    <label>Comment:</label>
-                    <textarea id="comment-${questionIndex}" rows="4" style="width: 100%;"></textarea>
-                </div>
-            `;
-            questionContainer.appendChild(questionDiv);
+        const scoreDropdown = document.getElementById('score');
+        const commentBox = document.getElementById('comment');
 
-            const scoreInput = document.getElementById(`score-${questionIndex}`);
-            const commentBox = document.getElementById(`comment-${questionIndex}`);
-
-            scoreInput.addEventListener('input', () => {
-                const selectedScore = scoreInput.value;
-                if (commentTexts[selectedScore] !== undefined) {
-                    commentBox.value = commentTexts[selectedScore];
-                } else {
-                    commentBox.value = '';
-                }
-            });
-        }
+        scoreDropdown.addEventListener('change', () => {
+            const selectedScore = scoreDropdown.value;
+            commentBox.value = commentTexts[selectedScore];
+            console.log('Score selected:', selectedScore, 'Comment:', commentTexts[selectedScore]);
+        });
     }
-
+    
     function saveAnswer() {
-        for (let i = 0; i < 2; i++) {
-            const questionIndex = currentQuestionIndex + i;
-            if (questionIndex >= questions.length) break;
-
-            const score = document.getElementById(`score-${questionIndex}`).value;
-            const comment = document.getElementById(`comment-${questionIndex}`).value;
-
-            fetch('http://localhost:9009/api/scores', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                },
-                body: JSON.stringify({
-                    questionId: questions[questionIndex].id,
-                    score,
-                    comment
-                })
-            }).then(response => response.json())
-                .then(data => console.log(data.message))
-                .catch(error => console.error('Error saving answer:', error));
+        const score = document.getElementById('score').value;
+        const comment = document.getElementById('comment').value;
+        const question = questions[currentQuestionIndex];
+        if (!question.id || !question.category|| !question.subcategory || score === undefined) {
+            console.error('Missing required data:', { question, score, comment });
+            alert('Please fill in all required fields before saving.');
+            return;
         }
-
-        if (currentQuestionIndex + 2 < questions.length) {
-            currentQuestionIndex += 2;
-            displayQuestions();
-        } else {
-            alert('Please submit your answers.');
-        }
+        
+    
+        fetch(`${prod}/api/scores`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                questionId: question.id,
+                category: question.category,
+                subcategory: question.subcategory,
+                component: question.component,
+                score,
+                comment
+            })
+        }).then(response => response.json())
+            .then(data => {
+                console.log('Response from server:', data);
+                if (currentQuestionIndex < questions.length - 1) {
+                    currentQuestionIndex++;
+                    displayQuestion();
+                } else {
+                    alert('Please submit your answers.');
+                }
+            })
+            .catch(error => console.error('Error saving answer:', error));
+            console.log('Sending data:', {
+                questionId: question.id,
+                category: question.category_id,
+                subcategory: question.subcategory_id,
+                score,
+                comment
+            });
     }
 
     document.getElementById('save').addEventListener('click', saveAnswer);
 
     document.getElementById('prev').addEventListener('click', () => {
         if (currentQuestionIndex > 0) {
-            currentQuestionIndex -= 3;
-            displayQuestions();
+            currentQuestionIndex--;
+            displayQuestion();
         }
     });
 
     document.getElementById('submit').addEventListener('click', () => {
+        console.log('Submitting assessment');
         alert('Assessment submitted successfully!');
         window.location.href = 'dashboard.html';
     });

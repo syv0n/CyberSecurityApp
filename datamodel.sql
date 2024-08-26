@@ -41,23 +41,24 @@ CREATE TABLE Saves (
     FOREIGN KEY (user_id) REFERENCES Users(id)
 );
 
+
 CREATE TABLE Scores (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    user_id BIGINT UNSIGNED ,
-    subcategory_id BIGINT UNSIGNED ,
-    component_id BIGINT UNSIGNED ,
-    category_id BIGINT UNSIGNED ,
-    current_state INT,
+    user_id BIGINT UNSIGNED,
+    question_id BIGINT UNSIGNED,
+    subcategory VARCHAR(255),
+    component VARCHAR(255),
+    category VARCHAR(255),
+    score INT,
+    comments TEXT,
     target_state INT,
-    save_id BIGINT UNSIGNED ,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(id),
-    FOREIGN KEY (subcategory_id) REFERENCES Subcategories(id),
-    FOREIGN KEY (component_id) REFERENCES Components(id),
-    FOREIGN KEY (category_id) REFERENCES Categories(id),
-    FOREIGN KEY (save_id) REFERENCES Saves(id)
+    is_submitted BOOLEAN DEFAULT FALSE,
+    submitted_at TIMESTAMP NULL,
+    FOREIGN KEY (user_id) REFERENCES Users(id)
 );
+
 CREATE TABLE QuestionSets (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     user_type VARCHAR(255) ,
@@ -79,17 +80,19 @@ CREATE TABLE Questions (
     FOREIGN KEY (component_id) REFERENCES Components(id)
 );
 
-CREATE TABLE Submissions (
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    user_id BIGINT UNSIGNED ,
-    save_id BIGINT UNSIGNED ,
-    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES Users(id),
-    FOREIGN KEY (save_id) REFERENCES Saves(id)
-);
 
 CREATE TABLE Departments (
     dept_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) 
 );
 
+
+
+
+
+CREATE TABLE Submissions (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT UNSIGNED,
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(id)
+);

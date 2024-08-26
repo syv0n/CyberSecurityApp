@@ -1,66 +1,60 @@
 body {
     font-family: 'Roboto', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     height: 100vh;
     margin: 0;
-    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-    background-size: cover;
 }
 
 .container {
     background-color: rgba(255, 255, 255, 0.9);
-    padding: 2.5rem;
-    border-radius: 10px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    max-width: 500px;
-    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    max-width: 600px;
+    margin: auto;
     text-align: center;
     transition: transform 0.3s;
 }
 
 .container:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
 }
 
 h2 {
     color: #333;
+    font-size: 2rem;
     margin-bottom: 1rem;
-    font-weight: 700;
 }
 
 p {
     color: #555;
-    margin-top: 1rem;
+    margin-bottom: 2rem;
 }
 
-a {
-    color: #007bff;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-a:hover {
-    color: #b38f00;
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .button {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #b38f00, #b38f00);
+    background: #007bff;
     color: white;
     border: none;
-    padding: 0.75rem;
-    border-radius: 4px;
+    padding: 1rem;
+    border-radius: 8px;
     cursor: pointer;
     transition: background 0.3s, transform 0.3s;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .button:hover {
-    background: linear-gradient(135deg, #0056b3, #003d80);
+    background: #b3a700;
     transform: translateY(-2px);
 }
 
@@ -70,6 +64,7 @@ input {
     border: 1px solid #ddd;
     border-radius: 4px;
     width: 100%;
+    font-size: 1rem;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
@@ -79,10 +74,6 @@ input:focus {
     outline: none;
 }
 
-.success {
-    color: green;
-}
-
-.error {
-    color: red;
+.hidden {
+    display: none;
 }

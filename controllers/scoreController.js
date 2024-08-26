@@ -9,33 +9,27 @@ const handleValidationErrors = (req, res, next) => {
     next();
 };
 
-exports.createOrUpdateScore = [
-    body('category').isString().notEmpty().withMessage('Category is required'),
-    body('subcategory').isString().notEmpty().withMessage('Subcategory is required'),
-    body('score').isInt({ min: 0, max: 4 }).withMessage('Score must be between 0 and 4'),
-    body('comments').optional().isString(),
-    handleValidationErrors,
-    async (req, res) => {
-        try {
-            const userId = req.userData.userId;
-            const { category, subcategory, score, comments } = req.body;
+exports.createOrUpdateScore = async (req, res) => {
+    try {
+        const userId = req.userData.userId;
+        const { questionId, component, category, subcategory, score, comment } = req.body;
 
-            const existingScore = await Score.findByUserCategorySubcategory(userId, category, subcategory);
+        const result = await Score.create(
+            userId,
+            questionId,
+            component,
+            category,
+            subcategory,
+            score,
+            comment
+        );
 
-            let result;
-            if (existingScore) {
-                result = await Score.update(existingScore.id, score, comments);
-                res.status(200).json({ message: 'Score updated successfully', score: result });
-            } else {
-                result = await Score.create(userId, category, subcategory, score, comments);
-                res.status(201).json({ message: 'Score created successfully', score: result });
-            }
-        } catch (error) {
-            res.status(500).json({ message: 'Error saving score', error: error.message });
-        }
+        res.status(201).json({ message: 'Score created successfully', score: result });
+    } catch (error) {
+        console.error('Error saving score:', error);
+        res.status(500).json({ message: 'Error saving score', error: error.message });
     }
-];
-
+};
 exports.getScoresByCategory = async (req, res) => {
     try {
         const userId = req.userData.userId;

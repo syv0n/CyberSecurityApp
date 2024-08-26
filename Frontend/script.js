@@ -1,10 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    const prod = window.location.hostname === 'localhost'
+    ? 'http://localhost:9009'
+    : 'http://162.240.40.136:9009'
+
     const signupForm = document.getElementById('signupForm');
     const loginForm = document.getElementById('loginForm');
     const message = document.getElementById('message');
     const nistForm = document.getElementById('nistForm');
     const saveButton = document.getElementById('saveButton');
-    const finishButton = document.getElementById('finishScoring');
     const nextPageBtn = document.getElementById('nextPageBtn');
     const ciobtn = document.getElementById('cio-btn');
     const techbtn = document.getElementById('tech-btn');
@@ -19,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = document.getElementById('password').value;
 
             try {
-                const response = await fetch('http://localhost:9009/api/users/register', {
+                const response = await fetch(`${prod}/api/users/register`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -54,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = document.getElementById('password').value;
 
             try {
-                const response = await fetch('http://localhost:9009/api/users/login', {
+                const response = await fetch(`${prod}/api/users/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -86,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (nextPageBtn) {
         nextPageBtn.addEventListener('click', function() {
             console.log('Button clicked');
-            window.location.href = 'Identify.html';
+            window.location.href = 'Choose_Options.html';
         });
     }
 
@@ -104,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             try {
-                const response = await fetch('http://localhost:9009/api/users/response', {
+                const response = await fetch(`${prod}/api/users/response`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -136,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch('http://localhost:9009/api/scores', {
+                const response = await fetch('${prod}/api/scores', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -168,23 +172,17 @@ document.addEventListener('DOMContentLoaded', () => {
         ciobtn.addEventListener('click', () => {
             window.location.href = 'cio.html';
         });
-    } else {
-        console.error('Element with ID "cio-btn" not found');
     }
 
     if (isobtn) {
         isobtn.addEventListener('click', () => {
             window.location.href = 'iso.html';
         });
-    } else {
-        console.error('Element with ID "iso-btn" not found');
-    }
+    } 
 
     if (techbtn) {
         techbtn.addEventListener('click', () => {
             window.location.href = 'Tech.html';
         });
-    } else {
-        console.error('Element with ID "tech-btn" not found');
-    }
+    } 
 });

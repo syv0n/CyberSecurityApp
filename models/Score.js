@@ -1,42 +1,44 @@
-const db = require('../config/database');
+const {db} = require('../config/database');
 
 class Score {
-    static async create(userId, subcategoryId, componentId, categoryId, currentState, targetState, saveId = null, comments = null) {
+    static async create(userId, questionId, component, category, subcategory, score, comments) {
         const query = `
-            INSERT INTO scores (user_id, subcategory_id, component_id, category_id, current_state, target_state, save_id, comments)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+            INSERT INTO scores (user_id, question_id, component, category, subcategory, score, comments)
+            VALUES (?, ?, ?, ?, ?, ?, ?)`;
         const [result] = await db.execute(query, [
             userId,
-            subcategoryId,
-            componentId,
-            categoryId,
-            currentState,
-            targetState,
-            saveId,
+            questionId,
+            component,
+            category,
+            subcategory,
+            score,
             comments
         ]);
-        return { id: result.insertId, userId, subcategoryId, componentId, categoryId, currentState, targetState, saveId, comments };
+        return { id: result.insertId, userId, questionId, component, category, subcategory, score, comments };
     }
 
-    static async getBySaveId(saveId) {
-        const query = 'SELECT * FROM scores WHERE save_id = ?';
-        const [rows] = await db.execute(query, [saveId]);
-        return rows;
-    }
-
-    static async update(scoreId, currentState, targetState, comments = null) {
+    static async update(scoreId, currentState, comments = null) {
         const query = `
             UPDATE scores
-            SET current_state = ?, target_state = ?, comments = ?
+            SET score = ?, comments = ?
             WHERE id = ?`;
         const [result] = await db.execute(query, [
-            currentState,
-            targetState,
+            score,
             comments,
             scoreId
         ]);
         return result.affectedRows > 0;
     }
+
+    static async findByUserCategorySubcategory(userId, categoryId, subcategoryId) {
+        const query = `
+            SELECT * FROM scores 
+            WHERE user_id = ? AND category_id = ? AND subcategory_id = ?`;
+        const [rows] = await db.execute(query, [userId, categoryId, subcategoryId]);
+        return rows.length > 0 ? rows[0] : null;
+    }
 }
+
+module.exports = Score;
 
 module.exports = Score;

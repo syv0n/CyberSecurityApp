@@ -6,30 +6,57 @@
     <title>Assessment Questions</title>
     <style>
         body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f4f4f9;
-}
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
 
-#app {
-    width: 80%;
-    max-width: 600px;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+        #app {
+            width: 80%;
+            max-width: 600px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-#navigation {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
+        #navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        h1 {
+            color: #00796b;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #question-container {
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #00796b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #004d40;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -47,82 +74,82 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-    let currentQuestionIndex = 0;
-    let questions = [];
+            let currentQuestionIndex = 0;
+            let questions = [];
 
-    function loadQuestions(role) {
-        fetch(`/api/questions/${role}`)
-            .then(response => response.json())
-            .then(data => {
-                questions = data;
-                displayQuestion();
+            function loadQuestions(role) {
+                fetch(`/api/questions/${role}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        questions = data;
+                        displayQuestion();
+                    });
+            }
+
+            function displayQuestion() {
+                const questionContainer = document.getElementById('question-container');
+                const question = questions[currentQuestionIndex];
+                questionContainer.innerHTML = `
+                    <h2>${question.question}</h2>
+                    <p>Category: ${question.category}</p>
+                    <p>Subcategory: ${question.subcategory}</p>
+                    <div>
+                        <label>Score:</label>
+                        <select id="score">
+                            <option value="0">0 - No progress</option>
+                            <option value="1">1 - Initialized</option>
+                            <option value="2">2 - Started</option>
+                            <option value="3">3 - More than 50%</option>
+                            <option value="4">4 - Completed</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Comment:</label>
+                        <textarea id="comment">${question.comment || ''}</textarea>
+                    </div>
+                `;
+            }
+
+            function saveAnswer() {
+                const score = document.getElementById('score').value;
+                const comment = document.getElementById('comment').value;
+                fetch('/api/answer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        questionId: questions[currentQuestionIndex].id,
+                        score,
+                        comment
+                    })
+                }).then(response => response.json())
+                    .then(data => console.log(data.message));
+            }
+
+            document.getElementById('next').addEventListener('click', () => {
+                saveAnswer();
+                if (currentQuestionIndex < questions.length - 1) {
+                    currentQuestionIndex++;
+                    displayQuestion();
+                }
             });
-    }
 
-    function displayQuestion() {
-        const questionContainer = document.getElementById('question-container');
-        const question = questions[currentQuestionIndex];
-        questionContainer.innerHTML = `
-            <h2>${question.question}</h2>
-            <p>Category: ${question.category}</p>
-            <p>Subcategory: ${question.subcategory}</p>
-            <div>
-                <label>Score:</label>
-                <select id="score">
-                    <option value="0">0 - No progress</option>
-                    <option value="1">1 - Initialized</option>
-                    <option value="2">2 - Started</option>
-                    <option value="3">3 - More than 50%</option>
-                    <option value="4">4 - Completed</option>
-                </select>
-            </div>
-            <div>
-                <label>Comment:</label>
-                <textarea id="comment">${question.comment || ''}</textarea>
-            </div>
-        `;
-    }
+            document.getElementById('prev').addEventListener('click', () => {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    displayQuestion();
+                }
+            });
 
-    function saveAnswer() {
-        const score = document.getElementById('score').value;
-        const comment = document.getElementById('comment').value;
-        fetch('/api/answer', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                questionId: questions[currentQuestionIndex].id,
-                score,
-                comment
-            })
-        }).then(response => response.json())
-            .then(data => console.log(data.message));
-    }
+            document.getElementById('submit').addEventListener('click', () => {
+                saveAnswer();
+                alert('Assessment submitted!');
+            });
 
-    document.getElementById('next').addEventListener('click', () => {
-        saveAnswer();
-        if (currentQuestionIndex < questions.length - 1) {
-            currentQuestionIndex++;
-            displayQuestion();
-        }
-    });
-
-    document.getElementById('prev').addEventListener('click', () => {
-        if (currentQuestionIndex > 0) {
-            currentQuestionIndex--;
-            displayQuestion();
-        }
-    });
-
-    document.getElementById('submit').addEventListener('click', () => {
-        saveAnswer();
-        alert('Assessment submitted!');
-    });
-
-    // Load questions for a specific role (e.g., 'CIO' or 'ISO')
-    loadQuestions('CIO');
-});
+            // Load questions for a specific role (e.g., 'CIO' or 'ISO')
+            loadQuestions('CIO');
+        });
     </script>
 </body>
 </html>

@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const prod = window.location.hostname === 'localhost'
+    ? 'http://localhost:9009'
+    : 'http://162.240.40.136:9009'
+
+
     let currentQuestionIndex = 0;
     let questions = [];
 
@@ -11,7 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function loadQuestions() {
-        fetch('http://localhost:9009/api/questions/CIO')
+
+
+        fetch(`${prod}/api/questions/CIO`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -19,6 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 return response.json();
             })
             .then(data => {
+
+
+                
                 questions = data;
                 if (questions.length > 0) {
                     displayQuestion();
@@ -32,8 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function displayQuestion() {
         const questionContainer = document.getElementById('question-container');
         const question = questions[currentQuestionIndex];
+
         questionContainer.innerHTML = `
-            <h2>${question.question}</h2>
+            <h2>${question.id} . ${question.question}</h2>
+            <p>Component: ${question.component}</p>
             <p>Category: ${question.category}</p>
             <p>Subcategory: ${question.subcategory}</p>
             <div>
@@ -58,26 +70,38 @@ document.addEventListener('DOMContentLoaded', () => {
         scoreDropdown.addEventListener('change', () => {
             const selectedScore = scoreDropdown.value;
             commentBox.value = commentTexts[selectedScore];
+            console.log('Score selected:', selectedScore, 'Comment:', commentTexts[selectedScore]);
         });
     }
-
+    
     function saveAnswer() {
         const score = document.getElementById('score').value;
         const comment = document.getElementById('comment').value;
-        fetch('http://localhost:9009/api/scores', {
+        const question = questions[currentQuestionIndex];
+        if (!question.id || !question.category|| !question.subcategory || score === undefined) {
+            console.error('Missing required data:', { question, score, comment });
+            alert('Please fill in all required fields before saving.');
+            return;
+        }
+        
+    
+        fetch(`${prod}/api/scores`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify({
-                questionId: questions[currentQuestionIndex].id,
+                questionId: question.id,
+                category: question.category,
+                subcategory: question.subcategory,
+                component: question.component,
                 score,
                 comment
             })
         }).then(response => response.json())
             .then(data => {
-                console.log(data.message);
+                console.log('Response from server:', data);
                 if (currentQuestionIndex < questions.length - 1) {
                     currentQuestionIndex++;
                     displayQuestion();
@@ -86,6 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             })
             .catch(error => console.error('Error saving answer:', error));
+            console.log('Sending data:', {
+                questionId: question.id,
+                category: question.category_id,
+                subcategory: question.subcategory_id,
+                score,
+                comment
+            });
     }
 
     document.getElementById('save').addEventListener('click', saveAnswer);
@@ -98,6 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('submit').addEventListener('click', () => {
+        console.log('Submitting assessment');
         alert('Assessment submitted successfully!');
         window.location.href = 'dashboard.html';
     });

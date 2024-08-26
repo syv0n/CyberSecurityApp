@@ -1,4 +1,4 @@
-const db = require('../config/database');
+const {db} = require('../config/database');
 
 class Submission {
     static async create(userId, saveId) {
