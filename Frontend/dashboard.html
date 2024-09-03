@@ -17,8 +17,8 @@
             <button id="viewProfileBtn" class="button">
                 <span class="material-icons">account_circle</span> View Profile
             </button>
-            <button id="NIST_CSF_2.0" class="button">
-                <span class="material-icons">security</span> NIST CSF 2.0
+            <button id="self-assessment" class="button">
+                <span class="material-icons">security</span> Self Assessment
             </button>
             <button id="updateProfileBtn" class="button">
                 <span class="material-icons">edit</span> Update Profile
@@ -52,6 +52,10 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const prod = window.location.hostname === 'localhost'
+            ? 'http://localhost:9009'
+            : 'http://162.240.40.136:9009'
+
             const token = localStorage.getItem('token');
             if (!token) {
                 window.location.href = 'login.html';
@@ -66,12 +70,12 @@
             const updateProfileSection = document.getElementById('updateProfileSection');
             const updateProfileForm = document.getElementById('updateProfileForm');
             const updateMessage = document.getElementById('updateMessage');
-            const nistCsfBtn = document.getElementById('NIST_CSF_2.0');
+            const selfAssessmentBtn = document.getElementById('self-assessment');
 
 
             viewProfileBtn.addEventListener('click', async () => {
                 try {
-                    const response = await fetch('http://localhost:9009/api/users/profile', {
+                    const response = await fetch(`${prod}/api/users/profile`, {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`,
@@ -94,9 +98,26 @@
                 }
             });
 
-            nistCsfBtn.addEventListener('click', () => {
-                window.location.href = 'NIST.html';
-            });
+            selfAssessmentBtn.addEventListener('click', () => {
+            const userRole = localStorage.getItem('userRole');
+
+            switch(userRole) {
+                case 'cio':
+                    window.location.href = 'cio.html';
+                    break;
+                case 'iso':
+                    window.location.href = 'iso.html';
+                    break;
+                case 'tech':
+                    window.location.href = 'tech.html';
+                    break;
+                default:
+
+                    alert('Please select a role before proceeding to the assessment.');
+                    window.location.href = 'Choose_Options.html';
+            }
+        });
+
 
 
             updateProfileBtn.addEventListener('click', () => {
@@ -110,7 +131,7 @@
                 const email = document.getElementById('updateEmail').value;
 
                 try {
-                    const response = await fetch('http://localhost:9009/api/users/profile', {
+                    const response = await fetch(`${prod}/api/users/profile`, {
                         method: 'PUT',
                         headers: {
                             'Authorization': `Bearer ${token}`,
@@ -143,7 +164,7 @@
             deleteUserBtn.addEventListener('click', async () => {
                 if (confirm('Are you sure you want to delete your account?')) {
                     try {
-                        const response = await fetch('http://localhost:9009/api/users/profile', {
+                        const response = await fetch(`${prod}/api/users/profile`, {
                             method: 'DELETE',
                             headers: {
                                 'Authorization': `Bearer ${token}`,

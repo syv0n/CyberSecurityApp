@@ -33,14 +33,6 @@ CREATE TABLE Subcategories (
     FOREIGN KEY (category_id) REFERENCES Categories(id)
 );
 
-CREATE TABLE Saves (
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    user_id BIGINT UNSIGNED ,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    description TEXT,
-    FOREIGN KEY (user_id) REFERENCES Users(id)
-);
-
 
 CREATE TABLE Scores (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -96,3 +88,8 @@ CREATE TABLE Submissions (
     submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(id)
 );
+
+
+show TABLES
+
+SELECT * FROM `Subcategories`

@@ -2,6 +2,9 @@
 const { db } = require("../config/database");
 
 class Questions {
+  // Method to update question IDs for CIO and ISO sets
+
+
   static async findByRole(role) {
     const query = `
             SELECT q.id, q.question, 

@@ -4,22 +4,27 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
+    padding: 20px;
     background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+    box-sizing: border-box;
 }
 
 h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     color: #333;
     margin-bottom: 2rem;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 .options-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 20px;
+    width: 100%;
+    max-width: 300px;
 }
 
 .option-button {
@@ -34,8 +39,9 @@ h1 {
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+    transition: background-color 0.3s, box-shadow 0.3s;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
 }
 
 .option-button .material-icons {
@@ -43,13 +49,29 @@ h1 {
     font-size: 1.2rem;
 }
 
-.option-button:hover {
+.option-button:hover,
+.option-button:focus {
     background-color: #0056b3;
-    transform: translateY(-5px);
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    outline: none;
 }
 
 .option-button:active {
-    transform: translateY(0);
+    background-color: #004085;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    .options-container {
+        flex-direction: row;
+        max-width: 600px;
+    }
+
+    .option-button {
+        flex: 1;
+    }
 }

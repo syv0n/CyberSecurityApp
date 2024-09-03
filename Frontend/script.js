@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const ciobtn = document.getElementById('cio-btn');
     const techbtn = document.getElementById('tech-btn');
     const isobtn = document.getElementById('iso-btn');
+    const selfAssessmentBtn = document.getElementById('self-assessment');
   
     
     if (signupForm) {
@@ -44,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     message.className = 'error';
                 }
             } catch (error) {
-                console.error('Error:', error);
                 message.textContent = 'An error occurred. Please try again.';
                 message.className = 'error';
             }
@@ -73,26 +73,63 @@ document.addEventListener('DOMContentLoaded', () => {
                     message.className = 'success';
                     localStorage.setItem('token', data.token);
                     setTimeout(() => {
-                        window.location.href = 'dashboard.html';
+                        window.location.href = 'Choose_Options.html';
                     }, 2000);
                 } else {
                     message.textContent = data.message || 'Login failed.';
                     message.className = 'error';
                 }
             } catch (error) {
-                console.error('Error:', error);
+
                 message.textContent = 'An error occurred. Please try again.';
                 message.className = 'error';
             }
         });
     }
-
-    if (nextPageBtn) {
-        nextPageBtn.addEventListener('click', function() {
-            console.log('Button clicked');
-            window.location.href = 'Choose_Options.html';
+    // Modify the role selection buttons
+    if (ciobtn) {
+        ciobtn.addEventListener('click', () => {
+            localStorage.setItem('userRole', 'cio');
+            window.location.href = 'dashboard.html';
         });
     }
+
+    if (isobtn) {
+        isobtn.addEventListener('click', () => {
+            localStorage.setItem('userRole', 'iso');
+            window.location.href = 'dashboard.html';
+        });
+    } 
+
+    if (techbtn) {
+        techbtn.addEventListener('click', () => {
+            localStorage.setItem('userRole', 'tech');
+            window.location.href = 'dashboard.html';
+        });
+    }
+
+    
+    
+    if (selfAssessmentBtn) {
+        selfAssessmentBtn.addEventListener('click', () => {
+            const userRole = localStorage.getItem('userRole');
+            switch(userRole) {
+                case 'cio':
+                    window.location.href = 'cio.html';
+                    break;
+                case 'iso':
+                    window.location.href = 'iso.html';
+                    break;
+                case 'tech':
+                    window.location.href = 'tech.html';
+                    break;
+                default:
+                    alert('Please select a role before proceeding to the assessment.');
+                    window.location.href = 'Choose_Options.html';
+            }
+        });
+    }
+    
 
     if (nistForm) {
         nistForm.addEventListener('submit', async (e) => {
@@ -124,7 +161,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert('Form submission failed: ' + (errorData.message || 'Please try again.'));
                 }
             } catch (error) {
-                console.error('Error:', error);
                 alert('An error occurred. Please try again.');
             }
         });
@@ -140,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch('${prod}/api/scores', {
+                const response = await fetch('${prod}/api/scores/save_scores', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -162,27 +198,43 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert(`Failed to save score. Server response: ${errorText}`);
                 }
             } catch (error) {
-                console.error('Error:', error);
+
                 alert('An error occurred. Please try again.');
             }
         });
     }
 
-    if (ciobtn) {
-        ciobtn.addEventListener('click', () => {
-            window.location.href = 'cio.html';
-        });
+    // Add this new function for email verification
+function verifyEmail() {
+    const messageElement = document.getElementById('message');
+    const token = new URLSearchParams(window.location.search).get('token');
+    
+    if (token) {
+        fetch(`${prod}/api/users/verify-email/${token}`)
+            .then(response => response.json())
+            .then(data => {
+                messageElement.textContent = data.message;
+                if (data.message.includes('successfully')) {
+                    messageElement.className = 'success';
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 3000);
+                } else {
+                    messageElement.className = 'error';
+                }
+            })
+            .catch(error => {
+                messageElement.textContent = 'Error verifying email: ' + error.message;
+                messageElement.className = 'error';
+            });
+    } else {
+        messageElement.textContent = 'Invalid verification link';
+        messageElement.className = 'error';
     }
+}
 
-    if (isobtn) {
-        isobtn.addEventListener('click', () => {
-            window.location.href = 'iso.html';
-        });
-    } 
-
-    if (techbtn) {
-        techbtn.addEventListener('click', () => {
-            window.location.href = 'Tech.html';
-        });
-    } 
+// Call verifyEmail function if on the verify-email page
+if (window.location.pathname.includes('verify-email')) {
+    verifyEmail();
+}  
 });

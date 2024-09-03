@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Please review your Answers</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #e0e7ff, #ffffff);
+      }
+
+      #app {
+        width: 100%;
+        max-width: 800px;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        border: 1px solid #ccc;
+        text-align: left;
+      }
+      .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #bbcb03;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Review Your Answers</h1>
+      <div id="categories-container">
+        <!-- Scores table will be dynamically loaded here -->
+      </div>
+      <div class="button-container">
+        <button id="submit">Back to Dashboard</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const prod = window.location.hostname === 'localhost'
+        ? 'http://localhost:9009'
+        : 'http://162.240.40.136:9009';
+
+    fetch(`${prod}/api/scores/display_scores`, {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Received scores:', data); // Check if data is being received
+        const categoriesContainer = document.getElementById('categories-container');
+        const scores = data.scores;
+
+        if (!scores || scores.length === 0) {
+            categoriesContainer.innerHTML = '<p>No scores available.</p>';
+            console.log('No scores available'); // Additional log for empty scores
+            return;
+        }
+
+        // Sort scores by question_id in ascending order
+        try {
+            scores.sort((a, b) => a.question_id - b.question_id);
+        } catch (error) {
+             // Catch any sorting errors
+        }
+
+        // Group scores by component
+        const scoresByComponent = scores.reduce((acc, score) => {
+            if (!acc[score.component]) {
+                acc[score.component] = [];
+            }
+            acc[score.component].push(score);
+            return acc;
+        }, {});
+
+        // Create tables for each component
+        Object.entries(scoresByComponent).forEach(([component, componentScores]) => {
+            const componentDiv = document.createElement('div');
+            componentDiv.className = 'category';
+            componentDiv.innerHTML = `<h2>${component}</h2>`;
+
+            const table = document.createElement('table');
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Question ID</th>
+                        <th>Category</th>
+                        <th>Subcategory</th>
+                        <th>Score</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${componentScores.map(score => `<tr>
+                        <td>${score.question_id}</td>
+                        <td>${score.category}</td>
+                        <td>${score.subcategory}</td>
+                        <td>${score.score}</td>
+                        <td>${score.comments}</td>
+                    </tr>`).join('')}
+                </tbody>
+            `;
+            componentDiv.appendChild(table);
+            categoriesContainer.appendChild(componentDiv);
+        });
+    })
+    .catch(error => {
+        console.error('Error fetching scores:', error);
+        // Make sure the element ID matches the container in your HTML
+        document.getElementById('categories-container').innerHTML = `<p>Error loading scores: ${error.message}</p>`;
+    });
+    document.getElementById('submit').addEventListener('click', () => {
+        window.location.href = 'dashboard.html';
+    });
+});
+
+    </script>
+  </body>
+</html>

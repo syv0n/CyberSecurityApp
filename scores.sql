@@ -20,4 +20,4 @@ CREATE TABLE scores (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-select * from `Submissions`;
+Select * FROM Users

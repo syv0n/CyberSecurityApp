@@ -6,6 +6,9 @@ const authenticateToken = require('../middleware/auth');
 
 router.post('/register', userController.register);
 router.post('/login', userController.login);
+
+router.get('/verify-email/:token', userController.verifyEmail);
+
 router.get('/profile', authenticateToken, userController.getProfile);
 router.put('/profile', authenticateToken, userController.updateProfile);
 router.delete('/profile', authenticateToken, userController.deleteUser);

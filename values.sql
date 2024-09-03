@@ -552,3 +552,4 @@ INSERT INTO Questions (set_id, user_type, question, subcategory_id, category_id,
     (SELECT id FROM Subcategories WHERE name = 'RC.CO-02'), 
     (SELECT id FROM Categories WHERE name = 'Recover Communications'), 
     (SELECT id FROM Components WHERE name = 'Recover'));
+

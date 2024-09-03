@@ -9,6 +9,9 @@ router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../Frontend', 'homepage.html'));
 });
 
+router.get('/verify-email', (req, res) => {
+  res.sendFile(path.join(__dirname, '../Frontend', 'verify-email.html'));
+});
 
 router.get('/register', (req, res) => {
   res.sendFile(path.join(__dirname, '../Frontend', 'signup.html'));

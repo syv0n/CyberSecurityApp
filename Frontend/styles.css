@@ -15,7 +15,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     max-width: 500px;
-    width: 100%;
+    width: 90%;
     text-align: center;
     transition: transform 0.3s;
 }
@@ -85,4 +85,40 @@ input:focus {
 
 .error {
     color: red;
+}
+
+/* Media Queries for Responsiveness */
+
+@media (max-width: 768px) {
+    .container {
+        padding: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    input, .button {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    input, .button {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    p {
+        font-size: 0.9rem;
+    }
 }

@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tailwindcss -i ./input.css -o ./output.css --watch"
   },
   "keywords": [],
   "author": "",
@@ -13,13 +14,16 @@
   "description": "",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-validator": "^7.1.0",
     "http-proxy-middleware": "^3.0.0",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.0",
+    "nodemailer": "^6.9.14",
     "nodemon": "^3.1.4",
     "pg": "^8.12.0"
   },
