@@ -4,7 +4,7 @@ let transporter;
 
 function createTransporter() {
     transporter = nodemailer.createTransport({
-        host: "smtp.siteprotect.com",
+        host: "",
         port: 587,
         secure: false, // true for 465, false for other ports
         auth: {

@@ -91,5 +91,3 @@ CREATE TABLE Submissions (
 
 
 show TABLES
-
-SELECT * FROM `Subcategories`
