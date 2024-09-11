@@ -11,7 +11,7 @@ body {
 
 .container {
     background-color: rgba(255, 255, 255, 0.9);
-    padding: 2.5rem;
+    padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     max-width: 500px;
@@ -65,13 +65,18 @@ a:hover {
 }
 
 input {
-    margin-bottom: 1rem;
+    margin-bottom: 0;  /* Remove the bottom margin from inputs */
     padding: 0.75rem;
     border: 1px solid #ddd;
     border-radius: 4px;
     width: 100%;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
+
+input::placeholder {
+    color: #999;
+}
+
 
 input:focus {
     border-color: #007bff;
@@ -89,36 +94,53 @@ input:focus {
 
 /* Media Queries for Responsiveness */
 
+/* Media query adjustments */
 @media (max-width: 768px) {
-    .container {
-        padding: 2rem;
+    .input-group label {
+        font-size: 0.85rem;
     }
-
-    h2 {
-        font-size: 1.5rem;
-    }
-
-    input, .button {
-        padding: 0.5rem;
-        font-size: 0.9rem;
+    
+    input {
+        padding: 0.6rem;
     }
 }
 
 @media (max-width: 480px) {
-    .container {
-        padding: 1.5rem;
-    }
-
-    h2 {
-        font-size: 1.2rem;
-    }
-
-    input, .button {
-        padding: 0.5rem;
+    .input-group label {
         font-size: 0.8rem;
     }
-
-    p {
-        font-size: 0.9rem;
+    
+    input {
+        padding: 0.5rem;
     }
+}
+
+
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+
+input.error {
+    border: 1px solid #ff3860;
+}
+
+.error-message {
+    color: #ff3860;
+    font-size: 0.9em;
+    position: absolute;
+    bottom: -20px;
+    left: 0;
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,103 +8,69 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="cio.css">
     <style>
-         body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #e0e7ff, #ffffff);
-            height: 100%;
-            overflow: hidden;
-        }
-        .container {
-            display: flex;
-            height: 100vh;
-            position: relative;
-        }
-        #wheel-container {
-            position: absolute;
+        .help-button {
+            position: fixed;
+            bottom: 20px;
             left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            height: 300px;
-            transition: left 1s ease-out, transform 1s ease-out;
-        }
-        #question-wrapper {
-            position: absolute;
-            right: -60%;
-            top: 0;
-            width: 60%;
-            height: 100%;
+            transform: translateX(-50%);
             display: flex;
-            justify-content: center;
             align-items: center;
-            transition: right 1s ease-out;
-        }
-        #question-container {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        .question {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        select, textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        textarea {
-            height: 100px;
-            resize: vertical;
-        }
-        #navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-        button {
-            background-color: #007bff;
+            gap: 5px;
+            background-color: #3f51b5;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            border-radius: 20px;
+            padding: 10px 15px;
+            font-size: 14px;
             cursor: pointer;
-            font-size: 16px;
+            outline: none;
+            transition: all 0.4s;
+            white-space: nowrap;
+            overflow: hidden;
+            max-width: 150px;
+        }
+
+        .help-button.expanded {
+            max-width: 600px;
+            padding: 10px 20px;
+            height: auto;
+        }
+
+        .help-button span {
             display: flex;
             align-items: center;
         }
-        button:hover {
-            background-color: #0056b3;
+
+        .help-button .material-icons {
+            font-size: 20px;
         }
-        .material-icons {
-            margin-right: 8px;
+
+        .info-text {
+            display: none;
+            margin-left: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .help-button.expanded .info-text {
+            display: block;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
+        <!-- Help Button -->
+     
+        <!-- Wheel Container -->
         <div id="wheel-container"></div>
+
+        <!-- Question Wrapper -->
         <div id="question-wrapper">
             <div id="question-container">
-                <h1>CIO Self - Assessment Questions</h1>
+                <h1>CIO Self-Assessment Questions</h1>
                 <div id="question-content">
                     <!-- Questions will be dynamically loaded here by cio.js -->
                 </div>
@@ -114,42 +81,43 @@
             </div>
         </div>
     </div>
+
+    <!-- Plotly Sunburst and Interaction Script -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var data = [{
-                type: "sunburst",
-                labels: ["NIST CSF 2.0", "Identify", "Protect", "Detect", "Respond", "Recover"],
-                parents: ["", "NIST CSF 2.0", "NIST CSF 2.0", "NIST CSF 2.0", "NIST CSF 2.0", "NIST CSF 2.0"],
- 
-                outsidetextfont: {size: 16, color: "#0d0000"},
-                insidetextfont: {size: 14, color: ["#000000", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"]},
-                leaf: {opacity: 1},
-                marker: {line: {width: 2, color: "#ffffff"}},
-                branchvalues: 'total',
-                textposition: 'inside',
-                insidetextorientation: 'radial'
-            }];
+        document.addEventListener('DOMContentLoaded', function () {
+    // Sunburst data and configuration
+    var data = [{
+        type: "sunburst",
+        labels: ["NIST CSF 2.0", "Identify", "Protect", "Detect", "Respond", "Recover"],
+        parents: ["", "NIST CSF 2.0", "NIST CSF 2.0", "NIST CSF 2.0", "NIST CSF 2.0", "NIST CSF 2.0"],
+        outsidetextfont: { size: 16, color: "#0d0000" },
+        insidetextfont: { size: 14, color: ["black", "black", "black", "black", "black", "black"] }, // Ensure each segment text color is black
+        leaf: { opacity: 1 },
+        marker: { line: { width: 2, color: "#ffffff" } },
+        branchvalues: 'total',
+        textposition: 'inside',
+        insidetextorientation: 'radial'
+    }];
 
-            var layout = {
-                margin: {l: 0, r: 0, b: 0, t: 0},
-                sunburstcolorway: ["#1a69a4", "#e67300", "#248f23", "#b32121", "#7e5494", "#734c3f"],
-                paper_bgcolor: 'rgba(0,0,0,0)',
-                plot_bgcolor: 'rgba(0,0,0,0)'
-            };
- 
-            var config = {
-                responsive: true
-            };
+    var layout = {
+        margin: { l: 0, r: 0, b: 0, t: 0 },
+        sunburstcolorway: ["#1a69a4", "#e67300", "#248f23", "#b32121", "#7e5494", "#734c3f"],
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)'
+    };
 
-            Plotly.newPlot('wheel-container', data, layout, config);
+    var config = {
+        responsive: true
+    };
 
-            // Animate the wheel and show questions after a delay
-            setTimeout(function() {
-                document.getElementById('wheel-container').style.left = '20%';
-                document.getElementById('question-wrapper').style.right = '0';
-            }, 1000);
-        });
+    Plotly.newPlot('wheel-container', data, layout, config);
+
+    
+});
+
     </script>
+
     <script src="cio.js"></script>
 </body>
+
 </html>

@@ -15,7 +15,8 @@ const handleValidationErrors = (req, res, next) => {
 exports.register = [
   body('username').isLength({ min: 5, max: 30 }).withMessage('Username must be between 5 and 30 characters'),
   body('email').isEmail().withMessage('Invalid email address'),
-  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+  body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
+  .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>])/).withMessage('Password must include uppercase, lowercase, numbers, and special characters'),
   handleValidationErrors,
   async (req, res) => {
     try {
@@ -48,7 +49,7 @@ exports.login = [
           const token = jwt.sign({ userId: user.id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
           res.json({ message: 'Login successful', token });
         } else {
-          res.status(403).json({ message: 'Please verify your email before logging in.' });
+          res.status(403).json({ message: 'Please verify your email before logging in. If you did not receive it, try checking your spam folder' });
         }
       } else {
         res.status(401).json({ message: 'Invalid credentials' });

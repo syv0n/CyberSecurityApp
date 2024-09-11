@@ -221,38 +221,38 @@ document.addEventListener('DOMContentLoaded', () => {
             type: "sunburst",
             labels: ["NIST CSF 2.0", "Identify", "Protect", "Detect", "Respond", "Recover"],
             parents: ["", "NIST CSF 2.0", "NIST CSF 2.0", "NIST CSF 2.0", "NIST CSF 2.0", "NIST CSF 2.0"],
-            outsidetextfont: {size: 16, color: "#0d0000"},
-            insidetextfont: {size: 14, color: ["#000000", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"]},
-            leaf: {opacity: 1},
+            outsidetextfont: { size: 16, color: "#0d0000" },
+            insidetextfont: { size: 14, color: "#000000" }, // Ensure all inner text is black
+            leaf: { opacity: 1 },
             marker: {
-                line: {width: 2, color: "#ffffff"},
+                line: { width: 2, color: "#ffffff" },
                 colors: originalColors
             },
             branchvalues: 'total',
             textposition: 'inside',
             insidetextorientation: 'radial'
         }];
-
+    
         var layout = {
-            margin: {l: 0, r: 0, b: 0, t: 0},
+            margin: { l: 0, r: 0, b: 0, t: 0 },
             paper_bgcolor: 'rgba(0,0,0,0)',
             plot_bgcolor: 'rgba(0,0,0,0)',
             sunburstcolorway: originalColors
         };
-
+    
         var config = {
             responsive: true
         };
-
+    
         Plotly.newPlot('wheel-container', data, layout, config).then((plot) => {
             wheelPlot = plot;
-            // Animate the wheel and show questions after a delay
-            setTimeout(function() {
+            setTimeout(function () {
                 document.getElementById('wheel-container').style.left = '20%';
                 document.getElementById('question-wrapper').style.right = '0';
             }, 1000);
         });
     }
+    
 
     function highlightWheelComponent(component) {
         if (!wheelPlot) {

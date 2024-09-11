@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
 const submissionsController = require('../controllers/submissionsController');
+const finalScoreController = require('../controllers/finalScoreController');
 
-router.post('/', auth, submissionsController.createSubmission);
-router.get('/', auth, submissionsController.getSubmissionsByUser);
+router.post('/new_submission', auth, submissionsController.createSubmission);
+router.get('/get_submission', auth, submissionsController.getSubmissionsByUser);
+router.get('/scores/final_score', auth, finalScoreController.calculateFinalScore);
 
 module.exports = router;

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Final Cybersecurity Maturity Score</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      h1,
+      h2 {
+        color: #2c3e50;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .final-score {
+        font-size: 24px;
+        font-weight: bold;
+        color: #27ae60;
+        margin-bottom: 20px;
+      }
+      .button-container {
+        text-align: center;
+        margin-top: 20px;
+      }
+      button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      button:hover {
+        background-color: #2980b9;
+      }
+      .submission-history {
+        margin-top: 30px;
+      }
+      .submission-history table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .submission-history th,
+      .submission-history td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      .submission-history th {
+        background-color: #f2f2f2;
+      }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Final Cybersecurity Maturity Score</h1>
+        <div id="score-container">
+            <!-- Final score and calculation details will be dynamically loaded here -->
+        </div>
+        <div class="button-container">
+            <button id="submit-score">Submit Score</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const prod = window.location.hostname === "localhost"
+                ? "http://localhost:9009"
+                : "http://162.240.40.136:9009";
+
+            let currentFinalScore = 0;
+
+            function loadFinalScore() {
+                fetch(`${prod}/api/submissions/scores/final_score`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Received final score data:', data);
+                    if (data && typeof data.finalScore === 'number' && data.functionScores) {
+                        const { finalScore, functionScores } = data;
+                        currentFinalScore = finalScore;
+                        displayFinalScore(finalScore, functionScores);
+                    } else {
+                        throw new Error('Invalid data structure received from server');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching final score:', error);
+                    document.getElementById('score-container').innerHTML = `<p>Error loading final score: ${error.message}</p>`;
+                });
+            }
+
+            function displayFinalScore(finalScore, functionScores) {
+                const scoreContainer = document.getElementById('score-container');
+                
+                if (finalScore === undefined || functionScores === undefined) {
+                    scoreContainer.innerHTML = '<p>Error: Unable to calculate final score. Please try again later.</p>';
+                    console.error('Final score or function scores are undefined:', { finalScore, functionScores });
+                    return;
+                }
+
+                let html = `
+                    <div class="final-score">Final Maturity Score: ${finalScore.toFixed(2)}</div>
+                    <h2>Calculation Details</h2>
+                    <table>
+                        <tr>
+                            <th>Function</th>
+                            <th>Score</th>
+                            <th>Weight</th>
+                            <th>Contribution</th>
+                        </tr>
+                `;
+
+                for (const [func, details] of Object.entries(functionScores)) {
+                    if (details && typeof details.score === 'number' && typeof details.weight === 'number') {
+                        html += `
+                            <tr>
+                                <td>${func}</td>
+                                <td>${details.score.toFixed(2)}</td>
+                                <td>${(details.weight * 100).toFixed(0)}%</td>
+                                <td>${(details.score * details.weight).toFixed(2)}</td>
+                            </tr>
+                        `;
+                    } else {
+                        console.error(`Invalid details for function ${func}:`, details);
+                    }
+                }
+
+                html += `
+                    </table>
+                    <h2>Interpretation</h2>
+                    <p>The final maturity score of ${finalScore.toFixed(2)} represents your organization's overall cybersecurity maturity level based on the NIST Cybersecurity Framework. This score is calculated by weighing the performance in each of the five core functions: Identify, Protect, Detect, Respond, and Recover.</p>
+                    <p>A score closer to 4.0 indicates a higher level of cybersecurity maturity, while a lower score suggests areas for improvement. Here's a general interpretation:</p>
+                    <ul>
+                        <li>0.0 - 1.0: Initial stage, significant improvements needed</li>
+                        <li>1.1 - 2.0: Developing stage, foundational practices in place</li>
+                        <li>2.1 - 3.0: Established stage, consistent implementation of practices</li>
+                        <li>3.1 - 4.0: Advanced stage, proactive and adaptive cybersecurity program</li>
+                    </ul>
+                    <p>Review the individual function scores to identify specific areas for enhancement in your cybersecurity practices.</p>
+                `;
+
+                scoreContainer.innerHTML = html;
+            }
+
+            document.getElementById("submit-score").addEventListener("click", () => {
+                fetch(`${prod}/api/submissions/new_submission`, {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ finalScore: currentFinalScore }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert("Score submitted successfully!");
+                    window.location.href = "dashboard.html"; // Redirect to dashboard
+                })
+                .catch(error => {
+                    console.error("Error submitting score:", error);
+                    alert("Error submitting score. Please try again.");
+                });
+            });
+
+            loadFinalScore();
+        });
+    </script>
+</body>
+</html>

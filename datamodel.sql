@@ -90,4 +90,6 @@ CREATE TABLE Submissions (
 );
 
 
-show TABLES
+ALTER TABLE Submissions ADD COLUMN final_score DECIMAL(5,2) NOT NULL;
+
+SELECT * from `Submissions`

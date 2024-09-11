@@ -4,7 +4,9 @@ let transporter;
 
 function createTransporter() {
     transporter = nodemailer.createTransport({
-        host: "",
+        service:"gmail",
+        host:"smtp.gmail.com",
+        // host: "smtp.siteprotect.com",
         port: 587,
         secure: false, // true for 465, false for other ports
         auth: {
@@ -26,7 +28,7 @@ exports.sendVerificationEmail = async (email, token) => {
     const verificationLink = `http://localhost:9009/verify-email.html?token=${token}`;
 
     const mailOptions = {
-        from: 'CyberPal <cyberpal@tcrest.com>', // Use the authenticated email address
+        from: 'CyberPal <sivashashank7@gmail.com>', // Use the authenticated email address
         to: email,
         subject: 'CyberPal - Verify your email',
         html: `
@@ -39,7 +41,7 @@ exports.sendVerificationEmail = async (email, token) => {
 
     try {
         let info = await transporter.sendMail(mailOptions);
-
+        console.log("Message sent: %s", info.messageId);
     } catch (error) {
         console.error("Error sending email:", error);
         throw error;

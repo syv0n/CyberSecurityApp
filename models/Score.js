@@ -47,6 +47,18 @@ class Score {
         // If category is provided, filter; otherwise, return all rows
         return rows;
     }
+
+    static async getByUserId(userId) {
+        const query = `
+            SELECT question_id, component, subcategory, score
+            FROM Scores
+            WHERE user_id = ?
+            ORDER BY created_at DESC
+        `;
+        const [rows] = await db.execute(query, [userId]);
+        return rows;
+    }
+
     
 
 }

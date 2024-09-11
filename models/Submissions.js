@@ -1,16 +1,16 @@
 const {db} = require('../config/database');
 
 class Submission {
-    static async create(userId) {
+    static async create(userId, finalScore) {
         const query = `
-            INSERT INTO Submissions (user_id, save_id, submitted_at)
+            INSERT INTO Submissions (user_id, final_score, submitted_at)
             VALUES (?, ?, CURRENT_TIMESTAMP)`;
-        const [result] = await db.execute(query, [userId]);
-        return { id: result.insertId, userId,submittedAt: new Date() };
+        const [result] = await db.execute(query, [userId, finalScore]);
+        return { id: result.insertId, userId, finalScore, submittedAt: new Date() };
     }
 
     static async getByUserId(userId) {
-        const query = 'SELECT * FROM Submissions WHERE user_id = ?';
+        const query = 'SELECT * FROM Submissions WHERE user_id = ? ORDER BY submitted_at DESC';
         const [rows] = await db.execute(query, [userId]);
         return rows;
     }
@@ -21,5 +21,6 @@ class Submission {
         return rows[0];
     }
 }
+
 
 module.exports = Submission;
