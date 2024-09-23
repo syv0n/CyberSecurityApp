@@ -78,7 +78,7 @@ CREATE TABLE Departments (
     name VARCHAR(255) 
 );
 
-
+DESCRIBE Questions
 
 
 
@@ -91,5 +91,7 @@ CREATE TABLE Submissions (
 
 
 ALTER TABLE Submissions ADD COLUMN final_score DECIMAL(5,2) NOT NULL;
+
+ALTER TABLE Scores ADD COLUMN submission_id BIGINT UNSIGNED;
 
 SELECT * from `Submissions`

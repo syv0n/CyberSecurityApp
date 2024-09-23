@@ -28,3 +28,18 @@ exports.getSubmissionsByUser = async (req, res) => {
         res.status(500).json({ message: 'Error fetching submissions', error: error.message });
     }
 };
+
+exports.getSubmissionById = async (req, res) => {
+    try {
+        const submissionId = req.params.submissionId;
+        const submission = await Submission.getById(submissionId);
+
+        if (!submission) {
+            return res.status(404).json({ message: 'Submission not found' });
+        }
+
+        res.status(200).json({ submission });
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching submission detail', error: error.message });
+    }
+};

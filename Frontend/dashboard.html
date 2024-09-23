@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
+    <div class="absolute-bg"></div>
     <div class="container">
         <h2>Welcome to Your Dashboard</h2>
-        <p id="welcomeMessage">You have successfully logged in!</p>
 
         <div class="button-group">
             <button id="viewProfileBtn" class="button">
@@ -19,6 +19,9 @@
             </button>
             <button id="self-assessment" class="button">
                 <span class="material-icons">security</span> Self Assessment
+            </button>
+            <button id="viewSubmissionsBtn" class="button">
+                <span class="material-icons">list</span> View Submissions
             </button>
             <button id="updateProfileBtn" class="button">
                 <span class="material-icons">edit</span> Update Profile
@@ -50,6 +53,7 @@
             <p id="updateMessage"></p>
         </div>
     </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const prod = window.location.hostname === 'localhost'
@@ -71,6 +75,7 @@
             const updateProfileForm = document.getElementById('updateProfileForm');
             const updateMessage = document.getElementById('updateMessage');
             const selfAssessmentBtn = document.getElementById('self-assessment');
+            const viewSubmissionsBtn = document.getElementById('viewSubmissionsBtn');
 
 
             viewProfileBtn.addEventListener('click', async () => {
@@ -98,27 +103,28 @@
                 }
             });
 
+            viewSubmissionsBtn.addEventListener('click', async() => {
+                window.location.href = "submission_history.html"
+            });
+
             selfAssessmentBtn.addEventListener('click', () => {
-            const userRole = localStorage.getItem('userRole');
+                const userRole = localStorage.getItem('userRole');
 
-            switch(userRole) {
-                case 'cio':
-                    window.location.href = 'cio.html';
-                    break;
-                case 'iso':
-                    window.location.href = 'iso.html';
-                    break;
-                case 'tech':
-                    window.location.href = 'tech.html';
-                    break;
-                default:
-
-                    alert('Please select a role before proceeding to the assessment.');
-                    window.location.href = 'Choose_Options.html';
-            }
-        });
-
-
+                switch(userRole) {
+                    case 'cio':
+                        window.location.href = 'cio.html';
+                        break;
+                    case 'iso':
+                        window.location.href = 'iso.html';
+                        break;
+                    case 'tech':
+                        window.location.href = 'tech.html';
+                        break;
+                    default:
+                        alert('Please select a role before proceeding to the assessment.');
+                        window.location.href = 'Choose_Options.html';
+                }
+            });
 
             updateProfileBtn.addEventListener('click', () => {
                 profileSection.style.display = 'none';
@@ -187,8 +193,6 @@
                     }
                 }
             });
-
-         
 
             logoutBtn.addEventListener('click', () => {
                 localStorage.removeItem('token');

@@ -1,4 +1,5 @@
 const Score = require('../models/Score'); // Assuming you have a Score model
+const Submission = require('../models/Submissions'); // Adjust the path if necessary
 
 exports.calculateFinalScore = async (req, res) => {
     try {
@@ -114,3 +115,95 @@ function calculateWeightedFunctionScore(funcScores) {
 
     return totalWeight > 0 ? weightedScore / totalWeight : 0;
 }
+
+exports.getFinalScoreById = async (req, res) => {
+    try {
+        const submissionId = req.params.submissionId;
+        const submission = await Submission.getById(submissionId);
+        
+        if (!submission) {
+            return res.status(404).json({ message: 'Submission not found' });
+        }
+
+        // Fetch the scores associated with this submission
+        const scores = await Score.getBySubmissionId(submissionId);
+
+        if (scores.length === 0) {
+            return res.status(404).json({ message: 'No scores found for this submission' });
+        }
+
+        const functionWeights = {
+            'Identify': 0.25,
+            'Protect': 0.20,
+            'Detect': 0.25,
+            'Respond': 0.20,
+            'Recover': 0.10
+        };
+
+        const functionScores = {};
+        let finalScore = 0;
+
+        for (const [func, weight] of Object.entries(functionWeights)) {
+            const funcScores = scores.filter(s => s.component === func);
+            const weightedFuncScore = calculateWeightedFunctionScore(funcScores);
+            functionScores[func] = {
+                score: weightedFuncScore,
+                weight: weight
+            };
+            finalScore += weightedFuncScore * weight;
+        }
+
+        res.status(200).json({ finalScore, functionScores });
+    } catch (error) {
+        console.error('Error fetching final score:', error);
+        res.status(500).json({ message: 'Error fetching final score', error: error.message });
+    }
+};
+
+exports.getSubmissionById = async (req, res) => {
+    try {
+        const submissionId = req.params.submissionId;
+        const submission = await Submission.getById(submissionId);
+
+        if (!submission) {
+            return res.status(404).json({ message: 'Submission not found' });
+        }
+
+        // Fetch the scores associated with this submission
+        const scores = await Score.getBySubmissionId(submissionId);
+
+        if (scores.length === 0) {
+            return res.status(404).json({ message: 'No scores found for this submission' });
+        }
+
+        const functionWeights = {
+            'Identify': 0.25,
+            'Protect': 0.20,
+            'Detect': 0.25,
+            'Respond': 0.20,
+            'Recover': 0.10
+        };
+
+        const functionScores = {};
+        let finalScore = 0;
+
+        for (const [func, weight] of Object.entries(functionWeights)) {
+            const funcScores = scores.filter(s => s.component === func);
+            const weightedFuncScore = calculateWeightedFunctionScore(funcScores);
+            functionScores[func] = {
+                score: weightedFuncScore,
+                weight: weight
+            };
+            finalScore += weightedFuncScore * weight;
+        }
+
+        // Return the correct data structure
+        res.status(200).json({
+            finalScore,
+            functionScores
+        });
+    } catch (error) {
+        console.error('Error fetching final score:', error);
+        res.status(500).json({ message: 'Error fetching final score', error: error.message });
+    }
+};

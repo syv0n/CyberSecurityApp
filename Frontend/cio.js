@@ -1,8 +1,8 @@
 let wheelPlot;
-let currentQuestionIndex = 0;
-let questions = [];
+let currentGroupIndex = 0;
+let questionGroups = [];
 const originalColors = ["#1a69a4", "#e67300", "#248f23", "#b32121", "#7e5494", "#734c3f"];
-const originalSizes = [1, 1, 1, 1, 1, 1];  // Original sizes for each component
+const originalSizes = [1, 1, 1, 1, 1, 1];
 let lastHighlightedIndex = -1;
 
 const commentTexts = {
@@ -92,9 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 return response.json();
             })
             .then(data => {
-                questions = data;
-                if (questions.length > 0) {
-                    displayQuestion();
+                questionGroups = groupQuestionsByComponent(data);
+                if (questionGroups.length > 0) {
+                    displayQuestionGroup();
                 } else {
                     alert('No questions available.');
                 }
@@ -105,52 +105,73 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-    function displayQuestion() {
-        const questionContent = document.getElementById('question-content');
-        const question = questions[currentQuestionIndex];
+    function groupQuestionsByComponent(questions) {
+        const groups = {};
+        questions.forEach(question => {
+            if (!groups[question.component]) {
+                groups[question.component] = [];
+            }
+            groups[question.component].push(question);
+        });
+        return Object.values(groups);
+    }
 
-        questionContent.innerHTML = `
-            <h2>${question.id}. ${question.question}</h2>
-            <p>Component: ${question.component}</p>
-            <p>Category: ${question.category}</p>
-            <p>Subcategory: ${question.subcategory}</p>
-            <div>
-                <label for="score">Score:</label>
-                <select id="score">
-                    <option value=""> Please select the score </option>
-                    <option value="0">0 - Have no policy or practice</option>
-                    <option value="1">1 - Have a policy</option>
-                    <option value="2">2 - Have a procedure/practice</option>
-                    <option value="3">3 - Level-1 of effectiveness</option>
-                    <option value="4">4 - Level-2 of effectiveness (HIGH)</option>
-                </select>
-            </div>
-            <div>
-                <label for="comment">Comment:</label>
-                <textarea id="comment" rows="4"></textarea>
-            </div>
-        `;
-        document.getElementById('score').addEventListener('change', updateComment);
+    function displayQuestionGroup() {
+        const questionContent = document.getElementById('question-content');
+        const group = questionGroups[currentGroupIndex];
+        
+        questionContent.innerHTML = `<h2>${group[0].component}</h2>`;
+        
+        group.forEach((question, index) => {
+            questionContent.innerHTML += `
+                <div class="question">
+                    <h3>${question.id}. ${question.question}</h3>
+                    <p>Category: ${question.category}</p>
+                    <p>Subcategory: ${question.subcategory}</p>
+                    <div>
+                        <label for="score-${index}">Score:</label>
+                        <select id="score-${index}" class="score-select">
+                            <option value=""> Please select the score </option>
+                            <option value="0">0 - Have no policy or practice</option>
+                            <option value="1">1 - Have a policy</option>
+                            <option value="2">2 - Have a procedure/practice</option>
+                            <option value="3">3 - Level-1 of effectiveness</option>
+                            <option value="4">4 - Level-2 of effectiveness (HIGH)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="comment-${index}">Comment:</label>
+                        <textarea id="comment-${index}" class="comment-area" rows="4"></textarea>
+                    </div>
+                </div>
+            `;
+        });
+
+        document.querySelectorAll('.score-select').forEach((select, index) => {
+            select.addEventListener('change', () => updateComment(index));
+        });
+
         updateNavigationButtons();
-        highlightWheelComponent(question.component);
+        highlightWheelComponent(group[0].component);
     }
 
     function updateNavigationButtons() {
         const prevButton = document.getElementById('prev');
         const nextButton = document.getElementById('next');
 
-        prevButton.style.display = currentQuestionIndex > 0 ? 'inline-flex' : 'none';
+        prevButton.style.display = currentGroupIndex > 0 ? 'inline-flex' : 'none';
 
-        if (currentQuestionIndex === questions.length - 1) {
+        if (currentGroupIndex === questionGroups.length - 1) {
             nextButton.innerHTML = '<span class="material-icons">save</span>Save';
         } else {
             nextButton.innerHTML = 'Next<span class="material-icons">navigate_next</span>';
         }
     }
-    function updateComment() {
-        const score = document.getElementById('score').value;
-        const commentElement = document.getElementById('comment');
-        const question = questions[currentQuestionIndex];
+
+    function updateComment(index) {
+        const score = document.getElementById(`score-${index}`).value;
+        const commentElement = document.getElementById(`comment-${index}`);
+        const question = questionGroups[currentGroupIndex][index];
         
         if (commentTexts[`Q${question.id}`] && commentTexts[`Q${question.id}`][score]) {
             commentElement.value = commentTexts[`Q${question.id}`][score];
@@ -159,62 +180,62 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    
-    function saveAnswer() {
-        const score = document.getElementById('score').value;
-        const comment = document.getElementById('comment').value;
-        const question = questions[currentQuestionIndex];
-        if (!question.id || !question.category || !question.subcategory || score === "") {
-            alert('Please fill in all required fields before saving.');
-            return Promise.reject('Missing data');
-        }
-        return fetch(`${prod}/api/scores/save_scores`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            },
-            body: JSON.stringify({
-                questionId: question.id,
-                category: question.category,
-                subcategory: question.subcategory,
-                component: question.component,
-                score,
-                comment
-            })
-        }).then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+    function saveAnswers() {
+        const group = questionGroups[currentGroupIndex];
+        const promises = group.map((question, index) => {
+            const score = document.getElementById(`score-${index}`).value;
+            const comment = document.getElementById(`comment-${index}`).value;
+            
+            if (!question.id || !question.category || !question.subcategory || score === "") {
+                return Promise.reject('Missing data');
             }
-            return response.json();
-        }).catch(error => {
-            console.error('Detailed error when saving answer:', error);
-            return Promise.reject('Error saving answer');
+
+            return fetch(`${prod}/api/scores/save_scores`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                    questionId: question.id,
+                    category: question.category,
+                    subcategory: question.subcategory,
+                    component: question.component,
+                    score,
+                    comment
+                })
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            });
         });
+
+        return Promise.all(promises);
     }
 
     document.getElementById('prev').addEventListener('click', () => {
-        if (currentQuestionIndex > 0) {
-            currentQuestionIndex--;
-            displayQuestion();
+        if (currentGroupIndex > 0) {
+            currentGroupIndex--;
+            displayQuestionGroup();
         }
     });
 
     document.getElementById('next').addEventListener('click', () => {
-        saveAnswer().then(() => {
-            if (currentQuestionIndex < questions.length - 1) {
-                currentQuestionIndex++;
-                displayQuestion();
+        saveAnswers().then(() => {
+            if (currentGroupIndex < questionGroups.length - 1) {
+                currentGroupIndex++;
+                displayQuestionGroup();
             } else {
                 alert('Assessment saved successfully!');
                 window.location.href = 'display_scores.html';
             }
         }).catch(error => {
-
-            alert('Error saving answer. Please try again.');
+            console.error('Error saving answers:', error);
+            alert('Error saving answers. Please ensure all fields are filled and try again.');
         });
     });
-
 
     function createWheel() {
         var data = [{

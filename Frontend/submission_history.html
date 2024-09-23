@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Submission History</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      h1 {
+        color: #2c3e50;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .back-button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Submission History</h1>
+    <div id="submission-list"></div>
+    <a href="dashboard.html" class="back-button">Back to Dashboard</a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const prod = window.location.hostname === 'localhost' ? 'http://localhost:9009' : 'http://162.240.40.136:9009';
+            
+            fetch(`${prod}/api/submissions/get_submission`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const submissionList = document.getElementById('submission-list');
+                let submissions = [];
+
+                if (Array.isArray(data)) {
+                    submissions = data;
+                } else if (data && Array.isArray(data.submissions)) {
+                    submissions = data.submissions;
+                } else if (data && typeof data === 'object') {
+                    submissions = [data]; // If it's a single object, wrap it in an array
+                }
+
+                if (submissions.length === 0) {
+                    submissionList.innerHTML = '<p>No submissions found.</p>';
+                } else {
+                    let tableHtml = `
+                        <table>
+                            <tr>
+                                <th>Submission Date</th>
+                                <th>Final Score</th>
+                            </tr>
+                    `;
+                    submissions.forEach(submission => {
+                        tableHtml += `
+                            <tr class="clickable-row" data-submission-id="${submission.id}">
+                                <td>${new Date(submission.submitted_at).toLocaleString()}</td>
+                                <td>${submission.final_score}</td>
+                            </tr>
+                        `;
+                    });
+                    tableHtml += '</table>';
+                    submissionList.innerHTML = tableHtml;
+        
+                    // Add click event listeners to rows
+                    document.querySelectorAll('.clickable-row').forEach(row => {
+                        row.addEventListener('click', () => {
+                            const submissionId = row.getAttribute('data-submission-id');
+                            console.log('Clicked submission ID:', submissionId); // Add this log
+                            window.location.href = `submission_details.html?submissionId=${submissionId}`;
+                        });
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching submission history:', error);
+                document.getElementById('submission-list').innerHTML = '<p>Error loading submission history. Please try again later.</p>';
+            });
+        });
+   
+   </script>
+  </body>
+</html>

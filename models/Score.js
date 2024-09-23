@@ -59,6 +59,11 @@ class Score {
         return rows;
     }
 
+    static async getBySubmissionId(submissionId) {
+        const query = 'SELECT * FROM Scores WHERE submission_id = ?';
+        const [rows] = await db.execute(query, [submissionId]);
+        return rows;
+    }
     
 
 }

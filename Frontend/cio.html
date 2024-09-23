@@ -10,60 +10,25 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <link rel="stylesheet" href="cio.css">
     <style>
-        .help-button {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            background-color: #3f51b5;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            padding: 10px 15px;
-            font-size: 14px;
-            cursor: pointer;
-            outline: none;
-            transition: all 0.4s;
-            white-space: nowrap;
-            overflow: hidden;
-            max-width: 150px;
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
         }
-
-        .help-button.expanded {
-            max-width: 600px;
-            padding: 10px 20px;
-            height: auto;
+        .question h3 {
+            margin-top: 0;
         }
-
-        .help-button span {
-            display: flex;
-            align-items: center;
-        }
-
-        .help-button .material-icons {
-            font-size: 20px;
-        }
-
-        .info-text {
-            display: none;
-            margin-left: 10px;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .help-button.expanded .info-text {
-            display: block;
+        #question-content {
+            max-height: 70vh;
+            overflow-y: auto;
         }
     </style>
 </head>
 
 <body>
+    <div class="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]"></div>
     <div class="container">
-        <!-- Help Button -->
-     
         <!-- Wheel Container -->
         <div id="wheel-container"></div>
 
@@ -91,7 +56,7 @@
         labels: ["NIST CSF 2.0", "Identify", "Protect", "Detect", "Respond", "Recover"],
         parents: ["", "NIST CSF 2.0", "NIST CSF 2.0", "NIST CSF 2.0", "NIST CSF 2.0", "NIST CSF 2.0"],
         outsidetextfont: { size: 16, color: "#0d0000" },
-        insidetextfont: { size: 14, color: ["black", "black", "black", "black", "black", "black"] }, // Ensure each segment text color is black
+        insidetextfont: { size: 14, color: ["black", "black", "black", "black", "black", "black"] },
         leaf: { opacity: 1 },
         marker: { line: { width: 2, color: "#ffffff" } },
         branchvalues: 'total',
@@ -111,10 +76,7 @@
     };
 
     Plotly.newPlot('wheel-container', data, layout, config);
-
-    
 });
-
     </script>
 
     <script src="cio.js"></script>

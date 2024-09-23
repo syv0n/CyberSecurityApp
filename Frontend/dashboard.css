@@ -1,11 +1,22 @@
 body {
     font-family: 'Roboto', sans-serif;
-
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    height: 100vh;
+    background-color: white;
     margin: 0;
+    height: 100vh;
+    position: relative;
+}
+
+.absolute-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -10;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    background-image: 
+        linear-gradient(to right, #f0f0f0 1px, transparent 1px),
+        linear-gradient(to bottom, #f0f0f0 1px, transparent 1px);
+    background-size: 6rem 4rem;
 }
 
 .container {
@@ -17,6 +28,8 @@ body {
     margin: auto;
     text-align: center;
     transition: transform 0.3s;
+    position: relative; /* Ensure it stays above the background */
+    z-index: 10; /* Keep the container above the background */
 }
 
 .container:hover {
@@ -71,9 +84,24 @@ input {
 input:focus {
     border-color: #007bff;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+button:focus, .button:focus {
     outline: none;
 }
 
 .hidden {
     display: none;
+}
+
+.success {
+    color: green;
+}
+
+.error {
+    color: red;
+}
+
+.material-icons {
+    margin-right: 8px;
 }
