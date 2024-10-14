@@ -1,0 +1,92 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+}
+
+nav {
+    background-color: #f4f4f4;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+nav button {
+    margin: 0 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+}
+
+#assessment-container {
+    padding: 1rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+input[type="number"] {
+    width: 60px;
+}
+
+button#submit-btn {
+    display: block;
+    margin: 1rem auto;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button#submit-btn:hover {
+    background-color: #45a049;
+}
+
+#score-display {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#score-chart {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    height: 200px;
+    margin-top: 20px;
+}
+
+.chart-bar {
+    width: 40px;
+    background-color: #4CAF50;
+    margin: 0 5px;
+    transition: height 0.5s ease-in-out;
+}
+
+.chart-label {
+    text-align: center;
+    margin-top: 5px;
+    font-size: 12px;
+}

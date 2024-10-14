@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMM 5300 C Self-Assessment</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>SIMM 5300 C Self-Assessment</h1>
+    </header>
+    <nav>
+        <button onclick="loadComponent('detect')">Detect</button>
+        <button onclick="loadComponent('identify')">Identify</button>
+        <button onclick="loadComponent('protect')">Protect</button>
+        <button onclick="loadComponent('recovery')">Recovery</button>
+        <button onclick="loadComponent('respond')">Respond</button>
+    </nav>
+    <main id="assessment-container">
+        <!-- Assessment content will be loaded here dynamically -->
+    </main>
+    <button onclick="loadFinalScore()">View Final Score</button>
+<div id="final-score-display"></div>
+    <script src="script.js"></script>
+</body>
+</html>
