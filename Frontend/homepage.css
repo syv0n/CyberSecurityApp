@@ -6,79 +6,129 @@ body {
   background-color: #f0ecec;
   color: #333;
 }
+
 .container {
   width: 80%;
   margin: auto;
   overflow: hidden;
 }
+
 header {
-  background: #408a1e;
+  background: url('FlagEagle.jpg') no-repeat center 20%;
+  background-size: cover;
   color: #fff;
   padding-top: 30px;
   min-height: 70px;
   border-bottom: #f97316 3px solid;
 }
+
+
 header a {
   color: #fff;
   text-decoration: none;
   font-size: 16px;
 }
+
 header ul {
   padding: 0;
   list-style: none;
 }
+
 header li {
   display: inline;
   padding: 0 20px;
 }
+
 header #branding {
   float: left;
   margin-top: 15px;
 }
+
 header #branding h1 {
   margin: 0;
 }
+
 header nav {
   float: right;
   margin-top: 10px;
 }
-header .highlight {
+
+.highlight {
   color: #600404;
   font-weight: bold;
 }
+
 #showcase {
   min-height: 300px;
-  background: #1ab06d url('https://source.unsplash.com/random/1600x900/?government,cybersecurity') no-repeat center center/cover;
-  text-align: center;
-  color: #fff;
+  position: relative;
+  overflow: hidden;
 }
+
+.bg-image {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
 #showcase h1 {
   margin-top: 100px;
   font-size: 55px;
   margin-bottom: 10px;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
+
 #showcase p {
   font-size: 20px;
+  color: #333;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
 }
+
 #nist-functions {
   margin-top: 20px;
+  background-image: url('Security.jpg'); /* Replace with the path to your image */
+  background-size: 82.5%;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  z-index: 1;
 }
+
+#nist-functions .container {
+  position: relative;
+  z-index: 2;
+}
+
+#nist-functions .container {
+  background-color: rgba(255, 255, 255, 0.8); /* Optional: white background with 80% opacity */
+  padding: 20px;
+}
+
+
 .function-box {
   float: left;
   width: 18%;
   padding: 10px;
   text-align: center;
 }
+
 .function-box h3 {
   color: #040c23;
 }
+
 footer {
-  background: #398a1e;
+  background: #4314de;
   color: #fff;
   text-align: center;
   padding: 20px;
   margin-top: 20px;
 }
+
 .btn {
   display: inline-block;
   padding: 10px 20px;
@@ -88,12 +138,14 @@ footer {
   border-radius: 5px;
   transition: all 0.3s ease;
 }
+
 .btn:hover {
   background-color: #580404;
   color: #fff;
   transform: translateY(-2px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 @media (max-width: 768px) {
   header #branding,
   header nav,
@@ -103,6 +155,7 @@ footer {
       text-align: center;
       width: 100%;
   }
+
   header nav ul li {
       display: block;
       margin: 10px 0;

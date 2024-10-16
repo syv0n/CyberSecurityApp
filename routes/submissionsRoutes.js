@@ -8,5 +8,5 @@ router.post('/new_submission', auth, submissionsController.createSubmission);
 router.get('/get_submission', auth, submissionsController.getSubmissionsByUser);
 router.get('/scores/final_score', auth, finalScoreController.calculateFinalScore);
 router.get('/scores/final_score/:submissionId', auth, submissionsController.getSubmissionById);
-
+router.post('/notify-submission', auth, submissionsController.notifySubmission);
 module.exports = router;

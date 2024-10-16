@@ -2,7 +2,10 @@ const { body, param, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const { sendVerificationEmail } = require('../services/emailService');
+const { sendVerificationEmail, sendPasswordResetEmail } = require('../services/emailService');
+const crypto = require('crypto');
+
+
 
 const handleValidationErrors = (req, res, next) => {
   const errors = validationResult(req);
@@ -189,6 +192,63 @@ exports.deleteUserById = [
       }
     } catch (error) {
       res.status(500).json({ message: 'Error deleting user', error: error.message });
+    }
+  }
+];
+
+
+
+exports.forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findByEmail(email);
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    if (!user.isVerified) {
+      return res.status(400).json({ message: 'Email not verified. Please verify your email before resetting password.' });
+    }
+    
+    const resetToken = crypto.randomBytes(20).toString('hex');
+    const resetTokenExpiry = Date.now() + 3600000; // 1 hour from now
+    await User.setResetToken(user.id, resetToken, resetTokenExpiry);
+    await sendPasswordResetEmail(email, resetToken);
+    res.json({ message: 'Password reset email sent' });
+  } catch (error) {
+    console.error('Error in forgot password:', error);
+    res.status(500).json({ message: 'Error processing request', error: error.message });
+  }
+};
+
+exports.resetPassword = [
+  body('token').notEmpty().withMessage('Token is required'),
+  body('newPassword').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
+    .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>])/).withMessage('Password must include uppercase, lowercase, numbers, and special characters'),
+  handleValidationErrors,
+  async (req, res) => {
+    try {
+      const { token, newPassword } = req.body;
+      const user = await User.findByResetToken(token);
+      
+      if (!user || user.resetTokenExpiry < Date.now()) {
+        return res.status(400).json({ message: 'Invalid or expired reset token' });
+      }
+      
+      // Check if the new password is the same as the old password
+      const isSamePassword = await bcrypt.compare(newPassword, user.password);
+      if (isSamePassword) {
+        return res.status(400).json({ message: 'New password must be different from the old password' });
+      }
+
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      await User.updatePassword(user.id, hashedPassword);
+      await User.clearResetToken(user.id);
+      res.json({ message: 'Password reset successful' });
+    } catch (error) {
+      console.error('Error resetting password:', error);
+      res.status(500).json({ message: 'Error resetting password', error: error.message });
     }
   }
 ];

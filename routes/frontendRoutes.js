@@ -13,6 +13,10 @@ router.get('/verify-email', (req, res) => {
   res.sendFile(path.join(__dirname, '../Frontend', 'verify-email.html'));
 });
 
+router.get('/reset-password.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '../Frontend', 'reset_password.html'));
+});
+
 router.get('/register', (req, res) => {
   res.sendFile(path.join(__dirname, '../Frontend', 'signup.html'));
 });

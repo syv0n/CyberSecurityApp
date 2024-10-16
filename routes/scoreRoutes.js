@@ -8,5 +8,7 @@ router.get('/:category', auth, scoreController.getScoresByCategory);
 // Endpoint to fetch saved answers for the current user
 router.get('/display_scores', auth, scoreController.displayScores);
 
+
+
 module.exports = router;
 

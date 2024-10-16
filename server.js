@@ -4,7 +4,7 @@ const { connectDB } = require('./config/database');
 const userRoutes = require('./routes/userRoutes');
 const frontendRoutes = require('./routes/frontendRoutes');
 const scoreRoutes = require('./routes/scoreRoutes');
-
+const simmRoutes = require('./routes/simmRoutes')
 const submissionsRoutes = require('./routes/submissionsRoutes');
 const questionsRoutes = require('./routes/questionRoutes');
 const cors = require('cors');
@@ -23,7 +23,7 @@ connectDB();
 // API Routes
 app.use('/api/users', userRoutes);
 app.use('/api/scores', scoreRoutes);
-
+app.use('/api/simm', simmRoutes);
 app.use('/api/submissions', submissionsRoutes);
 app.use('/api/questions', questionsRoutes);
 

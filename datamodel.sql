@@ -94,4 +94,12 @@ ALTER TABLE Submissions ADD COLUMN final_score DECIMAL(5,2) NOT NULL;
 
 ALTER TABLE Scores ADD COLUMN submission_id BIGINT UNSIGNED;
 
-SELECT * from `Submissions`
+
+
+ALTER TABLE Users 
+ADD COLUMN resetToken VARCHAR(255),
+ADD COLUMN resetTokenExpiry DATETIME;
+
+
+-- self-assessment SIMM schema
+

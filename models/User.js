@@ -55,8 +55,31 @@ class User {
         const query = 'SELECT isVerified FROM Users WHERE id = ?';
         const [rows] = await db.execute(query, [id]);
         return rows[0] ? rows[0].isVerified : false;
-      }
-      
+    }
+    
+    
+    static async findByResetToken(token) {
+        const query = 'SELECT * FROM Users WHERE resetToken = ?';
+        const [rows] = await db.execute(query, [token]);
+        return rows[0] || null;
+    }
+    
+    static async updatePassword(id, newPassword) {
+        const query = 'UPDATE Users SET password = ? WHERE id = ?';
+        await db.execute(query, [newPassword, id]);
+    }
+    
+    static async clearResetToken(id) {
+        const query = 'UPDATE Users SET resetToken = NULL, resetTokenExpiry = NULL WHERE id = ?';
+        await db.execute(query, [id]);
+    }
+    static async setResetToken(id, token, expiry) {
+        // Convert milliseconds to a MySQL compatible datetime
+        const expiryDate = new Date(expiry).toISOString().slice(0, 19).replace('T', ' ');
+        
+        const query = 'UPDATE Users SET resetToken = ?, resetTokenExpiry = ? WHERE id = ?';
+        await db.execute(query, [token, expiryDate, id]);
+    }
       
 }
 

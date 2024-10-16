@@ -18,7 +18,10 @@
                 <span class="material-icons">account_circle</span> View Profile
             </button>
             <button id="self-assessment" class="button">
-                <span class="material-icons">security</span> Self Assessment
+                <span class="material-icons">security</span> Self-Assessment Questions
+            </button>
+            <button id="self-assessment-score" class="button">
+                <span class="material-icons">security</span> Self-Assessment Scoring
             </button>
             <button id="viewSubmissionsBtn" class="button">
                 <span class="material-icons">list</span> View Submissions
@@ -75,6 +78,7 @@
             const updateProfileForm = document.getElementById('updateProfileForm');
             const updateMessage = document.getElementById('updateMessage');
             const selfAssessmentBtn = document.getElementById('self-assessment');
+            const selfAssessmentScoreBtn = document.getElementById('self-assessment-score');
             const viewSubmissionsBtn = document.getElementById('viewSubmissionsBtn');
 
 
@@ -117,13 +121,19 @@
                     case 'iso':
                         window.location.href = 'iso.html';
                         break;
-                    case 'tech':
-                        window.location.href = 'tech.html';
-                        break;
+                    // case 'tech':
+                    //     window.location.href = 'tech.html';
+                    //     break;
                     default:
                         alert('Please select a role before proceeding to the assessment.');
                         window.location.href = 'Choose_Options.html';
                 }
+            });
+
+            selfAssessmentScoreBtn.addEventListener('click', () => {
+                const userRole = localStorage.getItem('userRole');
+                window.location.href = 'SIMM_self_assessment.html';
+
             });
 
             updateProfileBtn.addEventListener('click', () => {

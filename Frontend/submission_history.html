@@ -5,110 +5,267 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Submission History</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              border: "hsl(var(--border))",
+              input: "hsl(var(--input))",
+              ring: "hsl(var(--ring))",
+              background: "hsl(var(--background))",
+              foreground: "hsl(var(--foreground))",
+              primary: {
+                DEFAULT: "hsl(var(--primary))",
+                foreground: "hsl(var(--primary-foreground))",
+              },
+              secondary: {
+                DEFAULT: "hsl(var(--secondary))",
+                foreground: "hsl(var(--secondary-foreground))",
+              },
+              destructive: {
+                DEFAULT: "hsl(var(--destructive))",
+                foreground: "hsl(var(--destructive-foreground))",
+              },
+              muted: {
+                DEFAULT: "hsl(var(--muted))",
+                foreground: "hsl(var(--muted-foreground))",
+              },
+              accent: {
+                DEFAULT: "hsl(var(--accent))",
+                foreground: "hsl(var(--accent-foreground))",
+              },
+              popover: {
+                DEFAULT: "hsl(var(--popover))",
+                foreground: "hsl(var(--popover-foreground))",
+              },
+              card: {
+                DEFAULT: "hsl(var(--card))",
+                foreground: "hsl(var(--card-foreground))",
+              },
+            },
+            borderRadius: {
+              lg: "var(--radius)",
+              md: "calc(var(--radius) - 2px)",
+              sm: "calc(var(--radius) - 4px)",
+            },
+          },
+        },
+      };
+    </script>
     <style>
-      body {
-        font-family: "Roboto", sans-serif;
-        line-height: 1.6;
-        color: #333;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-      }
-      h1 {
-        color: #2c3e50;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-      }
-      th,
-      td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-      }
-      th {
-        background-color: #f2f2f2;
-      }
-      .back-button {
-        display: inline-block;
-        margin-top: 20px;
-        padding: 10px 20px;
-        background-color: #3498db;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
+      @layer base {
+        :root {
+          --background: 0 0% 100%;
+          --foreground: 222.2 84% 4.9%;
+          --card: 0 0% 100%;
+          --card-foreground: 222.2 84% 4.9%;
+          --popover: 0 0% 100%;
+          --popover-foreground: 222.2 84% 4.9%;
+          --primary: 221.2 83.2% 53.3%;
+          --primary-foreground: 210 40% 98%;
+          --secondary: 210 40% 96.1%;
+          --secondary-foreground: 222.2 47.4% 11.2%;
+          --muted: 210 40% 96.1%;
+          --muted-foreground: 215.4 16.3% 46.9%;
+          --accent: 210 40% 96.1%;
+          --accent-foreground: 222.2 47.4% 11.2%;
+          --destructive: 0 84.2% 60.2%;
+          --destructive-foreground: 210 40% 98%;
+          --border: 214.3 31.8% 91.4%;
+          --input: 214.3 31.8% 91.4%;
+          --ring: 221.2 83.2% 53.3%;
+          --radius: 0.5rem;
+          --badge-background: 221.2 83.2% 53.3%;
+          --badge-foreground: 210 40% 98%;
+        }
+        .dark {
+          --background: 222.2 84% 4.9%;
+          --foreground: 210 40% 98%;
+          --card: 222.2 84% 4.9%;
+          --card-foreground: 210 40% 98%;
+          --popover: 222.2 84% 4.9%;
+          --popover-foreground: 210 40% 98%;
+          --primary: 217.2 91.2% 59.8%;
+          --primary-foreground: 222.2 47.4% 11.2%;
+          --secondary: 217.2 32.6% 17.5%;
+          --secondary-foreground: 210 40% 98%;
+          --muted: 217.2 32.6% 17.5%;
+          --muted-foreground: 215 20.2% 65.1%;
+          --accent: 217.2 32.6% 17.5%;
+          --accent-foreground: 210 40% 98%;
+          --destructive: 0 62.8% 30.6%;
+          --destructive-foreground: 210 40% 98%;
+          --border: 217.2 32.6% 17.5%;
+          --input: 217.2 32.6% 17.5%;
+          --ring: 224.3 76.3% 48%;
+          --badge-background: 221.2 83.2% 53.3%;
+          --badge-foreground: 210 40% 98%;
+        }
       }
     </style>
   </head>
-  <body>
-    <h1>Submission History</h1>
-    <div id="submission-list"></div>
-    <a href="dashboard.html" class="back-button">Back to Dashboard</a>
+  <body class="bg-background text-foreground">
+    <div class="container mx-auto px-4 py-8">
+      <h1 class="text-4xl font-bold mb-8">Submission History</h1>
+      <div class="flex space-x-4 mb-8">
+        <button
+          id="submission-scores-btn"
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+        >
+          Submission Scores
+        </button>
+        <a
+          href="dashboard.html"
+          class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2"
+        >
+          Back to Dashboard
+        </a>
+      </div>
+      <div id="submission-list" class="space-y-4"></div>
+      <div
+        id="scores-modal"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
+      >
+        <div class="bg-background p-6 rounded-lg shadow-xl max-w-md w-full">
+          <h2 class="text-2xl font-bold mb-4">Assessment Scores</h2>
+          <div id="scores-list" class="mb-4"></div>
+          <button
+            id="close-modal-btn"
+            class="w-full inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/dayjs.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const prod = window.location.hostname === 'localhost' ? 'http://localhost:9009' : 'http://162.240.40.136:9009';
-            
-            fetch(`${prod}/api/submissions/get_submission`, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                const submissionList = document.getElementById('submission-list');
-                let submissions = [];
+      document.addEventListener("DOMContentLoaded", () => {
+        const prod =
+          window.location.hostname === "localhost"
+            ? "http://localhost:9009"
+            : "http://162.240.40.136:9009";
 
-                if (Array.isArray(data)) {
-                    submissions = data;
-                } else if (data && Array.isArray(data.submissions)) {
-                    submissions = data.submissions;
-                } else if (data && typeof data === 'object') {
-                    submissions = [data]; // If it's a single object, wrap it in an array
-                }
+        fetch(`${prod}/api/submissions/get_submission`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const submissionList = document.getElementById("submission-list");
+            let submissions = [];
 
-                if (submissions.length === 0) {
-                    submissionList.innerHTML = '<p>No submissions found.</p>';
-                } else {
-                    let tableHtml = `
-                        <table>
-                            <tr>
-                                <th>Submission Date</th>
-                                <th>Final Score</th>
-                            </tr>
-                    `;
-                    submissions.forEach(submission => {
-                        tableHtml += `
-                            <tr class="clickable-row" data-submission-id="${submission.id}">
-                                <td>${new Date(submission.submitted_at).toLocaleString()}</td>
-                                <td>${submission.final_score}</td>
-                            </tr>
+            if (Array.isArray(data)) {
+              submissions = data;
+            } else if (data && Array.isArray(data.submissions)) {
+              submissions = data.submissions;
+            } else if (data && typeof data === "object") {
+              submissions = [data];
+            }
+
+            if (submissions.length === 0) {
+              submissionList.innerHTML =
+                '<p class="text-lg text-muted-foreground">No submissions found.</p>';
+            } else {
+              submissions.forEach((submission) => {
+                const submissionDate = dayjs(submission.submitted_at).format(
+                  "MMMM D, YYYY h:mm A"
+                );
+                const card = document.createElement("div");
+                card.className =
+                  "bg-card text-card-foreground rounded-lg border shadow-sm transition-all duration-300 hover:shadow-md";
+                card.innerHTML = `
+                            <div class="p-6">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-2xl font-semibold">${submissionDate}</h3>
+                                    <span class="inline-flex items-center rounded-full bg-[hsl(var(--badge-background))] px-2.5 py-0.5 text-xs font-medium text-[hsl(var(--badge-foreground))]">
+                                      Score: ${submission.final_score}
+                                    </span>
+                                </div>
+                                <p class="text-sm text-muted-foreground mb-4">Submission ID: ${submission.id}</p>
+                                <button class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3">
+                                    View Details
+                                </button>
+                            </div>
                         `;
-                    });
-                    tableHtml += '</table>';
-                    submissionList.innerHTML = tableHtml;
-        
-                    // Add click event listeners to rows
-                    document.querySelectorAll('.clickable-row').forEach(row => {
-                        row.addEventListener('click', () => {
-                            const submissionId = row.getAttribute('data-submission-id');
-                            console.log('Clicked submission ID:', submissionId); // Add this log
-                            window.location.href = `submission_details.html?submissionId=${submissionId}`;
-                        });
-                    });
-                }
+
+                card.querySelector("button").addEventListener("click", () => {
+                  window.location.href = `submission_details.html?submissionId=${submission.id}`;
+                });
+
+                submissionList.appendChild(card);
+              });
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching submission history:", error);
+            document.getElementById("submission-list").innerHTML =
+              '<p class="text-lg text-destructive">Error loading submission history. Please try again later.</p>';
+          });
+
+        const submissionScoresBtn = document.getElementById(
+          "submission-scores-btn"
+        );
+        const scoresModal = document.getElementById("scores-modal");
+        const closeModalBtn = document.getElementById("close-modal-btn");
+        const scoresList = document.getElementById("scores-list");
+
+        submissionScoresBtn.addEventListener("click", () => {
+          fetch(`${prod}/api/simm/assessment_score_history`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Received data:", data); // For debugging
+              if (Array.isArray(data) && data.length > 0) {
+                let scoresHTML = '<ul class="space-y-2">';
+                data.forEach((score) => {
+                  scoresHTML += `
+                    <li class="border-b pb-2">
+                        <p class="text-lg">Assessment Score: <span class="font-semibold">${
+                          score.assessment_score
+                        }</span></p>
+                        <p class="text-sm text-muted-foreground">Recorded on: ${dayjs(
+                          score.created_at
+                        ).format("MMMM D, YYYY h:mm A")}</p>
+                    </li>
+                `;
+                });
+                scoresHTML += "</ul>";
+                scoresList.innerHTML = scoresHTML;
+              } else {
+                scoresList.innerHTML =
+                  '<p class="text-lg text-muted-foreground">No assessment scores available.</p>';
+              }
+              scoresModal.classList.remove("hidden");
             })
-            .catch(error => {
-                console.error('Error fetching submission history:', error);
-                document.getElementById('submission-list').innerHTML = '<p>Error loading submission history. Please try again later.</p>';
+            .catch((error) => {
+              console.error("Error fetching assessment scores:", error);
+              scoresList.innerHTML =
+                '<p class="text-lg text-destructive">Error loading assessment scores. Please try again later.</p>';
+              scoresModal.classList.remove("hidden");
             });
         });
-   
-   </script>
+
+        closeModalBtn.addEventListener("click", () => {
+          scoresModal.classList.add("hidden");
+        });
+
+        scoresModal.addEventListener("click", (e) => {
+          if (e.target === scoresModal) {
+            scoresModal.classList.add("hidden");
+          }
+        });
+      });
+    </script>
   </body>
 </html>

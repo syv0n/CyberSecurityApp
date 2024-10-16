@@ -1,23 +1,20 @@
 const nodemailer = require('nodemailer');
 
-let transporter;
-
 function createTransporter() {
-    transporter = nodemailer.createTransport({
-        service:"gmail",
-        host:"smtp.gmail.com",
-        // host: "smtp.siteprotect.com",
+    return nodemailer.createTransport({
+        service: "gmail",
+        host: "smtp.gmail.com",
         port: 587,
-        secure: false, // true for 465, false for other ports
+        secure: false,
         auth: {
-            user: process.env.SENDER_USER ,
+            user: process.env.SENDER_USER,
             pass: process.env.SENDER_PASSWORD 
         }
     });
 }
 
-// Call createTransporter immediately
-createTransporter();
+module.exports = { createTransporter}
+
 
 exports.sendVerificationEmail = async (email, token) => {
     // Ensure transporter is created before sending email
@@ -47,3 +44,18 @@ exports.sendVerificationEmail = async (email, token) => {
         throw error;
     }
 };
+
+exports.sendPasswordResetEmail = async (email, token) => {
+    const resetUrl = `http://localhost:9009/verify-email.html?token=${token}`;
+    const mailOptions = {
+      from: process.env.EMAIL_FROM,
+      to: email,
+      subject: 'Password Reset',
+      html: `<p>You requested a password reset. Click <a href="${resetUrl}">here</a> to reset your password.</p>
+             <p>If you didn't request this, please ignore this email.</p>`
+    };
+  
+    await transporter.sendMail(mailOptions);
+  };
+
+
